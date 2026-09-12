@@ -1,0 +1,12 @@
+import {chromium,expect} from '@playwright/test';import {writeFile} from 'node:fs/promises';
+const browser=await chromium.launch({channel:'chrome',headless:true});const ctx=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});const page=await ctx.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));const results=[];
+try{await page.goto('http://127.0.0.1:4173');for(let id=1;id<=10;id++){
+await page.evaluate(id=>window.__BIOLOGY__.start(id),id);await page.waitForFunction(id=>window.__BIOLOGY__.state?.level===id,id);if(id>=5)await page.locator('#recruit-plasma').click();
+if(id===7){await page.locator('#pause').click();await page.locator('#leave').click();await page.locator('[data-level="7"]').click();await page.locator('#begin').click();await page.screenshot({path:'artifacts/clone-selection-phone.png'});await page.locator('#clone-strong').click();await page.locator('#select-clone').click();await page.locator('#recruit-plasma').click();}
+await page.evaluate(()=>window.__BIOLOGY__.advance(36,true));
+if(id>=3){if([6,8,10].includes(id)){const a=(await page.locator('.lab').innerText()).includes('EPITOPE A');await page.locator(a?'#match-a':'#match-b').click();}else{const text=await page.locator('.lab').innerText();const doxy=text.includes('amoxicillin resistant')||text.includes('Beta-lactamase');await page.locator(doxy?'#pick-doxy':'#pick-amox').click();}await page.locator('#continue-check').click();}
+await page.evaluate(()=>window.__BIOLOGY__.advance(35,true));
+if(id>=5){await page.locator('#antibody').click();await page.locator(id===6?'#equip-b':'#equip-a').click();}
+await page.evaluate(()=>window.__BIOLOGY__.advance(20,true));await expect(page.getByRole('heading',{name:'Tiny team. Mission complete.'})).toBeVisible();const state=await page.evaluate(()=>({squad:window.__BIOLOGY__.state.squad,kills:window.__BIOLOGY__.state.kills,checks:window.__BIOLOGY__.state.learning}));results.push({level:id,phase:'victory',...state});console.log('PASS final level',id,state.squad);await page.locator('#result-map').click();}
+expect(errors).toEqual([]);
+}catch(e){console.error(e);results.push({failure:String(e)});await page.screenshot({path:'artifacts/final-sweep-failure.png'});process.exitCode=1;}finally{await writeFile('artifacts/final-sweep.json',JSON.stringify({mode:'Accelerated deterministic simulation; real UI support selections and result screens',results,errors},null,2));await browser.close();}

@@ -1,0 +1,9 @@
+{
+  "results": [
+    "Production excludes test controls",
+    "Production offline navigation reload",
+    "Offline cold game start with local assets and running clock",
+    "320px viewport no overflow"
+  ],
+  "errors": []
+}

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.sites-runtime/
+artifacts/*.zip
+artifacts/*.log
+android/.gradle/
+android/local.properties
+android/**/build/
+ios/App/Pods/
+*.keystore
+*.mobileprovision
+*.p12
+
+.pnpm-store/
+dist-test/

@@ -1,0 +1,12 @@
+import { chromium } from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:1});
+const errors=[];page.on('pageerror',e=>{errors.push(e.message);console.log('PAGE ERROR',e.message)});page.on('response',r=>console.log('HTTP',r.status(),r.url()));
+await page.goto('http://127.0.0.1:4173',{waitUntil:'domcontentloaded'});await page.waitForTimeout(2000);
+console.log('Title:',await page.title(),'buttons:',await page.getByRole('button').count());
+await page.screenshot({path:'artifacts/map-desktop.png',fullPage:true});
+await page.getByRole('button',{name:'Start your patrol'}).click();await page.getByRole('button',{name:'Begin patrol'}).click();
+await page.getByRole('button',{name:'Let’s move'}).click();await page.waitForTimeout(2200);
+await page.screenshot({path:'artifacts/patrol-desktop.png'});
+console.log('Canvas:',await page.locator('canvas').count(),'state:',await page.evaluate(()=>({time:window.__BIOLOGY__?.state?.time,squad:window.__BIOLOGY__?.state?.squad})));console.log('Errors:',errors);
+await browser.close();

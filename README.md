@@ -1,0 +1,55 @@
+# Biology Dash: Immune Patrol
+
+Original portrait Phaser + TypeScript game: ten 90-second authored patrols, local progression, two susceptibility-dependent medicine supports, cooperative immune roles and a playable B-cell selection/recall progression.
+
+## Run
+
+Node 24 and pnpm 11.19.0 are the verified toolchain.
+
+```sh
+pnpm install --frozen-lockfile
+pnpm test
+pnpm build
+pnpm preview
+```
+
+The normal development command is `pnpm dev`. On this host, Vite module requests stalled intermittently; a compiled build served by `python3 -m http.server 4175 --directory dist` was verified instead. Vite uses its native config loader to avoid the bundled-loader startup issue.
+
+## Controls
+
+Drag horizontally anywhere in the corridor; the finger may stay below the squad. Arrow keys or A/D steer on desktop. Phagocytes engulf automatically inside the contact zone. Left gate recruits, right gate widens contact. Space activates equipped external medicine (level 3+). Escape pauses. Medicine and antibody buttons expose evidence and switch profiles. Touch cancellation clears dragging.
+
+## Verify
+
+```sh
+pnpm test:build
+python3 -m http.server 4173 --directory dist-test
+# in another terminal
+pnpm test:browser
+node scripts/input-performance-test.mjs
+```
+
+Browser scripts use installed Google Chrome through Playwright. The browser suite includes a real-time patrol and separately labeled accelerated simulations for later learning flows. For production offline checks, serve `dist/` on 4175, then run `node scripts/production-test.mjs`. Test-only controls exist only in Vite dev/test mode and are excluded from production.
+
+## Native
+
+```sh
+pnpm build
+pnpm native:sync
+pnpm assets
+cd android && ./gradlew assembleDebug
+```
+
+Open `ios/App/App.xcodeproj` in Xcode for iOS. Both projects bundle game files locally. `dev.biologydash.immune` is temporary and must be replaced by an owner-approved identity before distribution. No signing keys are included. See RELEASE.md for exact missing tooling and release steps.
+
+## Architecture and evidence
+
+- `src/content.ts`: evidence-backed biological definitions and ten learning encounters.
+- `src/simulation.ts`: deterministic capped simulation, independent of renderer.
+- `src/game.ts`: Phaser scene, input, sprites, effects and audio.
+- `src/save.ts`: versioned local saves, rewards and entitlement catalog.
+- `src/main.ts`: campaign, decisions, field guide and native lifecycle.
+- `MEDICAL_EVIDENCE.md`: source records and review questions.
+- `GAME_DESIGN.md`, `ASSET_MANIFEST.md`, `RELEASE.md`, `STATUS.md`: design, provenance, release and resume checkpoint.
+
+Based on the structure of [Phaser’s official Vite TypeScript starter](https://github.com/phaserjs/template-vite-ts); original template license retained. No starter telemetry, backend, ads, purchases, accounts or analytics. This is a game abstraction, not prescribing advice or clinically validated instruction. Human learning evaluation and qualified medical review remain outstanding.

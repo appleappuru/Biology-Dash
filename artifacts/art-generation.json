@@ -1,0 +1,24 @@
+{
+  "generator": "built-in image_gen",
+  "atlas": {
+    "file": "immune-sprite-atlas.png",
+    "width": 1448,
+    "height": 1086,
+    "alpha": true,
+    "columns": 4,
+    "rows": 3,
+    "frameWidth": 362,
+    "frameHeight": 362,
+    "frames": ["neutrophil", "macrophage", "plasma", "antibody", "coccus", "rod", "resistantCoccus", "fastRod", "encapsulated", "bossCoccus", "bossRod", "heroGroup"]
+  },
+  "background": {
+    "file": "tissue-corridor.png",
+    "width": 1024,
+    "height": 1536,
+    "alpha": false
+  },
+  "prompts": {
+    "atlas": "Original transparent sprite atlas for Biology Dash Immune Patrol portrait mobile action game. Four columns and three rows, exactly 12 individual sprites: white cyan neutrophil, white teal macrophage, lavender plasma cell, blue Y antibody; lime coccus cluster, orange rod, coral resistant coccus, mint fast rod; violet encapsulated bacterium, large green boss cluster, large orange boss rod, trio of white cyan hero cells. Polished toy-like shaded 3D, dark teal outlines, upper-left highlights, saturated mint cyan lime coral violet, expressive eyes. Transparent background, no text or visible grid.",
+    "background": "Portrait 2:3 original microscopic tissue corridor. Deep navy and dark teal blue clear liquid center covering middle 72% of width, subtle faint floating particles, soft upper-center light. Organic rounded tissue cells hugging far left and right edges, muted teal blue and occasional mauve. Rich atmospheric depth, softly glowing membrane edges. Central gameplay lane uncluttered and dark. No characters, bacteria, text, HUD, watermark or bright effects."
+  }
+}
