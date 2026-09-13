@@ -43,6 +43,14 @@ await expect(page.locator('.patrol-awards')).toContainText('Flawless defense');
 await page.screenshot({path:'artifacts/patrol-awards-phone.png'});
 expect(await page.evaluate(()=>__BIOLOGY__.save.bestScores[1])).toBe(500);
 checks.push('Personal-best and flawless-defense awards with saved score');
+await page.locator('#result-map').click();
+await expect(page.locator('[data-level="1"]')).toContainText('PERSONAL BEST · 500');
+await page.reload();
+await expect(page.locator('[data-level="1"]')).toContainText('PERSONAL BEST · 500');
+await page.setViewportSize({width:320,height:740});
+expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+await page.screenshot({path:'artifacts/personal-best-map.png',fullPage:true});
+checks.push('Replay map shows retained personal best after reload at 320px width');
 expect(errors).toEqual([]);
 }catch(e){checks.push({failure:String(e)});process.exitCode=1;await page.screenshot({path:'artifacts/presentation-failure.png'});}
 finally{console.log(checks);await writeFile('artifacts/presentation-test.json',JSON.stringify({checks,errors},null,2));await browser.close();}

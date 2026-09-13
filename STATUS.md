@@ -30,7 +30,7 @@
 - Capacitor Android/iOS projects generated and synced with local game files, portrait config, lifecycle/back handling, icons/splash. CI workflow prepared, not run remotely.
 
 ## Next action
-Local revision is ready at http://127.0.0.1:4175. Source checkpoint: c59bf49.
+Local revision is ready at http://127.0.0.1:4175. Latest completed source checkpoint before the map-record audit: 709d8db.
 Hosted publication requires explicit user approval to export this project source and bundled QA artifacts to the existing private Sites repository:
 https://git.chatgpt-team.site/2b44f6f5-c34d-444b-83e8-53ef432f4f49/appgprj_6aa5bab3c21c819187d24627f0551c1d.git
 Automatic approval review rejected the upload on September 13 because the destination/payload were not explicitly authorized. No revised source was uploaded. Do not bypass or deploy the obsolete saved version.
@@ -38,14 +38,14 @@ The local Sites hosting skill and packaging helper also disappeared after the re
 
 ## Exact verification commands
 Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`; add its containing directory to PATH.
-- `node scripts/presentation-test.mjs` — all nine presentation checks passed, including actual gate crossing and saved awards.
+- `node scripts/presentation-test.mjs` — all ten presentation checks passed, including actual gate crossing and saved awards.
 - `node scripts/save-upgrade-test.mjs` — production save migration and reload passed.
 - `pnpm test` — 55 passed in three files, most recent run September 13.
 - `node node_modules/typescript/bin/tsc --pretty false` — passed.
 - `pnpm build` — production build passed, offline cache generated.
 - `pnpm native:sync` — both platforms synced successfully.
 - `pnpm test:build` then `python3 -m http.server 4173 --bind 127.0.0.1 --directory dist-test`.
-- `node scripts/browser-test.mjs` — full real-time/accelerated browser acceptance passed (September 12); later boss regression repaired and final all-level sweep below repeated.
+- `node scripts/browser-test.mjs` — full real-time/accelerated browser acceptance repeated successfully September 13, including six-run stability.
 - `node scripts/final-sweep.mjs` — all ten victories, September 13.
 - `node scripts/input-performance-test.mjs` — touch and headless performance passed.
 - Serve `dist` on port 4175; `node scripts/production-test.mjs` — offline/test-isolation/small-phone checks passed; final CSS check repeated September 13.
@@ -57,7 +57,7 @@ Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-
 Local production preview: http://127.0.0.1:4175 (restart server after host/session exit).
 Local instrumented QA preview: http://127.0.0.1:4173 (test build only).
 Hosting: `.openai/hosting.json` contains registered project `appgprj_6aa5bab3c21c819187d24627f0551c1d`; owner-private audience confirmed. Deployment pending, not yet a live URL.
-Source checkpoint before final publishing edits: `41d04e7`.
+Requirement-by-requirement assessment: ACCEPTANCE_AUDIT.md. Git history preserves initial and revised builds.
 
 ## Fixed failures / practical limitations
 Fixed scene-start race, malformed antibody-save validation, escaped-boss handling, boss-contact deletion and cross-profile affinity contamination. Vite default bundled config loader stalled on this host; native loader works. Dev module requests were intermittent, so verification uses compiled test/production servers. Production bundle includes Phaser (~395KB gzip JS); no unexplained runtime errors found.

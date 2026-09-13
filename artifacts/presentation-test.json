@@ -8,7 +8,8 @@
     "Five distinct enemy sprite rows",
     "Enemy hit pose and defeat tween",
     "Cost gate removes three visible defenders; shield timer displayed",
-    "Personal-best and flawless-defense awards with saved score"
+    "Personal-best and flawless-defense awards with saved score",
+    "Replay map shows retained personal best after reload at 320px width"
   ],
   "errors": []
 }

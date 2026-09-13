@@ -1,0 +1,13 @@
+{
+  "scope": "Bundled web-file equality only; not native compilation/runtime validation",
+  "results": {
+    "android": {
+      "files": 14,
+      "mismatches": []
+    },
+    "ios": {
+      "files": 14,
+      "mismatches": []
+    }
+  }
+}
