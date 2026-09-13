@@ -1,23 +1,26 @@
 # Biology Dash v0.1 — release preparation
 
-**Partial delivery; verification and distribution gates remain open.** Source implements the ten-level game and native projects have been generated. Browser interaction results are being collected separately; this document does not claim a verified public deployment, native compilation, signed package or store submission.
+**Playable web release; native distribution remains partial.** Ten levels and browser acceptance are verified. Native projects and artwork are prepared, but native compilation, device testing, signing and store submission remain outstanding. Publication status is recorded in STATUS.md.
 
 ## Feature / evidence matrix
 
-| Delivery | Implementation | Verification state |
-|---|---|---|
-| Ten 90-second authored levels and two colony bosses | Present in typed content and simulation | Browser full-flow check pending |
-| Movement, engulfment, gates, casualties, restart | Phaser + testable simulation | Automated/browser evidence to be recorded in STATUS.md |
-| Three defender roles and two medicines | Present; medical evidence register included | Source-checked; no independent clinician validation |
-| Susceptibility and antibody learning decisions | Present; correction opportunities and later transfer | Automated/browser progression checks pending |
-| Playable clone selection and matching recall | Present | Human learning evaluation not performed |
-| Map, local unlocks, replay and saves | Present | Reopen/corruption/browser checks pending |
-| Original art and subdued local sound | Bundled | Phone art and perceptual audio review pending |
-| Browser offline assets/service worker | Implemented production generation | Offline cold/reload checks pending; no offline claim yet |
-| Public playable URL | Not recorded here | Hosting/account and deployment verification outstanding |
-| iOS project | Generated under `ios/` | Xcode unavailable; no native compile/simulator/device evidence |
-| Android project | Generated under `android/` | Java/Android SDK unavailable; no APK/AAB build evidence |
-| Signed distribution / testing tracks | Not created or uploaded | Owner identity, accounts, signing and explicit upload authorization required |
+| Delivery | Evidence / result |
+|---|---|
+| Ten 90-second authored levels, two colony bosses | All ten won in final accelerated browser sweep with real support-panel inputs; first level also passed a real-time 90-second mouse-driven patrol |
+| Movement, engulfment, gates, casualties, restart | 38 automated tests; real relative drag, keyboard, pause, defeat/restart passed |
+| Three defender roles and two medicines | Source-checked evidence register; antibody support visibly joins squad; no clinician validation claimed |
+| Susceptibility, antigen and maturation decisions | Wrong choices give corrective feedback and allow recovery; clone selection and later matching recall verified |
+| Saves and progression | Corrupt-save tests, earned unlock and settings reload passed |
+| Original art and local sound | Actual phone/desktop screenshots inspected; native icons/splashes generated; audio files loaded, perceptual listening not performed |
+| Offline browser play | Production service-worker reload offline and fresh game start offline passed |
+| Test isolation | Production has no test control object |
+| Touch and stability | Touch cancel + next-touch no-jump passed; six restarts keep one scene/canvas/pointer listener |
+| Performance | Headless desktop Chrome: 180 frames, 16.7ms p95, about 60fps, 28 live enemies at sample end; no physical-device claim |
+| Web publication | Final publication status and URL recorded in STATUS.md |
+| iOS/Android projects | Generated and synced; portrait, local assets, lifecycle/back handling, icons and splash included |
+| Native compile / APK / AAB / signed iOS | Blocked: no full Xcode, Java, Android SDK or signing identities; no binaries claimed |
+| CI | Reproducible web and Android debug workflow prepared; not executed on a remote repository |
+| Human learning / clinical review | Protocol and open medical questions documented; neither performed |
 
 ## Reproducible commands and artifacts
 
@@ -73,8 +76,8 @@ Google Play internal testing supports up to 100 testers and uses a testing invit
 
 ## Exact remaining external actions
 
-1. Finish automated and real-browser acceptance, including phone viewport screenshots, repeated runs and production offline reload. Record concrete results and repair failures.
-2. Verify an already-authorized connected hosting account and publish a new game preview without unrelated deployment changes or charges. Inspect the resulting URL in a browser.
+1. Review the captured test evidence and run the prepared human/device acceptance protocols. Local automated/browser verification is complete.
+2. Refer to STATUS.md for the final hosted-preview result. Preserve private access unless the owner changes sharing.
 3. Install/activate Xcode and the required simulator runtimes on a Mac, and Java/Android SDK on the Android build host. Build the generated shells; test offline cold launch, safe areas, interruptions, persistence and a full run. Use declared real reference phones for any 60/30-fps device claim.
 4. Obtain the owner-approved identifiers, developer-account access and signing configuration. Produce APK for testing, AAB and signed iOS artifacts where credentials permit. Review icon, launch and screenshot outputs.
 5. Complete publisher support/privacy details, account-specific ratings and disclosures. Obtain explicit authorization before private-track upload or public submission; the current authorization prepares artifacts, not these uploads.

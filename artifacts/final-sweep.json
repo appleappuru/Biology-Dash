@@ -1,0 +1,156 @@
+{
+  "mode": "Accelerated deterministic simulation; real UI support selections and result screens",
+  "results": [
+    {
+      "level": 1,
+      "phase": "victory",
+      "squad": 15,
+      "kills": 19,
+      "checks": {
+        "medicine": false,
+        "cooperation": false,
+        "match": false,
+        "mismatch": false,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 2,
+      "phase": "victory",
+      "squad": 24,
+      "kills": 20,
+      "checks": {
+        "medicine": false,
+        "cooperation": false,
+        "match": false,
+        "mismatch": false,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 3,
+      "phase": "victory",
+      "squad": 15,
+      "kills": 20,
+      "checks": {
+        "medicine": true,
+        "cooperation": false,
+        "match": false,
+        "mismatch": false,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 4,
+      "phase": "victory",
+      "squad": 20,
+      "kills": 22,
+      "checks": {
+        "medicine": true,
+        "cooperation": false,
+        "match": false,
+        "mismatch": false,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 5,
+      "phase": "victory",
+      "squad": 20,
+      "kills": 22,
+      "checks": {
+        "medicine": true,
+        "cooperation": true,
+        "match": true,
+        "mismatch": false,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 6,
+      "phase": "victory",
+      "squad": 16,
+      "kills": 22,
+      "checks": {
+        "medicine": false,
+        "cooperation": true,
+        "match": true,
+        "mismatch": true,
+        "affinity": false,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 7,
+      "phase": "victory",
+      "squad": 12,
+      "kills": 24,
+      "checks": {
+        "medicine": true,
+        "cooperation": true,
+        "match": true,
+        "mismatch": false,
+        "affinity": true,
+        "recall": false,
+        "gate": true
+      }
+    },
+    {
+      "level": 8,
+      "phase": "victory",
+      "squad": 24,
+      "kills": 24,
+      "checks": {
+        "medicine": false,
+        "cooperation": true,
+        "match": true,
+        "mismatch": true,
+        "affinity": true,
+        "recall": true,
+        "gate": true
+      }
+    },
+    {
+      "level": 9,
+      "phase": "victory",
+      "squad": 20,
+      "kills": 26,
+      "checks": {
+        "medicine": true,
+        "cooperation": true,
+        "match": true,
+        "mismatch": false,
+        "affinity": true,
+        "recall": true,
+        "gate": true
+      }
+    },
+    {
+      "level": 10,
+      "phase": "victory",
+      "squad": 16,
+      "kills": 27,
+      "checks": {
+        "medicine": false,
+        "cooperation": true,
+        "match": true,
+        "mismatch": true,
+        "affinity": true,
+        "recall": true,
+        "gate": true
+      }
+    }
+  ],
+  "errors": []
+}
