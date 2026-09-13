@@ -4,7 +4,7 @@ A portrait, single-player arcade game for teens and adults. Steer a cooperative 
 
 ## Play and progression
 
-Relative horizontal drag keeps fingers below the squad. Mouse drag and Left/Right or A/D are equivalent. Space activates equipped external medicine; Escape pauses. Input is bounded and canceled on interruption. The first encounter introduces movement, automatic contact attacks and a gate. Breaches visibly cost a defender sent on tissue rescue; collisions have brief protection. Elimination means defeat. Result screens offer restart, the map and the next unlocked encounter.
+Relative two-axis drag keeps fingers below the squad. Mouse drag, all arrow keys and WASD move the actual contact zone within the playable corridor. Space activates equipped external medicine; Escape pauses. Input is bounded and canceled on interruption. The first encounter introduces movement, automatic contact attacks and a gate. Breaches visibly cost a defender sent on tissue rescue; collisions have brief protection. Elimination means defeat. Result screens offer restart, the map and the next unlocked encounter.
 
 Gates trade four arriving cells against increased contact coverage. Strength caps prevent exponential growth. First victories earn local research credits, which buy capped starting reinforcements through a separate catalog/entitlement boundary. More starting cells never alter drug susceptibility or antibody specificity. Replays retain the best star result. Three defender roles unlock across the trail: neutrophils and macrophages overlap as phagocytes; plasma cells provide antibody support alongside phagocytes.
 
@@ -45,3 +45,9 @@ Original generated raster art follows a soft teal/mint, lilac and warm-coral pal
 Automated checks cover damage/casualty rules, one-time gates, immutable compatibility, determinism, progression, saves and learning triggers. Real browser checks must cover movement, controls, decision correction, victory/defeat/restart, restored settings/progress, repeated runs, phone text/touch layout and production offline reload. Native checks additionally require safe areas, touch interruption, audio/background transitions, Android back behavior and offline cold launch. These are test requirements, not a claim that every environment has passed.
 
 Human learning study: recruit an age-appropriate small pilot with consent; ask four short pre-play questions about susceptibility, opsonization, specificity and maturation; observe an unassisted full sequence; then present new isolate/epitope examples and ask participants to explain choices aloud. Record confusion, correction and transfer separately from scores. Recheck recall after a delay if feasible. Revise explanations when a recurring misconception appears, then test with new participants. This is a formative protocol, not a validated efficacy study; no learning gains are claimed before data exist.
+
+## Gameplay presentation revision — September 13
+
+Every squad member has an individual rendered cell (1–30), with arriving recruitment and casualty transitions. Four gate pairs rotate: +4 cells / +18 reach; +6 cells / 12-second rapid response; −3 cells with +36 reach / 8-second rescue shielding; +8 cells / −2 cells with +28 reach. Shields prevent cell losses but do not cancel a boss breach. Ability timers are visible. These are arcade abstractions.
+
+Pre-rendered 3D-style assets use an elevated rear camera for defenders and approaching enemy views. Three defender rows and five enemy rows each have neutral, left, right and hit poses. Defeats squash/fade; recruited cells enter the formation. Enemy drift changes directional frames. This is a 2.5D Phaser scene, not a realtime skeletal 3D mesh. Illustrated choices clearly equip the selected lead class.

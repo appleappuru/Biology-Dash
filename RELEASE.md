@@ -7,7 +7,7 @@
 | Delivery | Evidence / result |
 |---|---|
 | Ten 90-second authored levels, two colony bosses | All ten won in final accelerated browser sweep with real support-panel inputs; first level also passed a real-time 90-second mouse-driven patrol |
-| Movement, engulfment, gates, casualties, restart | 38 automated tests; real relative drag, keyboard, pause, defeat/restart passed |
+| Movement, engulfment, gates, casualties, restart | 52 automated tests; real relative drag, keyboard, pause, defeat/restart passed |
 | Three defender roles and two medicines | Source-checked evidence register; antibody support visibly joins squad; no clinician validation claimed |
 | Susceptibility, antigen and maturation decisions | Wrong choices give corrective feedback and allow recovery; clone selection and later matching recall verified |
 | Saves and progression | Corrupt-save tests, earned unlock and settings reload passed |
@@ -15,7 +15,7 @@
 | Offline browser play | Production service-worker reload offline and fresh game start offline passed |
 | Test isolation | Production has no test control object |
 | Touch and stability | Touch cancel + next-touch no-jump passed; six restarts keep one scene/canvas/pointer listener |
-| Performance | Headless desktop Chrome: 180 frames, 16.7ms p95, about 60fps, 28 live enemies at sample end; no physical-device claim |
+| Performance | Headless desktop Chrome: 180 frames, 33.4ms p95, about 46fps reported by Phaser, 25 live enemies and 30 defenders at sample end; no physical-device claim |
 | Web publication | Final publication status and URL recorded in STATUS.md |
 | iOS/Android projects | Generated and synced; portrait, local assets, lifecycle/back handling, icons and splash included |
 | Native compile / APK / AAB / signed iOS | Blocked: no full Xcode, Java, Android SDK or signing identities; no binaries claimed |

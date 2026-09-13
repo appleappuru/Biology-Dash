@@ -11,6 +11,12 @@ Visual system: deep teal/navy tissue, mint controls, cyan-white phagocytes, viol
 | `public/assets/soft.wav`, `recruit.wav`, `finish.wav` | Original NumPy synthesis via `scripts/audio.py`, WAV container | Quiet sine cues, 0.12/0.25/0.65 seconds; normalized peak ~0.054 before in-game attenuation, 150ms sound rate cap, Phaser playback. No music. Perceptual listening unavailable in headless QA. |
 | `public/favicon.svg` | Original minimal vector mark | Tiny functional browser icon. |
 
-Generation prompt records and exact frame order: `artifacts/art-generation.json`. Atlas frames: neutrophil, macrophage, plasma, antibody; green cluster, unused rod, coral coccus, unused rod; unused capsule rod, green boss cluster, unused rod boss, hero trio. Game uses tint variants of the coccal cluster for resistant/mismatched phenotypes; never identifies a rod as S. aureus.
+Original atlas prompt records: `artifacts/art-generation.json`. The original atlas remains in menu illustrations only; gameplay uses the following revised assets.
 
-Phone screenshot inspection includes transparency, sprite bounds, contrast, representative squad count, gate text and HUD. Squads above 12 render 12 representative sprites while the HUD remains the authoritative strength count. No artificial sprite-sheet animation; small Phaser tweens supply motion. Generated image provenance is original AI art; no claim of human illustration or clinical microscopy.
+| Revised asset | Origin / layout | Gameplay use |
+|---|---|---|
+| `public/assets/defenders-v2.png` | Original image generation; 1448×1086 RGBA, 4×3 grid of 362px frames | Rows: neutrophil, macrophage, plasma. Columns: elevated rear neutral, left turn, right turn, compressed hit pose. |
+| `public/assets/enemies-v2.png` | Original image generation; 1122×1402 RGBA, proportional rounded 4×5 grid | Rows: green clustered cocci, amber ring, coral jagged cluster, violet armored cluster, turquoise paired cocci. Columns: approaching neutral, left, right, hit. Phenotype designs are fictional visual cues, not diagnostic morphology. |
+| `public/assets/tissue-perspective-v2.png` | Original image generation; 1024×1536 | Elevated 35-degree view from behind the patrol, broad open floor receding toward top center. |
+
+Art direction: polished shaded 3D-style cell miniatures with transparent backgrounds, distinct silhouettes and materials, consistent elevated camera, side-angle and damage poses. Gameplay uses these pre-rendered frames plus Phaser recruitment, hit and defeat transitions. Full 1–30 squad counts are drawn. The sheets and actual phone/desktop screenshots were visually inspected for framing, transparency, readable gates and correct phenotype/defender rows. No claim of human illustration or clinical microscopy.

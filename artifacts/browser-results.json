@@ -23,7 +23,7 @@
     {
       "name": "Complete real-time 90-second first patrol",
       "pass": true,
-      "wallSeconds": 89
+      "wallSeconds": 90
     },
     {
       "name": "Earned unlock and save restoration",
@@ -74,37 +74,37 @@
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         },
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         },
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         },
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         },
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         },
         {
           "canvases": 1,
           "scenes": 1,
-          "children": 17,
+          "children": 36,
           "listeners": 1
         }
       ]

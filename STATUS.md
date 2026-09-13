@@ -1,24 +1,33 @@
 # Biology Dash checkpoint — 2026-09-13
 
+## Gameplay overhaul
+- Addressed preview feedback: every defender is rendered up to the 30-cell cap; visible arrival and casualty transitions.
+- Four gate pairs rotate recruitment, reach, temporary rapid response, shields, and cell-cost tradeoffs. Recruitment labels reflect available capacity.
+- Three defender designs and five enemy designs, with neutral/left/right/hit frames and defeat transitions; elevated rear-view 2.5D tissue scene.
+- Arrow keys/WASD and relative mouse/touch movement on both axes. Moving forward changes combat range; enemies behind the squad still threaten the tissue.
+- Illustrated lead-defender choices and active ability timers. RULES_VERSION is now 2.
+- New presentation browser test passed; real 90-second play, all ten accelerated victories, save/settings, offline, touch and six-run stability repeated September 13.
+- Actual user's preview refreshed from stale offline cache and revised level-2 choice screen verified.
+
 ## Completed
 - Ten authored 90-second patrols, three defender roles, five tested bacterial phenotypes, two medicines, two theatrical bosses.
 - Phaser movement/engulfment/gates/casualties, campaign, earned unlocks, local saves, settings, field guide, B-cell selection and matching recall.
 - Original raster atlas/corridor/icon, local soft WAV cues; 86 Android and 8 iOS icon/splash outputs.
-- 38 rule/regression tests pass. TypeScript and final production build pass.
+- 52 rule/regression tests pass. TypeScript and final production build pass.
 - Real browser 90-second first-level run with actual mouse steering, victory, saved unlock, defeat/restart, settings persistence and learning corrections pass.
 - Final accelerated browser sweep wins all ten levels with real support-panel selections (`artifacts/final-sweep.json`). All reported browser page-error lists empty.
 - Relative touch, cancellation and no-jump restart pass. Six repeated game runs keep one scene, canvas and pointer listener.
 - Production test controls excluded. Offline navigation reload and cold gameplay start after precaching pass.
 - Phone/desktop screenshots inspected; 320px hero overlap repaired.
-- Headless desktop Chrome heavy encounter: 180 frames, 16.7ms p95, about 60fps, 28 live enemies at sample end. This is NOT physical-phone performance.
+- Headless desktop Chrome heavy encounter: 180 frames, 33.4ms p95, about 46fps reported by Phaser, 25 live enemies and 30 defenders at sample end. This is NOT physical-phone performance.
 - Capacitor Android/iOS projects generated and synced with local game files, portrait config, lifecycle/back handling, icons/splash. CI workflow prepared, not run remotely.
 
 ## Next action
-Publish the verified build to the existing private Sites project, record the deployment result here, and provide artifact handoff. Do not create a replacement Site.
+Publish the revised build to the existing private Sites project. The previous saved version is obsolete. Local Sites packaging skill/helper disappeared after the reset; searched the plugin cache with no match. Source and local production build are ready; use a supported remote build fallback or restore the hosting helper before archiving. Do not create a replacement Site.
 
 ## Exact verification commands
 Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`; add its containing directory to PATH.
-- `pnpm test` — 38 passed in two files, most recent run September 13.
+- `pnpm test` — 52 passed in three files, most recent run September 13.
 - `node node_modules/typescript/bin/tsc --pretty false` — passed.
 - `pnpm build` — production build passed, offline cache generated.
 - `pnpm native:sync` — both platforms synced successfully.

@@ -17,7 +17,7 @@ The normal development command is `pnpm dev`. On this host, Vite module requests
 
 ## Controls
 
-Drag horizontally anywhere in the corridor; the finger may stay below the squad. Arrow keys or A/D steer on desktop. Phagocytes engulf automatically inside the contact zone. Left gate recruits, right gate widens contact. Space activates equipped external medicine (level 3+). Escape pauses. Medicine and antibody buttons expose evidence and switch profiles. Touch cancellation clears dragging.
+Drag in any direction in the corridor; the finger may stay below the squad. Arrow keys or WASD move left/right and forward/back on desktop. Phagocytes engulf automatically inside the contact zone. Read each gate pair: recruitment, wider reach, rapid response, rescue shielding, and explicit cell-for-reach tradeoffs rotate through the encounter. Every defender is drawn, up to 30. Space activates equipped external medicine (level 3+). Escape pauses. Medicine and antibody buttons expose evidence and switch profiles. Touch cancellation clears dragging.
 
 ## Verify
 

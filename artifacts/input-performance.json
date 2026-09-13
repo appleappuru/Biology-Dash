@@ -2,11 +2,11 @@
   "touch": "Relative touch + cancel + no jump on next touch passed",
   "performance": {
     "frames": 180,
-    "p50ms": 16.699999999999818,
-    "p95ms": 16.700000000000273,
-    "phaserFps": 60.296875,
-    "enemies": 28,
-    "children": 45,
+    "p50ms": 33.19999999999982,
+    "p95ms": 33.40000000000009,
+    "phaserFps": 46.0458984375,
+    "enemies": 25,
+    "children": 63,
     "renderer": 2
   },
   "disclaimer": "Headless desktop Chrome at emulated phone viewport; no physical-device performance claim"

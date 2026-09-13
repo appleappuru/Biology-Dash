@@ -1,0 +1,41 @@
+import { chromium, expect } from '@playwright/test';
+import { writeFile } from 'node:fs/promises';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+const errors=[],checks=[];page.on('pageerror',e=>errors.push(e.message));
+const state=()=>page.evaluate(()=>({x:__BIOLOGY__.state.x,y:__BIOLOGY__.state.y,count:__BIOLOGY__.state.squad,visible:__BIOLOGY__.scene.cells.filter(c=>c.node.visible).length,frame:__BIOLOGY__.scene.cells[0].body.frame.name}));
+try{
+await page.goto('http://127.0.0.1:4173');await page.evaluate(()=>__BIOLOGY__.start(2));await page.waitForFunction(()=>__BIOLOGY__.state?.level===2);
+await page.locator('#pause').click();await page.locator('#leave').click();await page.locator('[data-level="2"]').click();
+await expect(page.locator('#select-macrophage')).toHaveAttribute('aria-pressed','true');
+await page.screenshot({path:'artifacts/defender-selection-v2.png'});
+await page.locator('#begin').click();await page.waitForFunction(()=>__BIOLOGY__.state?.defender==='macrophage');await page.waitForTimeout(700);
+expect((await state()).frame).toBe(4);checks.push('Illustrated choice equips macrophage sprite row');
+await page.keyboard.down('ArrowUp');await page.waitForTimeout(400);await page.keyboard.up('ArrowUp');
+const forward=(await state()).y;expect(forward).toBeLessThan(600);
+await page.keyboard.down('ArrowDown');await page.waitForTimeout(250);await page.keyboard.up('ArrowDown');expect((await state()).y).toBeGreaterThan(forward);
+await page.keyboard.down('ArrowLeft');await page.waitForTimeout(200);expect((await state()).frame).toBe(5);await page.keyboard.up('ArrowLeft');
+await page.keyboard.down('ArrowRight');await page.waitForTimeout(200);expect((await state()).frame).toBe(6);await page.keyboard.up('ArrowRight');checks.push('Keyboard forward/back and left/right directional poses');
+const b=await page.locator('canvas').boundingBox();
+await page.mouse.move(b.x+b.width*.5,b.y+b.height*.75);await page.mouse.down();await page.mouse.move(b.x+b.width*.65,b.y+b.height*.65,{steps:8});await page.mouse.up();
+expect((await state()).y).toBeLessThan(forward);checks.push('Diagonal pointer drag');
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.enemies=[];p.nextSpawn=999;p.nextGate=999;p.move(110,600);p.gates=[{id:800,y:574,used:false}];});await page.waitForTimeout(700);
+expect((await state()).count).toBe(16);expect((await state()).visible).toBe(16);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;for(let i=0;i<4;i++)p.applyGate({id:900+i,y:600,used:false},'recruit');});await page.waitForTimeout(700);
+expect((await state()).visible).toBe(30);checks.push('Real gate crossing grows 12 to 16; repeated recruitment displays all 30');
+await page.evaluate(()=>{__BIOLOGY__.state.gates=[{id:950,y:300,used:false}];});await page.waitForTimeout(50);
+expect(await page.evaluate(()=>__BIOLOGY__.scene.gateViews.get(950).panels[0].list[3].text)).toBe('Squad full · 30');
+checks.push('Full squad gate clearly labels capacity instead of promising unavailable recruits');
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.move(210,610);['susceptible','beta-lactamase','doxy-resistant','dual-resistant','antigen-b'].forEach((kind,i)=>{p.spawn(kind);const e=p.enemies.at(-1);e.x=100+i%2*210;e.y=150+i*68;});p.gates=[{id:999,y:470,used:false,left:{id:'risk',label:'−3 cells · +36 reach',detail:'Reassign defenders',kind:'risk',value:36,cost:3},right:{id:'shield',label:'Rescue shield',detail:'8 seconds',kind:'shield',value:8}}];});
+await page.waitForTimeout(100);expect(await page.evaluate(()=>new Set([...__BIOLOGY__.scene.views.values()].map(v=>v.row)).size)).toBe(5);
+await page.screenshot({path:'artifacts/gameplay-v2-phone.png'});checks.push('Five distinct enemy sprite rows');
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.attackTimer=100;p.damage(p.enemies[0],1);});await page.waitForTimeout(40);
+expect(await page.evaluate(()=>[...__BIOLOGY__.scene.views.values()][0].body.frame.name)).toBe(3);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.damage(p.enemies[0],10000);});await page.waitForTimeout(50);
+expect(await page.evaluate(()=>__BIOLOGY__.scene.tweens.getTweens().length)).toBeGreaterThan(0);checks.push('Enemy hit pose and defeat tween');
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate(p.gates[0],'left');});await page.waitForTimeout(100);expect((await state()).visible).toBe(27);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate({id:1001,y:600,used:false,right:{id:'shield',kind:'shield',label:'Shield',detail:'Shield',value:8}},'right');});
+await expect(page.locator('#ability-status')).toContainText('Rescue shield');checks.push('Cost gate removes three visible defenders; shield timer displayed');
+expect(errors).toEqual([]);
+}catch(e){checks.push({failure:String(e)});process.exitCode=1;await page.screenshot({path:'artifacts/presentation-failure.png'});}
+finally{console.log(checks);await writeFile('artifacts/presentation-test.json',JSON.stringify({checks,errors},null,2));await browser.close();}

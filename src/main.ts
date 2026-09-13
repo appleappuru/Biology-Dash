@@ -68,14 +68,28 @@ function brief(id: number) {
     const l = LEVELS[id - 1];
     const p = PATHOGENS.find(p => p.id === l.pathogens[0])!;
     medicine = id === 4 ? 'doxycycline' : 'amoxicillin';
-    defender = 'neutrophil';
-    modal(`<span class="eyebrow">PATROL ${String(id).padStart(2, '0')} · 90 SECONDS</span><h2>${l.name}</h2><p>${l.objective}</p>${id >= 3 ? `<div class="lab"><b>ISOLATE REPORT · ${p.species}</b>${p.clue}<br>Surface marker: epitope ${p.epitope}</div><p>Choose external support. You can change it during patrol.</p><div class="choice-list"><button id="amoxicillin" class="choice ${medicine === 'amoxicillin' ? 'selected' : ''}"><b>Amoxicillin</b><small>Cell-wall synthesis · damages susceptible bacteria</small></button><button id="doxycycline" class="choice ${medicine === 'doxycycline' ? 'selected' : ''}"><b>Doxycycline</b><small>Protein synthesis · suppresses susceptible bacterial growth</small></button></div><div id="choice-feedback" class="selected-label" role="status">${medicineEffect(medicine, p.id).feedback}</div>` : `${sprite(id === 2 ? 1 : 0, 'modal-art', 'Phagocyte')}<div class="lab"><b>YOUR MISSION</b>Drag left or right. Engulf nearby bacteria automatically. Cross a gate to recruit cells or widen your reach.</div>`}${id >= 2 ? '<button id="defender-choice" class="secondary">Lead: Neutrophil · tap to switch</button>' : ''}<button id="begin" class="primary">${id === 7 ? 'Visit the selection room' : 'Begin patrol'} →</button><button id="back" class="secondary">Back to map</button>`, { amoxicillin: () => chooseMedicine('amoxicillin', p.id), doxycycline: () => chooseMedicine('doxycycline', p.id), 'defender-choice': () => { defender = defender === 'neutrophil' ? 'macrophage' : 'neutrophil'; document.querySelector('#defender-choice')!.textContent = `Lead: ${defender === 'neutrophil' ? 'Neutrophil' : 'Macrophage'} · tap to switch`; }, begin: () => { closeModal(); id === 7 ? cloneRoom(() => start(id)) : start(id); }, back: closeModal });
+    if (id === 1) defender = 'neutrophil';
+    if (id === 2) defender = 'macrophage';
+    modal(`<span class="eyebrow">PATROL ${String(id).padStart(2, '0')} · 90 SECONDS</span><h2>${l.name}</h2><p>${l.objective}</p>${id >= 3 ? `<div class="lab"><b>ISOLATE REPORT · ${p.species}</b>${p.clue}<br>Surface marker: epitope ${p.epitope}</div><p>Choose external support. You can change it during patrol.</p><div class="choice-list"><button id="amoxicillin" class="choice ${medicine === 'amoxicillin' ? 'selected' : ''}"><b>Amoxicillin</b><small>Cell-wall synthesis · damages susceptible bacteria</small></button><button id="doxycycline" class="choice ${medicine === 'doxycycline' ? 'selected' : ''}"><b>Doxycycline</b><small>Protein synthesis · suppresses susceptible bacterial growth</small></button></div><div id="choice-feedback" class="selected-label" role="status">${medicineEffect(medicine, p.id).feedback}</div>` : `${sprite(id === 2 ? 1 : 0, 'modal-art', 'Phagocyte')}<div class="lab"><b>YOUR MISSION</b>Drag in any direction. Engulf nearby bacteria automatically. Cross a gate to recruit cells or widen your reach.</div>`}${id >= 2 ? defenderChoices() : ''}<button id="begin" class="primary">${id === 7 ? 'Visit the selection room' : 'Begin patrol'} →</button><button id="back" class="secondary">Back to map</button>`, { amoxicillin: () => chooseMedicine('amoxicillin', p.id), doxycycline: () => chooseMedicine('doxycycline', p.id), 'select-neutrophil': () => chooseDefender('neutrophil'), 'select-macrophage': () => chooseDefender('macrophage'), begin: () => { closeModal(); id === 7 ? cloneRoom(() => start(id)) : start(id); }, back: closeModal });
 }
+
+function defenderChoices() {
+    return '<p>Choose your lead defender</p><div class="choice-list defender-choices">' + ['neutrophil','macrophage'].map((id,i) => '<button id="select-'+id+'" class="choice '+(defender===id?'selected':'')+'" aria-pressed="'+(defender===id)+'"><span class="defender-preview" style="background-position:0% '+i*50+'%"></span><b>'+ (i?'Macrophage':'Neutrophil')+'</b><small>'+(i?'Larger, powerful engulfment':'Fast frontline response')+'</small></button>').join('')+'</div>';
+}
+function chooseDefender(id: 'neutrophil' | 'macrophage') {
+    defender=id;
+    for (const kind of ['neutrophil','macrophage']) {
+        const button=document.getElementById('select-'+kind);
+        button?.classList.toggle('selected',kind===id);
+        button?.setAttribute('aria-pressed',String(kind===id));
+    }
+}
+
 function chooseMedicine(m: MedicineId, pid: typeof PATHOGENS[number]['id']) { medicine = m; for (const id of ['amoxicillin', 'doxycycline'])
     document.getElementById(id)?.classList.toggle('selected', id === m); document.querySelector('#choice-feedback')!.textContent = medicineEffect(m, pid).feedback; }
 function cloneRoom(done: () => void) { let chosen = ''; modal(`<span class="eyebrow">LYMPH NODE · GERMINAL CENTER</span><h2>Which clone will thrive?</h2><p>B-cell clones vary. Compare their binding to epitope A. Better antigen capture and T-follicular-helper signals favor selection.</p><div class="choice-list">${CLONES.map(c => `<button id="clone-${c.id}" class="choice"><b>${c.name}</b><small>${c.change}</small><div class="progress-track"><div style="width:${c.profile.affinity * 100}%"></div></div></button>`).join('')}</div><p id="clone-feedback" role="status">Not every mutation helps. Select a clone to see its result.</p><div class="lab">Days to weeks are compressed here. B-cell genes vary; secreted antibodies do not learn. Class switching changes effector properties, not binding affinity.</div><button id="select-clone" class="primary" disabled>Continue to encounter</button>`, Object.fromEntries([...CLONES.map(c => ['clone-' + c.id, () => { chosen = c.id; document.querySelectorAll('.choice').forEach(e => e.classList.remove('selected')); document.querySelector('#clone-' + c.id)?.classList.add('selected'); document.querySelector('#clone-feedback')!.textContent = c.id === 'strong' ? 'Stronger binding selected. This clone becomes more represented; matching A recall will benefit.' : 'This clone captures less antigen. Compare it with the stronger-binding clone before selection.'; (document.querySelector('#select-clone') as HTMLButtonElement).disabled = c.id !== 'strong'; }]), ['select-clone', () => { if (chosen !== 'strong')
             return; save.antibody = { ...CLONES[2].profile }; save.checks.affinity = true; persist(); closeModal(); done(); }]])); }
-function gameMarkup() { return `<section class="game-shell"><header class="game-heading"><div><span class="eyebrow">PATROL ${String(selected).padStart(2, '0')}</span><h1>${LEVELS[selected - 1].name}</h1></div><button id="pause" class="icon-button" aria-label="Pause patrol">Ⅱ</button></header><div class="stage"><div id="game" aria-label="Immune patrol play area. Drag horizontally or use arrow keys." role="application"></div><div class="hud"><div class="hud-item"><small>DEFENDERS</small><strong id="squad-count">12</strong></div><div class="hud-item hud-time"><small>PROTECT THE TISSUE</small><strong id="clock">1:30</strong><div class="timebar"><div id="time-fill" style="width:0%"></div></div></div><div class="hud-item"><small>CLEARED</small><strong id="cleared">0</strong></div></div><div class="combat-feedback" id="feedback" role="status">${selected === 1 ? 'Drag to steer · engulf bacteria inside your contact zone' : LEVELS[selected - 1].subtitle}</div>${selected >= 3 ? `<div class="battle-actions"><button id="support">${medicine === 'amoxicillin' ? 'Amoxicillin' : 'Doxycycline'} · ready</button><button id="switch-med" aria-label="Change medicine">⇄</button>${selected >= 5 ? '<button id="antibody" class="antibody-btn">Antibody A</button>' : ''}</div>` : '<div class="drag-label">← &nbsp; DRAG TO GUIDE YOUR TEAM &nbsp; →</div>'}</div></section>`; }
+function gameMarkup() { return `<section class="game-shell"><header class="game-heading"><div><span class="eyebrow">PATROL ${String(selected).padStart(2, '0')}</span><h1>${LEVELS[selected - 1].name}</h1></div><button id="pause" class="icon-button" aria-label="Pause patrol">Ⅱ</button></header><div class="stage"><div id="game" aria-label="Immune patrol play area. Drag in any direction or use arrows or WASD." role="application"></div><div class="hud"><div class="hud-item"><small id="squad-kind">DEFENDERS</small><strong id="squad-count">12</strong></div><div class="hud-item hud-time"><small>PROTECT THE TISSUE</small><strong id="clock">1:30</strong><div class="timebar"><div id="time-fill" style="width:0%"></div></div></div><div class="hud-item"><small>CLEARED</small><strong id="cleared">0</strong></div></div><div id="ability-status" class="ability-status"></div><div class="combat-feedback" id="feedback" role="status">${selected === 1 ? 'Drag to steer · engulf bacteria inside your contact zone' : LEVELS[selected - 1].subtitle}</div>${selected >= 3 ? `<div class="battle-actions"><button id="support">${medicine === 'amoxicillin' ? 'Amoxicillin' : 'Doxycycline'} · ready</button><button id="switch-med" aria-label="Change medicine">⇄</button>${selected >= 5 ? '<button id="antibody" class="antibody-btn">Antibody A</button>' : ''}</div>` : '<div class="drag-label">← &nbsp; DRAG ANY DIRECTION · ARROWS / WASD &nbsp; →</div>'}</div></section>`; }
 function start(id: number) {
     page = 'game';
     selected = id;
@@ -102,13 +116,18 @@ function start(id: number) {
     }
     else if (id === 1 && !save.tutorial) {
         scene.paused = true;
-        modal(`<span class="eyebrow">A 15-SECOND FIELD LESSON</span><h2>Meet your tiny team</h2><p>Drag anywhere in the corridor to move left and right. Your finger can stay below the cells. On a keyboard, use ← and →.</p><p>Cells automatically engulf bacteria in the glowing contact zone. A breach past the bottom line costs one defender.</p><button id="learn" class="primary">Let’s move →</button>`, { learn: () => { closeModal(); scene!.paused = false; } });
+        modal(`<span class="eyebrow">A 15-SECOND FIELD LESSON</span><h2>Meet your tiny team</h2><p>Drag anywhere in the corridor to move left, right, forward and back. Your finger can stay below the cells. On a keyboard, use the arrow keys or WASD.</p><p>Cells automatically engulf bacteria in the glowing contact zone. A breach past the bottom line costs one defender.</p><button id="learn" class="primary">Let’s move →</button>`, { learn: () => { closeModal(); scene!.paused = false; } });
     } };
     boot();
 }
 function feedback(text: string) { const el = document.getElementById('feedback'); if (el)
     el.textContent = text; }
 function tick(p: Patrol) {
+    const kind=document.getElementById('squad-kind');
+    if(kind) kind.textContent=p.defender==='macrophage'?'MACROPHAGES':'NEUTROPHILS';
+    const ability=document.getElementById('ability-status');
+    if(ability) ability.textContent=[p.tempoRemaining>0?'Rapid response '+Math.ceil(p.tempoRemaining)+'s':'',p.shieldRemaining>0?'Rescue shield '+Math.ceil(p.shieldRemaining)+'s':''].filter(Boolean).join(' · ');
+
     const sec = Math.ceil(90 - p.time);
     if (sec !== lastHud) {
         lastHud = sec;
@@ -217,7 +236,7 @@ if (import.meta.env.DEV || import.meta.env.MODE === 'test') {
                 if (autopilot) {
                     const target = patrol.enemies.filter(e => e.y > 400).sort((a, b) => b.y - a.y)[0];
                     if (target)
-                        patrol.move(target.x);
+                        patrol.move(target.x, Math.max(460, Math.min(635, target.y + 110)));
                     else if (patrol.gates.some(g => g.y > 500 && !g.used))
                         patrol.move(110);
                 }

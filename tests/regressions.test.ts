@@ -17,9 +17,9 @@ it('ten levels are winnable with a bounded interception policy', () => { for (le
             const e = p.enemies.filter(e => e.y > 440).sort((a, b) => b.y - a.y)[0];
             if (e && level >= 5) p.antibody.epitope = e.kind === 'antigen-b' ? 'B' : 'A';
         if (e)
-            p.move(e.x);
+            p.move(e.x, Math.max(460, Math.min(635, e.y + 110)));
         else if (p.gates.some(g => !g.used && g.y > 490))
-            p.move(110);
+            p.move(110, 635);
         p.step(.05);
     }
     expect(p.phase, `level ${level}, ${p.squad} cells`).toBe('victory');

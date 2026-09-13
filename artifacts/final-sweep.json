@@ -4,8 +4,8 @@
     {
       "level": 1,
       "phase": "victory",
-      "squad": 15,
-      "kills": 19,
+      "squad": 27,
+      "kills": 20,
       "checks": {
         "medicine": false,
         "cooperation": false,
@@ -19,7 +19,7 @@
     {
       "level": 2,
       "phase": "victory",
-      "squad": 24,
+      "squad": 21,
       "kills": 20,
       "checks": {
         "medicine": false,
@@ -34,7 +34,7 @@
     {
       "level": 3,
       "phase": "victory",
-      "squad": 15,
+      "squad": 27,
       "kills": 20,
       "checks": {
         "medicine": true,
@@ -49,7 +49,7 @@
     {
       "level": 4,
       "phase": "victory",
-      "squad": 20,
+      "squad": 23,
       "kills": 22,
       "checks": {
         "medicine": true,
@@ -64,7 +64,7 @@
     {
       "level": 5,
       "phase": "victory",
-      "squad": 20,
+      "squad": 27,
       "kills": 22,
       "checks": {
         "medicine": true,
@@ -79,7 +79,7 @@
     {
       "level": 6,
       "phase": "victory",
-      "squad": 16,
+      "squad": 17,
       "kills": 22,
       "checks": {
         "medicine": false,
@@ -94,7 +94,7 @@
     {
       "level": 7,
       "phase": "victory",
-      "squad": 12,
+      "squad": 17,
       "kills": 24,
       "checks": {
         "medicine": true,
@@ -109,7 +109,7 @@
     {
       "level": 8,
       "phase": "victory",
-      "squad": 24,
+      "squad": 27,
       "kills": 24,
       "checks": {
         "medicine": false,
@@ -124,7 +124,7 @@
     {
       "level": 9,
       "phase": "victory",
-      "squad": 20,
+      "squad": 17,
       "kills": 26,
       "checks": {
         "medicine": true,
@@ -139,7 +139,7 @@
     {
       "level": 10,
       "phase": "victory",
-      "squad": 16,
+      "squad": 20,
       "kills": 27,
       "checks": {
         "medicine": false,

@@ -1,0 +1,13 @@
+{
+  "checks": [
+    "Illustrated choice equips macrophage sprite row",
+    "Keyboard forward/back and left/right directional poses",
+    "Diagonal pointer drag",
+    "Real gate crossing grows 12 to 16; repeated recruitment displays all 30",
+    "Full squad gate clearly labels capacity instead of promising unavailable recruits",
+    "Five distinct enemy sprite rows",
+    "Enemy hit pose and defeat tween",
+    "Cost gate removes three visible defenders; shield timer displayed"
+  ],
+  "errors": []
+}

@@ -37,11 +37,11 @@ describe('deterministic patrol and bounded resources', () => {
     it('clamps steering and ignores nonfinite pointer positions', () => {
         const patrol = new Patrol(1);
         patrol.move(-100);
-        expect(patrol.x).toBe(52);
+        expect(patrol.x).toBe(82);
         patrol.move(900);
-        expect(patrol.x).toBe(368);
+        expect(patrol.x).toBe(338);
         patrol.move(NaN);
-        expect(patrol.x).toBe(368);
+        expect(patrol.x).toBe(338);
     });
     it('allows each gate exactly once and respects the squad cap', () => {
         const patrol = new Patrol(1);
