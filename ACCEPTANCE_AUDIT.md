@@ -1,3 +1,18 @@
+# Local interaction revision — September 13, 2026
+
+Implemented individually attributable approach/contact/wrap/digestion, diffusing and specificity-preserving antibody markers, separate external medication effects, five named microbe species with new art, and organic squad/wave layouts. The reach guide defaults off. Macrophage/neutrophil style differences are not universal biological rankings.
+
+Evidence: `artifacts/interaction-results-v3.json` (7 passing checks), `tests/interactions.test.ts` (12 new behavior tests, part of 95 passing tests), `artifacts/browser-results.json` (90-second real-time patrol, UI choices, saves and six restarts), `artifacts/final-sweep.json` (10 victories), `artifacts/production-results.json`, `artifacts/save-upgrade-results.json`, and `artifacts/input-performance.json`. Animation stage screenshots use controlled local encounter fixtures. The real-time patrol uses actual pointer input; accelerated sweeps are labeled as such.
+
+Iterative fixes after screenshot inspection: cell-colored membrane lobes, stable actor-to-render positions, readable perspective-independent names, wider small-screen controls, distinct fungal target mismatch versus bacterial resistance, concise mixed-isolate medication feedback.
+
+This revision is local only. The earlier Vercel demo was not updated. No native work was performed. Physiological time, size, diffusion and health values remain explicitly compressed teaching conventions. Qualified medical review, human learning assessment and physical-device performance validation are not claimed.
+
+---
+## Earlier acceptance audit
+
+> Scope update: the user has deferred Sites publication and native development/distribution. Those historical incomplete deliveries below are future work, not blockers for the current local-web phase. The current sharing deliverable is an unlisted, independently hosted demo URL; no tunnel.
+
 # Acceptance audit — 2026-09-13
 
 Scope: original BIOLOGY_DASH_BUILD_PROMPT.md, the seven gameplay-preview issues, and the expanded goal requesting better graphics/gameplay and additional satisfying features. The latest movement request supersedes the brief's horizontal-only control description.

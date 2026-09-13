@@ -26,7 +26,7 @@ try {
     await expect(migrated.locator('[data-level="2"]')).toBeEnabled();
     await expect(migrated.locator('.currency')).toContainText('30');
     const stored=await migrated.evaluate(()=>JSON.parse(localStorage.getItem('biology-dash-v1')));
-    expect(stored.version).toBe(2);
+    expect(stored.version).toBe(3);
     expect(stored.stars['1']).toBe(3);
     expect(stored.checks.gate).toBe(true);
     results.push('Production migrates version-1 progression, stars, credits, settings and learning flags; retains them after reload');

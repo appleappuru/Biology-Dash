@@ -5,7 +5,7 @@ it('switching antibody profile cannot strengthen old tags', () => { const a = ne
     p.plasma = true;
     p.spawn('susceptible');
     p.enemies[0].y = 200;
-    p.tag();
+    for(let i=0;i<50;i++)p.stepAntibodies(.05);
     p.enemies[0].y = 550;
     p.enemies[0].x = 210;
 } a.antibody = { epitope: 'B', affinity: .9, effector: 'opsonization' }; a.step(.05); b.step(.05); expect(a.enemies[0].hp).toBe(b.enemies[0].hp); });
@@ -24,4 +24,4 @@ it('ten levels are winnable with a bounded interception policy', () => { for (le
     }
     expect(p.phase, `level ${level}, ${p.squad} cells`).toBe('victory');
 } });
-it('boss contact does not erase a surviving boss', () => { const p = new Patrol(1); p.spawn('susceptible', true); p.enemies[0].y = 669; p.enemies[0].x = p.x; p.enemies[0].hp = 1000; p.step(.05); expect(p.enemies).toHaveLength(1); expect(p.squad).toBe(11); });
+it('boss contact does not erase a surviving boss', () => { const p = new Patrol(1); p.spawn('susceptible', true); p.enemies[0].y = 669; p.enemies[0].x = p.x; p.enemies[0].hp = 1000; p.step(.05); expect(p.enemies).toHaveLength(1); expect(p.squad).toBe(12); });

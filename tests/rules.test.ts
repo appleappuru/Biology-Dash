@@ -125,20 +125,19 @@ describe('specific binding, opsonization and recall', () => {
         patrol.plasma = true;
         const a = stationaryTarget(patrol), b = stationaryTarget(patrol, 'antigen-b');
         const hp = [a.hp, b.hp];
-        patrol.tag();
+        for(let i=0;i<80;i++){patrol.time+=.05;patrol.stepAntibodies(.05);}
         expect([a.hp, b.hp]).toEqual(hp);
         expect([a.tagged, b.tagged]).toEqual([true, false]);
         expect(patrol.learning).toMatchObject({ match: true, mismatch: true, cooperation: false });
     });
-    it('matching tags strengthen contact engulfment only with a phagocyte', () => {
+    it('matching tags shorten actual contact wrapping with a phagocyte', () => {
         const tagged = new Patrol(5), plain = new Patrol(5);
-        tagged.plasma = true;
         const a = stationaryTarget(tagged), b = stationaryTarget(plain);
-        a.x = b.x = 210;
-        a.y = b.y = 550;
-        tagged.step(.05);
-        plain.step(.05);
-        expect(a.hp).toBeLessThan(b.hp);
+        a.tagged = true; a.tagAffinity = .9;
+        a.x = b.x = 210; a.y = b.y = 550;
+        for(const p of [tagged,plain]) {p.nextSpawn=999;while(!p.cells.some(c=>c.phase==='wrap'))p.step(.05);}
+        expect(tagged.cells.find(c=>c.phase==='wrap')!.duration).toBeLessThan(plain.cells.find(c=>c.phase==='wrap')!.duration);
+        advance(tagged,2);advance(plain,2);
         expect(tagged.learning.cooperation).toBe(true);
         expect(plain.learning.cooperation).toBe(false);
     });
@@ -148,7 +147,7 @@ describe('specific binding, opsonization and recall', () => {
             patrol.plasma = true;
             patrol.antibody = { epitope: 'A', affinity, effector: 'opsonization' };
             stationaryTarget(patrol, kind);
-            patrol.tag();
+            for(let i=0;i<50;i++)patrol.stepAntibodies(.05);
             expect(patrol.learning.recall).toBe(expected);
         }
     });

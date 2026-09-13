@@ -1,5 +1,19 @@
 # Biology Dash checkpoint — 2026-09-13
 
+## Current direction — latest user instructions
+Continue local web development only. Do not publish this revision until the user asks. No native build, sync or distribution work. The existing Vercel demo is an older build and remains unchanged.
+
+## Individual interactions and expanded microbes — current revision
+- Five actual species / nine encounter records, names and illustrated field-guide/briefing roster; four new directional/hit sprite rows in `public/assets/microbes-v3.png`.
+- Individual cells reserve different targets, approach within local reach, wrap at physical contact, engulf and display an internal digestion vesicle. Hits/deaths carry defender ID and cause. Steering away cancels unreachable interactions.
+- Plasma-cell antibodies diffuse before attaching; mismatches do not bind or damage. C3 host opsonins assist uptake. Medication wall stress, growth inhibition, target mismatch and resistance have distinct feedback.
+- Stable organic squad positions, clustered enemy waves, two-axis steering, optional approach dots default off, reduced-motion mode.
+- Existing saves version 1/2 migrate to version 3 without losing progress. Native scaffolds deliberately untouched.
+- Verified: 95 rule/regression tests; seven interaction browser checks; all ten accelerated campaign victories; a real 90-second patrol with mouse steering; six repeated restarts; touch cancellation; production offline start; save migration and 320px controls. Browser error lists empty.
+- Full-squad desktop Chrome stress sample: 180 frames, p95 33.4ms, 24 enemies remaining at sample end. This is not physical-phone performance.
+- User’s actual local browser refreshed from the old offline cache; retained two completed levels, 60 credits and a level-2 personal best of 725. Local preview is http://127.0.0.1:4175/ and is left at the level-2 briefing.
+- Current production script: index-ch4dd7ZR.js; offline cache biology-aa5ea9dd4d89. Production contains no debug controls. No public deployment authorized or performed for this revision.
+
 ## Gameplay overhaul
 - Addressed preview feedback: every defender is rendered up to the 30-cell cap; visible arrival and casualty transitions.
 - Four gate pairs rotate recruitment, reach, temporary rapid response, shields, and cell-cost tradeoffs. Recruitment labels reflect available capacity.
@@ -29,12 +43,15 @@
 - Headless desktop Chrome heavy encounter: 180 frames, 33.4ms p95, about 46fps reported by Phaser, 25 live enemies and 30 defenders at sample end. This is NOT physical-phone performance.
 - Capacitor Android/iOS projects generated and synced with local game files, portrait config, lifecycle/back handling, icons/splash. CI workflow prepared, not run remotely.
 
-## Next action
-Local revision is ready at http://127.0.0.1:4175. Latest completed source checkpoint before the map-record audit: 709d8db.
-Hosted publication requires explicit user approval to export this project source and bundled QA artifacts to the existing private Sites repository:
-https://git.chatgpt-team.site/2b44f6f5-c34d-444b-83e8-53ef432f4f49/appgprj_6aa5bab3c21c819187d24627f0551c1d.git
-Automatic approval review rejected the upload on September 13 because the destination/payload were not explicitly authorized. No revised source was uploaded. Do not bypass or deploy the obsolete saved version.
-The local Sites hosting skill and packaging helper also disappeared after the reset; a plugin-cache search found no copy. After authorization, restore the supported helper or use the connector's supported remote-build path. Preserve owner-private access and reuse the existing project.
+## Public demo — deployed September 13, 2026
+- User selected Apple Appuru Foundation (`applefound`), Hobby plan. Browser signed in as appuru. The connector remains linked to a different Team Hayashi account; use the browser for this project's deployments unless the connector is reconnected.
+- Live URL: https://biology-dash-public-demo.vercel.app/
+- Dashboard: https://vercel.com/applefound/biology-dash-public-demo
+- Deployed the 16-file compiled-only archive using Vercel Drop. No source repository or native upload, Git integration, or tunnel.
+- Anonymous HTTP request returned 200 and X-Robots-Tag: noindex, nofollow, noarchive. The unlisted URL is publicly accessible to anyone who has it.
+- Live browser loaded the campaign map and launched the first patrol with its tutorial; no browser error logs.
+- Future changes require deploying a newly built copy; local edits do not publish automatically.
+Current source checkpoint before demo setup: 3ea67be.
 
 ## Exact verification commands
 Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`; add its containing directory to PATH.
@@ -56,12 +73,16 @@ Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-
 ## Preview and release
 Local production preview: http://127.0.0.1:4175 (restart server after host/session exit).
 Local instrumented QA preview: http://127.0.0.1:4173 (test build only).
-Hosting: `.openai/hosting.json` contains registered project `appgprj_6aa5bab3c21c819187d24627f0551c1d`; owner-private audience confirmed. Deployment pending, not yet a live URL.
+Hosting: `.openai/hosting.json` contains registered project `appgprj_6aa5bab3c21c819187d24627f0551c1d`; owner-private audience previously confirmed. Dormant: do not publish or upload source; user deferred this path.
 Requirement-by-requirement assessment: ACCEPTANCE_AUDIT.md. Git history preserves initial and revised builds.
 
 ## Fixed failures / practical limitations
 Fixed scene-start race, malformed antibody-save validation, escaped-boss handling, boss-contact deletion and cross-profile affinity contamination. Vite default bundled config loader stalled on this host; native loader works. Dev module requests were intermittent, so verification uses compiled test/production servers. Production bundle includes Phaser (~395KB gzip JS); no unexplained runtime errors found.
 
-## External blockers (not completed)
+## Deferred future work (not current development blockers)
 No full Xcode/simulator, Java, Android SDK/emulator, connected physical device, or valid code-signing identity. No APK, AAB, signed IPA, TestFlight upload, store submission or native runtime result is claimed. Temporary development ID `dev.biologydash.immune` awaits owner-approved permanent identity. Native distribution stays partial until toolchain/accounts/devices are available.
 Perceptual audio listening, qualified medical review, and human learning evaluation are outstanding. See MEDICAL_EVIDENCE.md for five review questions and GAME_DESIGN.md for the human evaluation protocol. No clinical validation, measured learning gains or real-phone 60/30fps claim.
+
+## Demo package
+Compiled-only copy: /tmp/biology-dash-public-demo.zip (8,502,795 bytes, 16 files). Inventory: artifacts/demo-upload-manifest.json. Adds noindex/robots directives; no TypeScript sources, tests, Git data, source maps or native files. Uploaded via the supported Vercel Drop file chooser. A generic current-project deploy action was rejected because of full-source export risk; the narrower built-copy upload succeeded.
+Cloudflared was installed before the user rejected tunneling, but no tunnel command was started. Do not run it.

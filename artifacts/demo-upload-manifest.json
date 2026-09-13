@@ -1,0 +1,25 @@
+{
+  "directory": "/tmp/biology-dash-public-demo",
+  "archive": "/tmp/biology-dash-public-demo.zip",
+  "bytes": 8502795,
+  "files": [
+    "assets/defenders-v2.png",
+    "assets/enemies-v2.png",
+    "assets/finish.wav",
+    "assets/immune-sprite-atlas.png",
+    "assets/index-BXhvLef0.js",
+    "assets/index-Bv-BmIes.css",
+    "assets/recruit.wav",
+    "assets/soft.wav",
+    "assets/tissue-corridor.png",
+    "assets/tissue-perspective-v2.png",
+    "assets/web-C-3k58sv.js",
+    "favicon.svg",
+    "index.html",
+    "robots.txt",
+    "sw.js",
+    "vercel.json"
+  ],
+  "sourceFilesIncluded": false,
+  "nativeFilesIncluded": false
+}

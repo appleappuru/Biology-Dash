@@ -29,9 +29,9 @@ checks.push('Full squad gate clearly labels capacity instead of promising unavai
 await page.evaluate(()=>{const p=__BIOLOGY__.state;p.move(210,610);['susceptible','beta-lactamase','doxy-resistant','dual-resistant','antigen-b'].forEach((kind,i)=>{p.spawn(kind);const e=p.enemies.at(-1);e.x=100+i%2*210;e.y=150+i*68;});p.gates=[{id:999,y:470,used:false,left:{id:'risk',label:'−3 cells · +36 reach',detail:'Reassign defenders',kind:'risk',value:36,cost:3},right:{id:'shield',label:'Rescue shield',detail:'8 seconds',kind:'shield',value:8}}];});
 await page.waitForTimeout(100);expect(await page.evaluate(()=>new Set([...__BIOLOGY__.scene.views.values()].map(v=>v.row)).size)).toBe(5);
 await page.screenshot({path:'artifacts/gameplay-v2-phone.png'});checks.push('Five distinct enemy sprite rows');
-await page.evaluate(()=>{const p=__BIOLOGY__.state;p.attackTimer=100;p.damage(p.enemies[0],1);});await page.waitForTimeout(40);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.damage(p.enemies[0],1,'amoxicillin');});await page.waitForTimeout(40);
 expect(await page.evaluate(()=>[...__BIOLOGY__.scene.views.values()][0].body.frame.name)).toBe(3);
-await page.evaluate(()=>{const p=__BIOLOGY__.state;p.damage(p.enemies[0],10000);});await page.waitForTimeout(50);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.damage(p.enemies[0],10000,'amoxicillin');});await page.waitForTimeout(50);
 expect(await page.evaluate(()=>__BIOLOGY__.scene.tweens.getTweens().length)).toBeGreaterThan(0);checks.push('Enemy hit pose and defeat tween');
 await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate(p.gates[0],'left');});await page.waitForTimeout(100);expect((await state()).visible).toBe(27);
 await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate({id:1001,y:600,used:false,right:{id:'shield',kind:'shield',label:'Shield',detail:'Shield',value:8}},'right');});

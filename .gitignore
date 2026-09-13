@@ -13,3 +13,7 @@ ios/App/Pods/
 
 .pnpm-store/
 dist-test/
+
+.DS_Store
+artifacts/interaction-video/
+artifacts/*failure-v3.png

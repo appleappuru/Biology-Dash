@@ -31,7 +31,7 @@ node scripts/input-performance-test.mjs
 
 Browser scripts use installed Google Chrome through Playwright. The browser suite includes a real-time patrol and separately labeled accelerated simulations for later learning flows. For production offline checks, serve `dist/` on 4175, then run `node scripts/production-test.mjs`. Test-only controls exist only in Vite dev/test mode and are excluded from production.
 
-## Native
+## Native — deferred
 
 ```sh
 pnpm build
@@ -39,6 +39,8 @@ pnpm native:sync
 pnpm assets
 cd android && ./gradlew assembleDebug
 ```
+
+Native work is deferred for this development phase. Existing scaffolds are retained for future portability; do not run the commands above as part of normal web iteration.
 
 Open `ios/App/App.xcodeproj` in Xcode for iOS. Both projects bundle game files locally. `dev.biologydash.immune` is temporary and must be replaced by an owner-approved identity before distribution. No signing keys are included. See RELEASE.md for exact missing tooling and release steps.
 

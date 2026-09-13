@@ -1,5 +1,12 @@
 name: Verify and package Biology Dash
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      native:
+        description: 'Build deferred Android debug artifact (future work only)'
+        type: boolean
+        default: false
 jobs:
   web:
     runs-on: ubuntu-latest
@@ -19,6 +26,7 @@ jobs:
           name: biology-dash-web
           path: dist
   android-debug:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.native }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

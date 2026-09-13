@@ -4,8 +4,8 @@
     {
       "level": 1,
       "phase": "victory",
-      "squad": 27,
-      "kills": 20,
+      "squad": 11,
+      "kills": 21,
       "checks": {
         "medicine": false,
         "cooperation": false,
@@ -19,8 +19,8 @@
     {
       "level": 2,
       "phase": "victory",
-      "squad": 21,
-      "kills": 20,
+      "squad": 13,
+      "kills": 21,
       "checks": {
         "medicine": false,
         "cooperation": false,
@@ -34,8 +34,8 @@
     {
       "level": 3,
       "phase": "victory",
-      "squad": 27,
-      "kills": 20,
+      "squad": 11,
+      "kills": 21,
       "checks": {
         "medicine": true,
         "cooperation": false,
@@ -49,8 +49,8 @@
     {
       "level": 4,
       "phase": "victory",
-      "squad": 23,
-      "kills": 22,
+      "squad": 30,
+      "kills": 23,
       "checks": {
         "medicine": true,
         "cooperation": false,
@@ -64,13 +64,13 @@
     {
       "level": 5,
       "phase": "victory",
-      "squad": 27,
-      "kills": 22,
+      "squad": 20,
+      "kills": 24,
       "checks": {
         "medicine": true,
         "cooperation": true,
         "match": true,
-        "mismatch": false,
+        "mismatch": true,
         "affinity": false,
         "recall": false,
         "gate": true
@@ -79,8 +79,8 @@
     {
       "level": 6,
       "phase": "victory",
-      "squad": 17,
-      "kills": 22,
+      "squad": 26,
+      "kills": 23,
       "checks": {
         "medicine": false,
         "cooperation": true,
@@ -94,13 +94,13 @@
     {
       "level": 7,
       "phase": "victory",
-      "squad": 17,
-      "kills": 24,
+      "squad": 20,
+      "kills": 26,
       "checks": {
         "medicine": true,
         "cooperation": true,
         "match": true,
-        "mismatch": false,
+        "mismatch": true,
         "affinity": true,
         "recall": false,
         "gate": true
@@ -109,7 +109,7 @@
     {
       "level": 8,
       "phase": "victory",
-      "squad": 27,
+      "squad": 17,
       "kills": 24,
       "checks": {
         "medicine": false,
@@ -124,13 +124,13 @@
     {
       "level": 9,
       "phase": "victory",
-      "squad": 17,
-      "kills": 26,
+      "squad": 20,
+      "kills": 27,
       "checks": {
         "medicine": true,
         "cooperation": true,
         "match": true,
-        "mismatch": false,
+        "mismatch": true,
         "affinity": true,
         "recall": true,
         "gate": true
@@ -139,8 +139,8 @@
     {
       "level": 10,
       "phase": "victory",
-      "squad": 20,
-      "kills": 27,
+      "squad": 17,
+      "kills": 28,
       "checks": {
         "medicine": false,
         "cooperation": true,

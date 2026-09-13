@@ -1,3 +1,7 @@
+# Active scope — September 13, 2026
+Finish and locally verify the individual-cell interaction revision and expanded named microbe roster. Preserve two-axis controls, organic formations, accessibility and save migration. Do not publish until explicitly requested. Native development remains deferred.
+
+## Earlier planning notes
 # Biology Dash milestones
 
 1. Evidence and foundation: authoritative references, official Phaser starter, deterministic testable simulation.
@@ -8,3 +12,5 @@
 6. Release: hosted preview, Capacitor projects and builds where tools are available, release documentation and exact blockers.
 
 Acceptance follows BIOLOGY_DASH_BUILD_PROMPT.md. No claim of perfection, clinical validation, measured learning, or physical-device performance without evidence.
+
+Current direction: local web game development with an unlisted independently hosted demo URL. Permanent Sites hosting and native development/distribution are deferred by the user. Preserve architecture and existing scaffolds without working on those deliveries now.

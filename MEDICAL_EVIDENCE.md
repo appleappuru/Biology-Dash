@@ -1,3 +1,25 @@
+# Current interaction revision — September 13, 2026
+
+This section supersedes the older five-isolate scope below. The game now uses fictional tested extracellular encounters with Staphylococcus aureus (including an explicitly resistant MRSA isolate), Streptococcus pneumoniae, Escherichia coli, Pseudomonas aeruginosa, and the yeast Candida albicans. Colonization is not automatically infection. Artistic color and exaggerated morphology are not diagnostic features.
+
+## Sources checked for this revision
+- [NCBI: phagocytosis](https://www.ncbi.nlm.nih.gov/books/NBK556043/): pseudopods enclose material in a phagosome; lysosome fusion contributes to intracellular digestion. Implemented as approach → local membrane wrapping → internal digestion. One identified phagocyte owns each target; no contact-zone damage.
+- [NCBI: transport into cells](https://www.ncbi.nlm.nih.gov/books/NBK26870/): membrane extension, enclosure and phagosomes. Non-gory membrane lobes and an internal vesicle visualize this sequence.
+- [NCBI: B cells and antibodies](https://www.ncbi.nlm.nih.gov/books/NBK26884/): plasma-cell secretion and antibody Fc-dependent uptake. Y-shaped markers leave the plasma cell, follow slow curved paths, and bind only at compatible targets. Binding changes no health. Emitted specificity/affinity is immutable. Diffusion is highly compressed and target-directed for readability, not a molecular transport model.
+- [Primary study: pneumococcal capsule and opsonization](https://pmc.ncbi.nlm.nih.gov/articles/PMC2812187/): capsule inhibits complement activity and phagocytosis. Untagged capsule increases wrapping time; antibody/C3 opsonins aid uptake. C3 is a host protein system, not a cell or drug. Pulse duration/cooldown and multipliers are game values; complement lysis is not simulated.
+- [CDC: pneumococcal disease](https://www.cdc.gov/pneumococcal/about/index.html): organism and clinical contexts. The fictional susceptibility report explicitly describes a non-meningeal encounter.
+- [CDC: Pseudomonas](https://www.cdc.gov/pseudomonas-aeruginosa/about/index.html): healthcare-associated infections and isolate susceptibility testing.
+- [DailyMed: cefepime](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=1eb8794e-2502-43cc-8a32-dcba78031f15): bacterial wall inhibition and susceptible isolates, including E. coli and Pseudomonas. No activity against the modeled MRSA or fungi. Unlock order is instructional, not a drug ranking.
+- [CDC: candidiasis treatment](https://www.cdc.gov/candidiasis/treatment/index.html) and [DailyMed: micafungin](https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=a064c4a7-25ec-4a2c-afc2-703491a4a38b): antifungal support and fungal beta-glucan wall inhibition. Candida is a fungus; antibacterial target mismatch is distinct from acquired resistance. This does not model clinical treatment selection or dosing.
+
+## Visual and timing abstractions
+Neutrophils use shorter, deformable wraps; macrophages use broader, longer wraps. This is visual variety, not a universal cell superiority claim. Both clear microbes. Non-boss engulfment is completed only at local contact, with a uniquely attributable cell ID. A surviving boss is a colony aggregate: each wrap removes a fragment, explained in the guide. Medication-caused defeats use separate wall-stress/collapse feedback; doxycycline inhibits modeled growth without immediate damage. Medicine effects do not originate from cells. Wall-contour marks, health and instantaneous medication pulses are explanatory conventions, not literal drug behavior. A phagosome digestion vignette is shown for less than one second rather than physiological timescales. Reduced motion keeps essential approach, wrapping, binding and digestion while suppressing decorative bobbing, deformation and camera effects.
+
+Qualified medical review and human learning evaluation remain outstanding; no clinical accuracy certification or learning outcome is claimed.
+
+---
+# Earlier evidence register (historical scope)
+
 # Medical evidence and abstraction register
 
 Checked **2026-09-12**. Status **source-checked, not independently clinically reviewed** applies to every implemented row. No claim of clinical validation or measured learning gains. Content is a mechanism teaching model, not a clinical efficacy calculator. No doses, durations, or patient-specific choices are provided.

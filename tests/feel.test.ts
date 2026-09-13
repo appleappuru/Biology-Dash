@@ -32,15 +32,16 @@ describe('two-axis patrol', () => {
         p.move(NaN,NaN);
         expect([p.x,p.y]).toEqual([180,635]);
     });
-    it('advancing moves the actual engulfment zone, not just the artwork', () => {
+    it('advancing brings individual cells within approach reach', () => {
         const forward = new Patrol(1), rear = new Patrol(1);
         for (const p of [forward,rear]) {
             p.spawn('susceptible');
             p.enemies[0].x = 210; p.enemies[0].y = 390;
         }
         forward.move(210,490);
-        forward.step(.05); rear.step(.05);
-        expect(forward.enemies[0].hp).toBeLessThan(rear.enemies[0].hp);
+        tick(forward,2); tick(rear,2);
+        expect(forward.kills).toBe(1);
+        expect(rear.kills).toBe(0);
         expect(forward.events.some(e=>e.type==='hit')).toBe(true);
         expect(rear.events.some(e=>e.type==='hit')).toBe(false);
     });
@@ -112,11 +113,10 @@ describe('authored gate abilities and tradeoffs', () => {
             patrol.spawn('susceptible',true);
             patrol.enemies[0].x=210; patrol.enemies[0].y=510;
             patrol.enemies[0].hp=10000;
-            patrol.attackTimer=0;
         }
-        tick(p,1); tick(ordinary,1);
+        tick(p,5); tick(ordinary,5);
         expect(p.enemies[0].hp).toBeLessThan(ordinary.enemies[0].hp);
-        p.enemies=[]; tick(p,11.05);
+        p.enemies=[]; tick(p,7.05);
         expect(p.tempoRemaining).toBe(0);
     });
 });
@@ -126,7 +126,7 @@ describe('feedback and terminal outcomes', () => {
         const p = new Patrol(3);
         p.spawn('susceptible');
         const enemy = p.enemies[0]; enemy.hp=1; enemy.y=550; enemy.x=p.x;
-        p.step(.05); p.step(.05);
+        tick(p,2);
         expect(p.events.filter(e=>e.type==='hit')).toEqual([expect.objectContaining({enemyId:enemy.id,x:enemy.x,y:enemy.y})]);
         expect(p.events.filter(e=>e.type==='death')).toEqual([expect.objectContaining({enemyId:enemy.id,x:enemy.x,y:enemy.y})]);
         expect(p.kills).toBe(1);
@@ -156,7 +156,7 @@ describe('feedback and terminal outcomes', () => {
 describe('rules upgrade save migration', () => {
     it('retains earned progress, resources and preferences from version 1', () => {
         const save=parseSave(JSON.stringify({version:1,completed:[1,2],credits:60,stars:{1:3,2:2},reinforcement:1,muted:true,volume:.1,reducedMotion:true,tutorial:true,antibody:{epitope:'A',affinity:.9,effector:'opsonization'},checks:{affinity:true}}));
-        expect(save.version).toBe(2);
+        expect(save.version).toBe(3);
         expect(save.completed).toEqual([1,2]);
         expect(save.credits).toBe(60);
         expect(save.stars).toEqual({1:3,2:2});

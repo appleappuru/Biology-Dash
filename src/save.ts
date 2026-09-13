@@ -10,15 +10,16 @@ export interface Save {
     muted: boolean;
     volume: number;
     reducedMotion: boolean;
+    showReach: boolean;
     tutorial: boolean;
     antibody: AntibodyProfile;
     checks: Partial<Learning>;
 }
-export const freshSave = (): Save => ({ version: RULES_VERSION, completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
+export const freshSave = (): Save => ({ version: RULES_VERSION, completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, showReach: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
 export function parseSave(raw: string | null): Save { try {
     const v = JSON.parse(raw ?? 'null');
-    // Version 2 changes encounter rules, not the persisted progression schema.
-    if (!v || ![1, RULES_VERSION].includes(v.version))
+    // Encounter revisions preserve the progression schema.
+    if (!v || ![1, 2, RULES_VERSION].includes(v.version))
         return freshSave();
     const d = freshSave();
     d.completed = Array.isArray(v.completed) ? [...new Set<number>(v.completed.filter((x: unknown) => Number.isInteger(x) && Number(x) >= 1 && Number(x) <= 10))] : [];
@@ -28,6 +29,7 @@ export function parseSave(raw: string | null): Save { try {
     d.muted = v.muted === true;
     d.volume = Number.isFinite(v.volume) ? Math.max(0, Math.min(1, v.volume)) : .25;
     d.reducedMotion = v.reducedMotion === true;
+    d.showReach = v.showReach === true;
     d.tutorial = v.tutorial === true;
     if (v.antibody?.effector === 'opsonization' && v.antibody?.epitope === 'A' && [.2, .45, .9].includes(v.antibody?.affinity))
         d.antibody = v.antibody;

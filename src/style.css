@@ -12,3 +12,15 @@
 .patrol-awards{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:14px 0}.patrol-awards span{background:#224c45;color:#c4ffdf;border:1px solid #518d78;border-radius:20px;padding:8px 12px;font-size:12px}
 
 .level-best{color:#b5e4d2;font-size:10px;font-weight:700;letter-spacing:.4px;margin-top:7px}
+
+/* Microbe identification is available before combat and in the field guide. */
+.encounter-roster{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:14px 0}
+.encounter-microbe{display:flex;align-items:center;gap:9px;background:#ffffff08;border:1px solid #b4e3d51c;border-radius:14px;padding:6px 8px;min-width:0}
+.encounter-microbe b{font-size:12px;display:block}.encounter-microbe small{font-size:10px;display:block;opacity:.72;line-height:1.4}
+.microbe-portrait{display:inline-block;flex:0 0 64px;width:64px;height:64px;background-repeat:no-repeat}
+.microbe-entry{display:flex;gap:12px;padding:18px 0;border-top:1px solid #b4e3d522}.microbe-entry>div{min-width:0}.microbe-entry small{line-height:1.5;display:block;opacity:.8}
+.battle-actions{flex-wrap:wrap}.battle-actions #complement{font-size:11px;padding:8px 10px;color:#163d49;background:#bde5ef}
+@media(max-width:480px){.microbe-entry{gap:5px}.microbe-entry .microbe-portrait{flex-basis:52px;width:52px;height:52px}.battle-actions{gap:4px}.battle-actions button{font-size:11px!important;padding:8px!important}}
+
+.battle-actions button{min-width:44px}.battle-actions #support{flex:1}.battle-actions #complement{color:#163d49;background:#bde5ef}
+@media(max-width:350px){.battle-actions{display:grid;grid-template-columns:minmax(0,1fr) 44px minmax(0,1fr)}.battle-actions #complement{grid-column:1/-1;min-height:42px}.battle-actions #support{font-size:10px!important}}
