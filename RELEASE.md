@@ -7,7 +7,7 @@
 | Delivery | Evidence / result |
 |---|---|
 | Ten 90-second authored levels, two colony bosses | All ten won in final accelerated browser sweep with real support-panel inputs; first level also passed a real-time 90-second mouse-driven patrol |
-| Movement, engulfment, gates, casualties, restart | 52 automated tests; real relative drag, keyboard, pause, defeat/restart passed |
+| Movement, engulfment, gates, casualties, restart | 55 automated tests; real relative drag, keyboard, pause, defeat/restart passed |
 | Three defender roles and two medicines | Source-checked evidence register; antibody support visibly joins squad; no clinician validation claimed |
 | Susceptibility, antigen and maturation decisions | Wrong choices give corrective feedback and allow recovery; clone selection and later matching recall verified |
 | Saves and progression | Corrupt-save tests, earned unlock and settings reload passed |

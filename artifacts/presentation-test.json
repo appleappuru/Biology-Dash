@@ -7,7 +7,8 @@
     "Full squad gate clearly labels capacity instead of promising unavailable recruits",
     "Five distinct enemy sprite rows",
     "Enemy hit pose and defeat tween",
-    "Cost gate removes three visible defenders; shield timer displayed"
+    "Cost gate removes three visible defenders; shield timer displayed",
+    "Personal-best and flawless-defense awards with saved score"
   ],
   "errors": []
 }

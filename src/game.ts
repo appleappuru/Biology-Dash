@@ -125,12 +125,25 @@ export class PatrolScene extends Phaser.Scene {
             this.squadHitUntil = this.time.now + 220;
             if (!this.reducedMotion) this.cameras.main.shake(90, .0018);
         }
-        if (event.type === 'gate' || event.type === 'recruit') this.soundCue('recruit');
+        if (event.type === 'gate') {
+            this.soundCue('recruit');
+            const p=this.patrol, q=project(p.x,p.y);
+            const message=event.label ?? 'Gate activated';
+            this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
+        }
+        if (event.type === 'recruit' || (event.type === 'loss' && event.amount)) {
+            const q=project(this.patrol.x,this.patrol.y);
+            this.floatFeedback((event.amount! > 0 ? '+' : '') + event.amount + ' cells',q.x,q.y-50,event.amount! > 0 ? 0xb5ffe0 : 0xffb6aa);
+        }
         if (event.type === 'medicine') {
             const ring = this.add.ellipse(210, 380, 220, 380).setStrokeStyle(3, 0xdac7ff, .6).setDepth(4);
             this.tweens.add({ targets: ring, scale: 1.5, alpha: 0, duration: 450, onComplete: () => ring.destroy() });
         }
         if (!['hit', 'death', 'engulf', 'tag'].includes(event.type)) this.hooks.event(event.text);
+    }
+    floatFeedback(message: string, x: number, y: number, color: number) {
+        const text=this.add.text(Phaser.Math.Clamp(x,95,325),y,message,{fontFamily:'Arial',fontSize:message.length>18?'11px':'20px',fontStyle:'bold',color:'#'+color.toString(16),stroke:'#09242c',strokeThickness:4,align:'center',wordWrap:{width:180}}).setOrigin(.5).setDepth(1000);
+        this.tweens.add({targets:text,y:y-(this.reducedMotion?0:28),alpha:0,delay:600,duration:this.reducedMotion?1:500,onComplete:()=>text.destroy()});
     }
     dismissEnemy(id: number, v: EnemyView, defeated: boolean) {
         this.views.delete(id); v.health.setVisible(false); v.tag.setVisible(false);

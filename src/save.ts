@@ -5,6 +5,7 @@ export interface Save {
     completed: number[];
     stars: Record<string, number>;
     credits: number;
+    bestScores: Record<string, number>;
     reinforcement: number;
     muted: boolean;
     volume: number;
@@ -13,13 +14,15 @@ export interface Save {
     antibody: AntibodyProfile;
     checks: Partial<Learning>;
 }
-export const freshSave = (): Save => ({ version: RULES_VERSION, completed: [], stars: {}, credits: 0, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
+export const freshSave = (): Save => ({ version: RULES_VERSION, completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
 export function parseSave(raw: string | null): Save { try {
     const v = JSON.parse(raw ?? 'null');
-    if (!v || v.version !== RULES_VERSION)
+    // Version 2 changes encounter rules, not the persisted progression schema.
+    if (!v || ![1, RULES_VERSION].includes(v.version))
         return freshSave();
     const d = freshSave();
     d.completed = Array.isArray(v.completed) ? [...new Set<number>(v.completed.filter((x: unknown) => Number.isInteger(x) && Number(x) >= 1 && Number(x) <= 10))] : [];
+    d.bestScores = Object.fromEntries(Object.entries(v.bestScores ?? {}).filter(([key, value]) => Number.isInteger(Number(key)) && Number(key)>=1 && Number(key)<=10 && Number.isInteger(value) && Number(value)>=0 && Number(value)<=100000).map(([key,value])=>[key,Number(value)]));
     d.credits = Number.isFinite(v.credits) ? Math.max(0, Math.min(10000, v.credits)) : 0;
     d.reinforcement = Math.max(0, Math.min(6, Number(v.reinforcement) || 0));
     d.muted = v.muted === true;
@@ -51,7 +54,7 @@ catch {
     return false;
 } }
 export function isUnlocked(save: Save, level: number) { return level === 1 || save.completed.includes(level - 1); }
-export function completeLevel(save: Save, level: number, squad: number, checks: Partial<Learning>) { const first = !save.completed.includes(level); if (first) {
+export function completeLevel(save: Save, level: number, squad: number, checks: Partial<Learning>, score = 0) { save.bestScores[level] = Math.max(save.bestScores[level] ?? 0, Number.isFinite(score) ? Math.max(0, Math.floor(score)) : 0); const first = !save.completed.includes(level); if (first) {
     save.completed.push(level);
     save.credits += 30;
 } save.stars[level] = Math.max(save.stars[level] ?? 0, squad >= 12 ? 3 : squad >= 6 ? 2 : 1); for (const k of Object.keys(checks) as (keyof Learning)[])

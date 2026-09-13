@@ -53,3 +53,5 @@ Open `ios/App/App.xcodeproj` in Xcode for iOS. Both projects bundle game files l
 - `GAME_DESIGN.md`, `ASSET_MANIFEST.md`, `RELEASE.md`, `STATUS.md`: design, provenance, release and resume checkpoint.
 
 Based on the structure of [Phaser’s official Vite TypeScript starter](https://github.com/phaserjs/template-vite-ts); original template license retained. No starter telemetry, backend, ads, purchases, accounts or analytics. This is a game abstraction, not prescribing advice or clinically validated instruction. Human learning evaluation and qualified medical review remain outstanding.
+
+The revised presentation includes individually rendered squads, directional 3D-style cell frames, four rotating gate pairs, floating effect callouts, personal-best scores and flawless-defense awards. Existing version-1 saves migrate automatically. Additional checks: `node scripts/presentation-test.mjs` and `node scripts/save-upgrade-test.mjs`.

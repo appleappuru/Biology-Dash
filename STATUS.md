@@ -9,11 +9,18 @@
 - New presentation browser test passed; real 90-second play, all ten accelerated victories, save/settings, offline, touch and six-run stability repeated September 13.
 - Actual user's preview refreshed from stale offline cache and revised level-2 choice screen verified.
 
+## Added polish and upgrade safety
+- Floating gate/recruitment/casualty callouts; saved per-level personal bests and flawless-defense awards. Strategic cell reassignment does not count as a forced loss.
+- Version-1 saves migrate to rules version 2, retaining progression, stars, credits, preferences and learning flags. Verified in a production browser and through reload; see artifacts/save-upgrade-results.json.
+- The initial version bump briefly displayed an empty save before migration was added. After reconnecting, verified the final production script index-Pryq4p-P.js and the actual user UI retained level 1 complete, three stars and 30 credits through reload.
+- Preview servers survived a UI disconnect but returned empty responses. Confirmed live PIDs and empty HTTP replies, then restarted only those two servers with file-backed logs in /tmp/biology-preview-*.log.
+- Award screenshot uses a synthetic result fixture for layout verification; real victory evidence remains the full 90-second run and all-level sweep.
+
 ## Completed
 - Ten authored 90-second patrols, three defender roles, five tested bacterial phenotypes, two medicines, two theatrical bosses.
 - Phaser movement/engulfment/gates/casualties, campaign, earned unlocks, local saves, settings, field guide, B-cell selection and matching recall.
 - Original raster atlas/corridor/icon, local soft WAV cues; 86 Android and 8 iOS icon/splash outputs.
-- 52 rule/regression tests pass. TypeScript and final production build pass.
+- 55 rule/regression tests pass. TypeScript and final production build pass.
 - Real browser 90-second first-level run with actual mouse steering, victory, saved unlock, defeat/restart, settings persistence and learning corrections pass.
 - Final accelerated browser sweep wins all ten levels with real support-panel selections (`artifacts/final-sweep.json`). All reported browser page-error lists empty.
 - Relative touch, cancellation and no-jump restart pass. Six repeated game runs keep one scene, canvas and pointer listener.
@@ -31,7 +38,9 @@ The local Sites hosting skill and packaging helper also disappeared after the re
 
 ## Exact verification commands
 Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`; add its containing directory to PATH.
-- `pnpm test` — 52 passed in three files, most recent run September 13.
+- `node scripts/presentation-test.mjs` — all nine presentation checks passed, including actual gate crossing and saved awards.
+- `node scripts/save-upgrade-test.mjs` — production save migration and reload passed.
+- `pnpm test` — 55 passed in three files, most recent run September 13.
 - `node node_modules/typescript/bin/tsc --pretty false` — passed.
 - `pnpm build` — production build passed, offline cache generated.
 - `pnpm native:sync` — both platforms synced successfully.

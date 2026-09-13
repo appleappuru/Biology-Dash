@@ -34,6 +34,7 @@ export interface Gate {
 export interface PatrolEvent {
     type: 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit';
     text: string;
+    label?: string;
     enemyId?: number;
     squad?: number;
     amount?: number;
@@ -59,6 +60,7 @@ export class Patrol {
     shieldRemaining = 0;
     squad = 12;
     kills = 0;
+    casualties = 0;
     score = 0;
     coverage = 52;
     enemies: Enemy[] = [];
@@ -89,6 +91,7 @@ export class Patrol {
     lose(reason: string) {
         if (this.protection > 0 || this.shieldRemaining > 0 || this.phase !== 'playing') return;
         this.squad = Math.max(0, this.squad - 1);
+        this.casualties++;
         this.protection = BALANCE.invulnerability;
         this.events.push({type:'loss',text:reason,x:this.x,y:this.y,squad:this.squad,amount:-1});
         if (this.squad === 0) this.phase = 'defeat';
@@ -108,7 +111,7 @@ export class Patrol {
         if (option.kind === 'coverage' || option.kind === 'risk') this.coverage = Math.min(115, this.coverage + option.value);
         if (option.kind === 'tempo') this.tempoRemaining = Math.max(this.tempoRemaining, option.value);
         if (option.kind === 'shield') this.shieldRemaining = Math.max(this.shieldRemaining, option.value);
-        this.events.push({type:'gate',text:option.detail,x:this.x,y:this.y,squad:this.squad});
+        this.events.push({type:'gate',text:option.detail,label:option.label,x:this.x,y:this.y,squad:this.squad});
         if (this.squad !== before) this.events.push({type:this.squad > before ? 'recruit' : 'loss',text:option.label,x:this.x,y:this.y,squad:this.squad,amount:this.squad-before});
         if (this.squad === 0) this.phase = 'defeat';
         return true;

@@ -36,6 +36,13 @@ expect(await page.evaluate(()=>__BIOLOGY__.scene.tweens.getTweens().length)).toB
 await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate(p.gates[0],'left');});await page.waitForTimeout(100);expect((await state()).visible).toBe(27);
 await page.evaluate(()=>{const p=__BIOLOGY__.state;p.applyGate({id:1001,y:600,used:false,right:{id:'shield',kind:'shield',label:'Shield',detail:'Shield',value:8}},'right');});
 await expect(page.locator('#ability-status')).toContainText('Rescue shield');checks.push('Cost gate removes three visible defenders; shield timer displayed');
+await page.evaluate(()=>__BIOLOGY__.start(1));await page.waitForFunction(()=>__BIOLOGY__.state?.level===1);
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.nextSpawn=999;p.nextGate=999;p.bossSpawned=true;p.score=500;__BIOLOGY__.advance(91);});
+await expect(page.locator('.patrol-awards')).toContainText('New personal best');
+await expect(page.locator('.patrol-awards')).toContainText('Flawless defense');
+await page.screenshot({path:'artifacts/patrol-awards-phone.png'});
+expect(await page.evaluate(()=>__BIOLOGY__.save.bestScores[1])).toBe(500);
+checks.push('Personal-best and flawless-defense awards with saved score');
 expect(errors).toEqual([]);
 }catch(e){checks.push({failure:String(e)});process.exitCode=1;await page.screenshot({path:'artifacts/presentation-failure.png'});}
 finally{console.log(checks);await writeFile('artifacts/presentation-test.json',JSON.stringify({checks,errors},null,2));await browser.close();}

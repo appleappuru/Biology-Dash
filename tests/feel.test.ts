@@ -1,3 +1,4 @@
+import { parseSave, freshSave, completeLevel } from '../src/save';
 import { describe, expect, it } from 'vitest';
 import { BALANCE, Patrol, type Gate } from '../src/simulation';
 
@@ -148,5 +149,40 @@ describe('feedback and terminal outcomes', () => {
         const p=new Patrol(1); const before=JSON.stringify(p);
         p.step(NaN); p.step(Infinity); p.step(0);
         expect(JSON.stringify(p)).toBe(before);
+    });
+});
+
+
+describe('rules upgrade save migration', () => {
+    it('retains earned progress, resources and preferences from version 1', () => {
+        const save=parseSave(JSON.stringify({version:1,completed:[1,2],credits:60,stars:{1:3,2:2},reinforcement:1,muted:true,volume:.1,reducedMotion:true,tutorial:true,antibody:{epitope:'A',affinity:.9,effector:'opsonization'},checks:{affinity:true}}));
+        expect(save.version).toBe(2);
+        expect(save.completed).toEqual([1,2]);
+        expect(save.credits).toBe(60);
+        expect(save.stars).toEqual({1:3,2:2});
+        expect(save.reinforcement).toBe(1);
+        expect(save.muted && save.reducedMotion && save.tutorial && save.checks.affinity).toBe(true);
+        expect(save.antibody.affinity).toBe(.9);
+    });
+});
+
+describe('patrol recognition', () => {
+    it('records actual casualties without penalizing strategic reassignment or shielded contact', () => {
+        const p=new Patrol(1);
+        p.applyGate({id:1,y:500,used:false,left:{id:'risk',label:'Trade',detail:'Trade',kind:'risk',cost:3,value:36}},'left');
+        expect(p.casualties).toBe(0);
+        p.shieldRemaining=8;p.lose('shielded');
+        expect(p.casualties).toBe(0);
+        p.shieldRemaining=0;p.lose('contact');p.lose('invulnerable');
+        expect(p.casualties).toBe(1);
+    });
+    it('retains the personal best while replay credits remain one-time', () => {
+        const save=freshSave();
+        completeLevel(save,1,12,{},500);
+        completeLevel(save,1,12,{},300);
+        expect(save.bestScores[1]).toBe(500);
+        expect(save.credits).toBe(30);
+        completeLevel(save,1,12,{},650);
+        expect(parseSave(JSON.stringify(save)).bestScores[1]).toBe(650);
     });
 });
