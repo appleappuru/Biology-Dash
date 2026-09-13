@@ -23,7 +23,11 @@
 - Capacitor Android/iOS projects generated and synced with local game files, portrait config, lifecycle/back handling, icons/splash. CI workflow prepared, not run remotely.
 
 ## Next action
-Publish the revised build to the existing private Sites project. The previous saved version is obsolete. Local Sites packaging skill/helper disappeared after the reset; searched the plugin cache with no match. Source and local production build are ready; use a supported remote build fallback or restore the hosting helper before archiving. Do not create a replacement Site.
+Local revision is ready at http://127.0.0.1:4175. Source checkpoint: c59bf49.
+Hosted publication requires explicit user approval to export this project source and bundled QA artifacts to the existing private Sites repository:
+https://git.chatgpt-team.site/2b44f6f5-c34d-444b-83e8-53ef432f4f49/appgprj_6aa5bab3c21c819187d24627f0551c1d.git
+Automatic approval review rejected the upload on September 13 because the destination/payload were not explicitly authorized. No revised source was uploaded. Do not bypass or deploy the obsolete saved version.
+The local Sites hosting skill and packaging helper also disappeared after the reset; a plugin-cache search found no copy. After authorization, restore the supported helper or use the connector's supported remote-build path. Preserve owner-private access and reuse the existing project.
 
 ## Exact verification commands
 Use Node 24 / pnpm 11.19.0. On this host, Node is `/Users/henrywei/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node`; add its containing directory to PATH.
