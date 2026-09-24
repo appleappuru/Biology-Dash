@@ -2,7 +2,7 @@ import {chromium,expect} from '@playwright/test';
 const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:320,height:568}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
 try{
  await page.addInitScript(()=>{if(!sessionStorage.getItem('quick-fixture')){localStorage.setItem('biology-dash-v1',JSON.stringify({version:4,completed:[1,2,3,4,5,6,7,8,9,10],credits:42,tutorial:true}));sessionStorage.setItem('quick-fixture','1');}});
- await page.goto('http://127.0.0.1:4190');await page.locator('#configure').click();await expect(page.locator('.loadout')).toBeVisible();await page.locator('#back').click();
+ await page.goto('http://127.0.0.1:4190');await page.locator('#configure').click();await expect(page.locator('.loadout')).toBeVisible();const affinity=await page.evaluate(()=>__BIOLOGY__.save.antibody.affinity);await page.locator('#selection-room').click();await page.locator('#leave-selection').click();await expect(page.locator('.loadout')).toBeVisible();expect(await page.evaluate(()=>__BIOLOGY__.save.antibody.affinity)).toBe(affinity);await page.locator('#back').click();
  for(const [level,med] of [[2,'amoxicillin'],[3,'amoxicillin'],[4,'doxycycline'],[5,'amoxicillin'],[7,'micafungin'],[9,'cefepime']]){
   await page.locator(`[data-level="${level}"]`).click();await page.waitForFunction(l=>__BIOLOGY__.state?.level===l&&!!__BIOLOGY__.scene?.patrol,level);
   await expect(page.locator('.modal-backdrop')).toHaveCount(0);expect(await page.evaluate(()=>__BIOLOGY__.state.medicine)).toBe(med);
