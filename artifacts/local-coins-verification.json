@@ -1,0 +1,26 @@
+{
+  "url": "http://127.0.0.1:4181",
+  "balance": 130,
+  "reward": {
+    "id": "3965eb41-9fd4-4b2e-bb92-37bbc9a3263c",
+    "level": 2,
+    "won": true,
+    "lines": [
+      {
+        "label": "First patrol clear",
+        "coins": 60
+      },
+      {
+        "label": "21 microbes cleared (cap 40)",
+        "coins": 40
+      },
+      {
+        "label": "No casualties",
+        "coins": 10
+      }
+    ],
+    "total": 110
+  },
+  "errors": [],
+  "offline": true
+}

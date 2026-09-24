@@ -25,3 +25,9 @@ it('ten levels are winnable with a bounded interception policy', () => { for (le
     expect(p.phase, `level ${level}, ${p.squad} cells`).toBe('victory');
 } });
 it('boss contact does not erase a surviving boss', () => { const p = new Patrol(1); p.spawn('susceptible', true); p.enemies[0].y = 669; p.enemies[0].x = p.x; p.enemies[0].hp = 1000; p.step(.05); expect(p.enemies).toHaveLength(1); expect(p.squad).toBe(12); });
+
+it('does not skip the colony when its arrival finds a full field',()=>{
+ const p=new Patrol(3);p.time=60;p.nextSpawn=999;p.nextGate=999;
+ for(let i=0;i<32;i++){p.spawn('susceptible');p.enemies[i].y=200;}
+ p.step(.05);expect(p.bossSpawned).toBe(false);p.enemies.pop();p.step(.05);expect(p.bossSpawned).toBe(true);expect(p.enemies.filter(e=>e.boss)).toHaveLength(1);
+});

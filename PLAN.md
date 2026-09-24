@@ -14,3 +14,7 @@ Finish and locally verify the individual-cell interaction revision and expanded 
 Acceptance follows BIOLOGY_DASH_BUILD_PROMPT.md. No claim of perfection, clinical validation, measured learning, or physical-device performance without evidence.
 
 Current direction: local web game development with an unlisted independently hosted demo URL. Permanent Sites hosting and native development/distribution are deferred by the user. Preserve architecture and existing scaffolds without working on those deliveries now.
+
+## Ongoing experience goal — September14
+Current release milestone: mixed squads + Coins economy + permanent roster + role upgrades. Preserve compiled-only applefound deployment and local saves. Do not mark the broader iterative game-experience goal complete solely because this release ships.
+Completed and verified: compact results actions, current/next upgrade previews, optional squad presets, live antibody selection, colony feedback and crowded-label spacing. Local follow-on ready for release validation: pause status, affordable shop choices, card-local purchase receipts, recruit-to-lineup navigation and preserved squad-builder focus. Next gameplay candidates: additional recognizable contact/engulfment poses and restrained sound feedback review. Prefer clear rewards and readable interaction over adding competing progression systems. Validate on actual touch hardware when available; current evidence is desktop Chrome with phone viewport.

@@ -53,3 +53,15 @@ Every squad member has an individual rendered cell (1–30), with arriving recru
 Pre-rendered 3D-style assets use an elevated rear camera for defenders and approaching enemy views. Three defender rows and five enemy rows each have neutral, left, right and hit poses. Defeats squash/fade; recruited cells enter the formation. Enemy drift changes directional frames. This is a 2.5D Phaser scene, not a realtime skeletal 3D mesh. Illustrated choices clearly equip the selected lead class.
 
 Recruitment and gate effects have short floating callouts beside the squad. End-of-patrol awards recognize a new saved personal-best score and zero forced losses; deliberate gate reassignment does not invalidate flawless defense. These are arcade achievements, not biological outcomes. Version-1 progression migrates intact to version 2.
+
+## Naming preference — September23
+Keep names educational and recognizable. Use real medication names (Amoxicillin, Doxycycline, Cefepime, Micafungin), immune-cell names (Neutrophil, Macrophage, Plasma cell), and familiar scientific microbe labels (E. coli, S. aureus, MRSA, Pseudomonas, Candida, Pneumococcus). Do not abbreviate merely to sound cute. Explain full species/resistance terms in the guide. Fictional gameplay variants should describe their tradeoff and remain identified as game specializations. Kawaii art may remain; names should teach. Prefer adapting layout over clipping or inventing shortened names.
+
+## Immediate play — September23
+The first patrol starts directly from the map's primary action. Teach steering, engulfment and gates with a compact checklist during play instead of a mandatory reading modal. Both movement axes count. Keep later biological choices and optional map briefings. Victory previews the next patrol's discovery alongside replay/progression and recruitment actions. No extra currency, streak penalties, timers outside patrol, or progression obligations are added.
+
+## Opening pace — September23
+Patrol1 brings its first microbe cluster into the middle distance and its first gate closer, so the opening teaches catch then recruitment within roughly12seconds at the rear position. Later waves and the subsequent27/44/61second gate schedule retain their existing travel. Timing and placements are arcade conventions; contact reach, approach/wrap damage, medicine susceptibility and rewards are unchanged. Inspiration: Mob Control's official App Store description emphasizes immediate readable crowd growth and gate decisions (https://apps.apple.com/us/app/mob-control/id1562817072?platform=ipad, checked September23,2026).
+
+## Tissue interception cues — September23
+Unwrapped microbes within2.5seconds of the tissue line at their current authored travel speed receive quiet lower arcs and line markers (up to3, nearest first). Directional text points from the squad toward the closest threat; later patrols place it above the medicine kit to avoid occlusion. Wrapping suppresses the cue because it holds travel. Static cues remain in reduced motion. These are gameplay warnings, not forecasts of clinical outcomes or guaranteed cell losses. Combat balance is unchanged.

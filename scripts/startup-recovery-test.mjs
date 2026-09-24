@@ -1,0 +1,30 @@
+import {chromium,expect} from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:320,height:568}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try{
+ await page.goto('http://127.0.0.1:4190');
+ await page.route('**/assets/defenders-v2.png',r=>r.abort());
+ const before=await page.evaluate(()=>JSON.stringify({credits:__BIOLOGY__.save.credits,roster:__BIOLOGY__.save.roster}));
+ await page.locator('#continue').click();
+ await expect(page.locator('#retry-loading')).toBeVisible({timeout:25000});
+ await expect(page.locator('#retry-loading')).toBeFocused();
+ await expect(page.locator('#game')).toHaveAttribute('aria-busy','false');
+ await page.screenshot({path:'artifacts/startup-recovery-phone.png'});
+ await page.unroute('**/assets/defenders-v2.png');await page.locator('#retry-loading').click();
+ await page.waitForFunction(()=>!!__BIOLOGY__.scene?.patrol);
+ await expect(page.locator('#patrol-loading')).toHaveCount(0);
+ expect(await page.evaluate(()=>JSON.stringify({credits:__BIOLOGY__.save.credits,roster:__BIOLOGY__.save.roster}))).toBe(before);
+ await page.locator('#pause').click();await page.locator('#leave').click();
+ await page.route('**/assets/defenders-v2.png',r=>r.abort());await page.locator('#continue').click();
+ await expect(page.locator('#leave-loading')).toBeVisible({timeout:25000});await page.locator('#leave-loading').click();
+ await expect(page.locator('#continue')).toBeVisible();
+ await page.unroute('**/assets/defenders-v2.png');
+ let release;const held=new Promise(r=>release=r);
+ await page.route('**/assets/defenders-v2.png',async r=>{await held;await r.continue().catch(()=>{});});
+ await page.locator('#continue').click();
+ await expect(page.locator('#retry-loading')).toBeVisible({timeout:25000});
+ release();await page.waitForTimeout(500);
+ expect(await page.evaluate(()=>__BIOLOGY__.state)).toBe(null);
+ await page.locator('#leave-loading').click();await expect(page.locator('#continue')).toBeVisible();
+ expect(errors).toEqual([]);
+ console.log('PASS failed art offers focused retry and safe exit; retry starts playable scene; Coins/roster unchanged; no uncaught errors');
+}finally{await browser.close();}

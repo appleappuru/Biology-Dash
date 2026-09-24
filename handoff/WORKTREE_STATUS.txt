@@ -1,0 +1,113 @@
+ M .gitignore
+ M GAME_DESIGN.md
+ M MEDICAL_EVIDENCE.md
+ M PLAN.md
+ M README.md
+ M STATUS.md
+ D artifacts/clone-selection-phone.png
+ D artifacts/defender-selection-v2.png
+ D artifacts/demo-upload-manifest.json
+ D artifacts/final-sweep.json
+ D artifacts/native-asset-sync.json
+ D artifacts/patrol-awards-phone.png
+ D artifacts/personal-best-map.png
+ D artifacts/save-migration-production.png
+ D artifacts/save-upgrade-results.json
+ M package.json
+ M scripts/input-performance-test.mjs
+ M scripts/offline.mjs
+ M src/content.ts
+ M src/game.ts
+ M src/main.ts
+ M src/save.ts
+ M src/simulation.ts
+ M src/style.css
+ M src/vite-env.d.ts
+ M tests/feel.test.ts
+ M tests/interactions.test.ts
+ M tests/regressions.test.ts
+ M vite.config.ts
+?? AGENTS.md
+?? ECONOMY.md
+?? RELEASES.md
+?? START_HERE.md
+?? "android/app/src/main/res/xml/config 2.xml"
+?? "android/app/src/main/res/xml/config 3.xml"
+?? artifacts/affordable-choice-phone.png
+?? artifacts/cache-transition-failure.png
+?? artifacts/casualty-feedback-phone.png
+?? artifacts/coin-roster-v6.png
+?? artifacts/coins-results-v6.png
+?? artifacts/colony-health-v10.png
+?? artifacts/colony-warning-v10.png
+?? artifacts/educational-names-phone.png
+?? artifacts/final-stretch-v5.png
+?? artifacts/first-play-phone.png
+?? artifacts/heavy-encounter-v11.png
+?? artifacts/input-performance-v11.json
+?? artifacts/live-antibody-picker-v12.png
+?? artifacts/live-cache-upgrade-v14.json
+?? artifacts/live-care-kit-320-v4.png
+?? artifacts/live-care-kit-v4.png
+?? artifacts/live-coins-production.png
+?? artifacts/live-coins-verification.json
+?? artifacts/live-v021-pause.png
+?? artifacts/local-cache-upgrade-v14.json
+?? artifacts/local-coins-production.png
+?? artifacts/local-coins-verification.json
+?? artifacts/mixed-squad-builder-v6.png
+?? artifacts/mobile-polish-results-v4.json
+?? artifacts/next-discovery-phone.png
+?? artifacts/opening-pace-phone.png
+?? artifacts/oriented-wrap-poses.png
+?? artifacts/patrol-loading-phone.png
+?? artifacts/pause-snapshot-phone.png
+?? artifacts/purchase-feedback-phone.png
+?? artifacts/quick-formations-v7.png
+?? artifacts/recruit-single-callout.png
+?? artifacts/replay-lineup-preview-v13.png
+?? artifacts/results-320x568-v7.png
+?? artifacts/results-expanded-320-v7.png
+?? artifacts/roster-320-v6.png
+?? artifacts/single-gate-v4.png
+?? artifacts/startup-recovery-phone.png
+?? artifacts/teamwork-catch-v9.png
+?? artifacts/teamwork-reduced-motion-v9.png
+?? artifacts/upgrade-before-after-v8.png
+?? artifacts/version-phone.png
+?? artifacts/victory-celebration-v5.png
+?? artifacts/victory-results-v5.png
+?? handoff/
+?? "ios/App/App/config 2.xml"
+?? scripts/affordable-choice-test.mjs
+?? scripts/cache-upgrade-test.mjs
+?? scripts/casualty-feedback-test.mjs
+?? scripts/coins-production-test.mjs
+?? scripts/colony-feedback-test.mjs
+?? scripts/economy-browser-test.mjs
+?? scripts/educational-names-test.mjs
+?? scripts/ending-test.mjs
+?? scripts/first-play-test.mjs
+?? scripts/formation-browser-test.mjs
+?? scripts/live-pause-test.mjs
+?? scripts/live-tags-test.mjs
+?? scripts/local-cache-transition-test.mjs
+?? scripts/mobile-polish-test.mjs
+?? scripts/opening-pace-test.mjs
+?? scripts/pause-snapshot-test.mjs
+?? scripts/recruit-feedback-test.mjs
+?? scripts/replay-lineup-test.mjs
+?? scripts/results-layout-test.mjs
+?? scripts/save-debug.mjs
+?? scripts/sound-priority-test.mjs
+?? scripts/startup-readiness-test.mjs
+?? scripts/startup-recovery-test.mjs
+?? scripts/teamwork-feedback-test.mjs
+?? scripts/upgrade-preview-test.mjs
+?? scripts/verify-live-build.mjs
+?? scripts/version-browser-test.mjs
+?? scripts/wrap-pose-test.mjs
+?? src/economy.ts
+?? src/roster.ts
+?? tests/economy.test.ts
+?? tests/opening.test.ts

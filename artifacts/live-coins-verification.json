@@ -1,0 +1,26 @@
+{
+  "url": "https://biology-dash-public-demo.vercel.app",
+  "balance": 130,
+  "reward": {
+    "id": "913f8458-b2c9-4efa-96ad-673e99dff9ad",
+    "level": 2,
+    "won": true,
+    "lines": [
+      {
+        "label": "First patrol clear",
+        "coins": 60
+      },
+      {
+        "label": "21 microbes cleared (cap 40)",
+        "coins": 40
+      },
+      {
+        "label": "No casualties",
+        "coins": 10
+      }
+    ],
+    "total": 110
+  },
+  "errors": [],
+  "offline": true
+}

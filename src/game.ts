@@ -1,6 +1,7 @@
+import {rosterOption} from './roster';
 import * as Phaser from 'phaser';
 import { Patrol, BALANCE, type PatrolEvent } from './simulation';
-import { PATHOGENS } from './content';
+import { PATHOGENS, ANTIBODY_NAMES, medicineStyle } from './content';
 
 
 
@@ -20,6 +21,20 @@ export function project(x: number, y: number) {
     return { x: 210 + (x - 210) * scale, y: 76 + y * .84, scale };
 }
 
+export function breachThreats(p: Patrol) {
+    return p.phase==='playing' ? p.enemies.filter(e=>e.hp>0 && e.y<=BALANCE.breachY &&
+            (BALANCE.breachY-e.y)/(e.boss?30:PATHOGENS.find(k=>k.id===e.kind)!.speed)<=2.5 &&
+            !p.cells.some(c=>c.targetId===e.id && c.phase==='wrap'))
+            .sort((a,b)=>(BALANCE.breachY-a.y)/(a.boss?30:PATHOGENS.find(k=>k.id===a.kind)!.speed)-
+                (BALANCE.breachY-b.y)/(b.boss?30:PATHOGENS.find(k=>k.id===b.kind)!.speed)) : [];
+}
+export function breachWarning(p: Patrol, threats=breachThreats(p)) {
+    const nearest=threats[0];
+    if(!nearest)return '';
+    const direction=nearest.x<p.x-45?'← LEFT':nearest.x>p.x+45?'RIGHT →':'HERE';
+    return `INTERCEPT ${direction} · ${threats.length} NEAR TISSUE`;
+}
+
 export class PatrolScene extends Phaser.Scene {
     patrol!: Patrol;
     hooks!: GameHooks;
@@ -30,6 +45,8 @@ export class PatrolScene extends Phaser.Scene {
     dragStartY = 640;
     paused = true;
     finished = false;
+    lastTeamworkCue = -Infinity;
+    teamworkAnnounced = false;
     muted = false;
     volume = .25;
     reducedMotion = false;
@@ -38,16 +55,19 @@ export class PatrolScene extends Phaser.Scene {
     cells: CellView[] = [];
     zone!: Phaser.GameObjects.Graphics;
     molecules!: Phaser.GameObjects.Graphics;
+    breachMarkers!: Phaser.GameObjects.Graphics;
+    tissueLabel!: Phaser.GameObjects.Text;
     showReach = false;
     ground!: Phaser.GameObjects.Graphics;
     bg!: Phaser.GameObjects.Image;
     keys!: Record<string, Phaser.Input.Keyboard.Key>;
-    lastSound = 0;
+    soundTimes = new Map<string, number>();
     lastSquad = 0;
-    squadHitUntil = 0;
     scroll = 0;
     constructor() { super('Patrol'); }
+    startupFailed = false;
     preload() {
+        this.load.on('loaderror', (file: Phaser.Loader.File) => { if (['defenders-v2','enemies-v2','microbes-v3','tissue-v2'].includes(file.key)) this.startupFailed = true; });
         this.load.spritesheet('defenders-v2', 'assets/defenders-v2.png', {frameWidth:362, frameHeight:362});
         this.load.image('enemies-v2', 'assets/enemies-v2.png');
         this.load.image('microbes-v3', 'assets/microbes-v3.png');
@@ -55,6 +75,7 @@ export class PatrolScene extends Phaser.Scene {
         for (const s of ['soft', 'recruit', 'finish']) this.load.audio(s, `assets/${s}.wav`);
     }
     create() {
+        if(this.startupFailed)return;
         for (const [key, rows] of [['enemies-v2', 5], ['microbes-v3', 4]] as const) {
             const texture = this.textures.get(key), source = texture.getSourceImage();
             for (let row = 0; row < rows; row++) for (let col = 0; col < 4; col++) {
@@ -67,10 +88,11 @@ export class PatrolScene extends Phaser.Scene {
         this.ground = this.add.graphics();
         this.zone = this.add.graphics().setDepth(2);
         this.molecules = this.add.graphics().setDepth(860);
+        this.breachMarkers = this.add.graphics().setDepth(865);
         const line = this.add.graphics().setDepth(3);
         const a = project(20, BALANCE.breachY), b = project(400, BALANCE.breachY);
         line.lineStyle(2, 0xedb19d, .7).lineBetween(a.x, a.y, b.x, b.y);
-        this.add.text(210, a.y + 14, 'TISSUE LINE · BREACH COSTS 1 CELL', { fontFamily: 'Arial', fontSize: '10px', color: '#e2b8ad', letterSpacing: .5 }).setOrigin(.5).setDepth(4);
+        this.tissueLabel = this.add.text(210, a.y + 14, 'TISSUE LINE · BREACH COSTS 1 CELL', { fontFamily: 'Arial', fontSize: '10px', color: '#e2b8ad', letterSpacing: .5, stroke:'#09232c', strokeThickness:3 }).setOrigin(.5).setDepth(866);
         for (let i = 0; i < BALANCE.maxSquad; i++) {
             const shadow = this.add.ellipse(0, 13, 30, 13, 0x00151b, .38);
             const body = this.add.image(0, -4, 'defenders-v2', 0).setDisplaySize(40, 40);
@@ -92,7 +114,7 @@ export class PatrolScene extends Phaser.Scene {
         for (const name of ['pointerup', 'pointerupoutside', 'gameout']) this.input.on(name, this.cancelDrag);
         this.keys = this.input.keyboard!.addKeys('LEFT,RIGHT,UP,DOWN,A,D,W,S,SPACE,ESC') as typeof this.keys;
         this.input.keyboard!.on('keydown-ESC', () => this.hooks?.pause());
-        this.input.keyboard!.on('keydown-SPACE', () => { if (!this.paused) this.patrol?.useMedicine(); });
+        this.input.keyboard!.on('keydown-SPACE', (event: KeyboardEvent) => { if (!this.paused && !(event.target as HTMLElement)?.closest('button,input,select')) this.patrol?.useMedicine(); });
         this.game.canvas.addEventListener('pointercancel', this.cancelDrag);
         this.game.events.on(Phaser.Core.Events.BLUR, this.onBlur);
         const cleanup = () => { this.game.canvas?.removeEventListener('pointercancel', this.cancelDrag); this.game.events.off(Phaser.Core.Events.BLUR, this.onBlur); };
@@ -101,21 +123,32 @@ export class PatrolScene extends Phaser.Scene {
     onBlur = () => { this.cancelDrag(); if (!this.paused) this.hooks?.pause(); };
     cancelDrag = () => { this.held = false; this.input.keyboard?.resetKeys(); };
     startPatrol(p: Patrol, hooks: GameHooks) {
-        this.patrol = p; this.hooks = hooks; this.finished = false; this.paused = false; this.cancelDrag();
+        this.patrol = p; this.hooks = hooks; this.finished = false; this.soundTimes.clear(); this.lastTeamworkCue=-Infinity;this.teamworkAnnounced=false; this.paused = false; this.cancelDrag();
         for (const v of this.views.values()) v.node.destroy();
         for (const v of this.gateViews.values()) v.node.destroy();
         this.views.clear(); this.gateViews.clear(); this.lastSquad = 0;
     }
-    soundCue(key: string) {
-        if (this.muted || this.time.now - this.lastSound < 150) return;
-        this.lastSound = this.time.now; this.sound.play(key, { volume: this.volume * .5 });
+    soundCue(key: string, rate = 1) {
+        if (this.muted || this.volume <= 0) return;
+        const gap = key === 'soft' ? 300 : 150;
+        if (this.time.now - (this.soundTimes.get(key) ?? -Infinity) < gap) return;
+        this.soundTimes.set(key, this.time.now);
+        // Preserve reward cues even when a catch just played; avoid stacked combat noise.
+        if (key !== 'soft') this.sound.stopByKey('soft');
+        this.sound.play(key, { volume: this.volume * .5, rate });
     }
     reaction(event: PatrolEvent) {
+        if (event.type === 'medicine') this.careBurst(event);
+
         if (event.type === 'hit' && event.enemyId !== undefined) {
             const v = this.views.get(event.enemyId);
             if (v) { v.hitUntil = this.time.now + 170; v.body.setTint(0xf5d6c5); }
         }
-        if (event.type === 'engulf') this.soundCue('soft');
+        if (event.type === 'engulf') {
+            const defender=this.patrol.cells.find(c=>c.id===event.cellId);
+            this.soundCue('soft',defender?.role==='macrophage'?.9:1.06);
+            if(event.assistance)this.teamworkCue(event);
+        }
         if (event.type === 'death' && event.enemyId !== undefined) {
             const v = this.views.get(event.enemyId);
             if (v) {
@@ -124,7 +157,6 @@ export class PatrolScene extends Phaser.Scene {
             }
         }
         if (event.type === 'loss') {
-            this.squadHitUntil = this.time.now + 220;
             if (!this.reducedMotion) this.cameras.main.shake(90, .0018);
         }
         if (event.type === 'gate') {
@@ -133,11 +165,80 @@ export class PatrolScene extends Phaser.Scene {
             const message=event.label ?? 'Gate activated';
             this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
         }
-        if (event.type === 'recruit' || (event.type === 'loss' && event.amount)) {
+        if (event.type === 'loss' && event.amount) {
             const q=project(this.patrol.x,this.patrol.y);
             this.floatFeedback((event.amount! > 0 ? '+' : '') + event.amount + ' cells',q.x,q.y-50,event.amount! > 0 ? 0xb5ffe0 : 0xffb6aa);
         }
         if (!['hit', 'death', 'engulf', 'tag', 'contact'].includes(event.type)) this.hooks.event(event.text);
+    }
+    teamworkCue(event: PatrolEvent) {
+        const actor=this.patrol.cells.find(c=>c.id===event.cellId);
+        if(!actor)return;
+        if(!this.teamworkAnnounced){
+            this.teamworkAnnounced=true;
+            this.hooks.event('Tag + catch! Finish the patrol for a 10-Coin teamwork bonus.');
+        }
+        // Keep crowded fights readable: at most one local celebration per two seconds.
+        if(this.time.now-this.lastTeamworkCue<2000)return;
+        this.lastTeamworkCue=this.time.now;
+        const q=project(actor.x,actor.y);
+        const label=event.assistance==='complement'?'Grip + catch!':'Tag + catch!';
+        const badge=this.add.container(Phaser.Math.Clamp(q.x,80,340),q.y-39).setDepth(q.y+80).setName('teamwork-cue');
+        const plate=this.add.rectangle(0,0,140,27,0x224941,.96).setStrokeStyle(1,0xc7efb5);
+        const text=this.add.text(0,0,'♥ '+label,{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#e4ffd9'}).setOrigin(.5);
+        badge.add([plate,text]);
+        if(!this.reducedMotion){
+            badge.setScale(.85);this.tweens.add({targets:badge,scale:1,duration:200,ease:'Back.Out'});
+            for(let i=0;i<3;i++){
+                const heart=this.add.text(q.x+(i-1)*12,q.y-5,'♥',{fontFamily:'Arial',fontSize:'12px',color:'#c6f3ca'}).setOrigin(.5).setDepth(q.y+79);
+                this.tweens.add({targets:heart,y:q.y-30-i*6,x:heart.x+(i-1)*7,alpha:0,duration:650,delay:i*65,onComplete:()=>heart.destroy()});
+            }
+        }
+        this.tweens.add({targets:badge,alpha:0,delay:900,duration:this.reducedMotion?0:250,onComplete:()=>badge.destroy()});
+    }
+    careBurst(event: PatrolEvent) {
+        const med=medicineStyle(event.cause && event.cause!=='phagocytosis'?event.cause:this.patrol.medicine);
+        const reduced=this.reducedMotion;
+        // An external care-package emblem is a UI metaphor, not a literal drug route or cell weapon.
+        const banner=this.add.container(210,182).setDepth(1800);
+        const ribbon=this.add.graphics().fillStyle(0x092b39,.96).fillRoundedRect(-150,-35,300,70,22).lineStyle(2,med.color,.95).strokeRoundedRect(-150,-35,300,70,22);
+        const pod=this.add.graphics().fillStyle(med.color).fillRoundedRect(-134,-25,47,50,17).fillStyle(0xffffff,.75).fillRoundedRect(-130,-22,39,18,12);
+        pod.fillStyle(0x173945).fillCircle(-121,3,2.5).fillCircle(-102,3,2.5).lineStyle(2,0x173945).beginPath().arc(-111,7,5,0,Math.PI).strokePath();
+        pod.fillStyle(0xf197ae,.8).fillEllipse(-126,9,6,3).fillEllipse(-97,9,6,3);
+        const title=this.add.text(-73,-22,med.nickname.toUpperCase()+' ASSIST!',{fontFamily:'Arial',fontSize:'22px',fontStyle:'bold',color:'#f0fff7'});
+        const label=this.add.text(-73,7,med.effect==='inhibit'?'Ⅱ  GROWTH PAUSE':'✦  WALL BREAK',{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#'+med.color.toString(16)});
+        banner.add([ribbon,pod,title,label]);
+        if(!reduced){banner.setScale(.82);this.tweens.add({targets:banner,scale:1,duration:260,ease:'Back.Out'});}
+        this.tweens.add({targets:banner,alpha:0,delay:1400,duration:reduced?0:280,onComplete:()=>banner.destroy()});
+        this.soundCue('soft');
+        for(const enemy of this.patrol.enemies){
+            const reaction=enemy.medicineReaction;
+            if(!reaction || reaction.id!==med.id)continue;
+            const q=project(enemy.x,enemy.y);
+            const stamp=this.add.container(q.x,q.y).setDepth(q.y+40);
+            const ink=this.add.graphics();
+            if(reaction.effective){
+                ink.lineStyle(3,med.color,.95);
+                if(med.effect==='inhibit'){
+                    ink.fillStyle(0x253a49,.92).fillRoundedRect(-13,-15,26,30,9);
+                    ink.lineBetween(-5,-7,-5,7).lineBetween(5,-7,5,7);
+                }else{
+                    // Broken contour represents cell-wall stress; no arbitrary blast damage.
+                    ink.beginPath().arc(0,0,27,.15,1.2).strokePath().beginPath().arc(0,0,27,1.8,3).strokePath().beginPath().arc(0,0,27,3.6,5.4).strokePath();
+                    ink.lineBetween(4,-29,-2,-18).lineBetween(-2,-18,5,-12);
+                }
+                if(!reduced)for(let i=0;i<4;i++){
+                    const angle=i*Math.PI/2+enemy.id;
+                    const spark=this.add.star(0,0,4,2,5,med.color).setDepth(q.y+41).setPosition(q.x,q.y);
+                    this.tweens.add({targets:spark,x:q.x+Math.cos(angle)*43,y:q.y+Math.sin(angle)*43,alpha:0,scale:.4,duration:600,onComplete:()=>spark.destroy()});
+                }
+            }else{
+                // Incompatible medication gets a quiet deflection mark, not an invincibility shield.
+                ink.lineStyle(2,0xb2bbc3,.9).lineBetween(-9,-9,9,9).lineBetween(9,-9,-9,9);
+            }
+            stamp.add(ink);
+            this.tweens.add({targets:stamp,alpha:0,scale:reduced?1:1.25,delay:reduced?700:250,duration:reduced?0:600,onComplete:()=>stamp.destroy()});
+        }
     }
     floatFeedback(message: string, x: number, y: number, color: number) {
         const text=this.add.text(Phaser.Math.Clamp(x,95,325),y,message,{fontFamily:'Arial',fontSize:message.length>18?'11px':'20px',fontStyle:'bold',color:'#'+color.toString(16),stroke:'#09242c',strokeThickness:4,align:'center',wordWrap:{width:180}}).setOrigin(.5).setDepth(1000);
@@ -151,6 +252,7 @@ export class PatrolScene extends Phaser.Scene {
     }
     update(time: number, delta: number) {
         if (!this.patrol) return;
+        if (this.finished) return;
         const p = this.patrol, dt = Math.min(delta / 1000, .05);
         if (!this.paused && !this.finished) {
             let dx = 0, dy = 0;
@@ -162,10 +264,54 @@ export class PatrolScene extends Phaser.Scene {
             p.step(dt);
             for (const event of p.drainEvents()) this.reaction(event);
             this.hooks.tick(p);
-            if (p.phase !== 'playing') { this.finished = true; this.soundCue('finish'); this.hooks.finish(p); }
+            if (p.phase !== 'playing') {
+                this.drawGround(); this.drawSquad(time); this.drawEnemies(time); this.drawGates(); this.drawBreachWarnings();
+                this.endPatrol(); return;
+            }
         }
         if (!this.paused && !this.reducedMotion) this.scroll = (this.scroll + dt * 25) % 70;
-        this.drawGround(); this.drawSquad(time); this.drawEnemies(time); this.drawGates();
+        this.drawGround(); this.drawSquad(time); this.drawEnemies(time); this.drawGates(); this.drawBreachWarnings();
+    }
+    drawBreachWarnings() {
+        const p=this.patrol;
+        this.breachMarkers.clear();
+        // Travel-time horizon is a visual cue, not a prediction of combat outcomes.
+        const threats=breachThreats(p);
+        const nearest=threats[0];
+        if(!nearest){
+            if(this.tissueLabel.text!=='TISSUE LINE · BREACH COSTS 1 CELL')this.tissueLabel.setText('TISSUE LINE · BREACH COSTS 1 CELL').setFontSize(10).setColor('#e2b8ad');
+            return;
+        }
+        const warning=breachWarning(p,threats);
+        if(this.tissueLabel.text!==warning)this.tissueLabel.setText(warning).setFontSize(13).setColor('#ffe0b5');
+        // No blinking, pulsing or extra audio; the same marks work with reduced motion.
+        for(const e of threats.slice(0,3)){
+            const q=project(e.x,e.y),radius=(e.boss?51:33)*q.scale;
+            this.breachMarkers.lineStyle(2,0xffd3a1,.95).beginPath().arc(q.x,q.y,radius,.15,Math.PI-.15).strokePath();
+            const y=project(e.x,BALANCE.breachY).y;
+            this.breachMarkers.lineStyle(3,0xffd3a1,1).lineBetween(q.x-5,y-8,q.x,y-3).lineBetween(q.x,y-3,q.x+5,y-8);
+        }
+    }
+    endPatrol() {
+        if (this.finished) return;
+        this.finished = true; this.cancelDrag();
+        const won = this.patrol.phase === 'victory';
+        if (won) this.soundCue('finish');
+        document.querySelector('.care-kit')?.classList.add('patrol-ended');
+        document.querySelectorAll<HTMLButtonElement>('.care-kit button').forEach(b=>b.disabled=true);
+        const shade=this.add.rectangle(210,390,420,780,0x052632,.55).setDepth(1900);
+        const title=this.add.text(210,305,won?'HOST PROTECTED!':'TIME TO REGROUP', {fontFamily:'Arial',fontSize:'27px',fontStyle:'bold',color:won?'#c7ffe2':'#f2dfdc',align:'center'}).setOrigin(.5).setDepth(2001);
+        const subtitle=this.add.text(210,349,won?'Tiny team. Mighty teamwork.':'Every hero gets another try.',{fontFamily:'Arial',fontSize:'15px',color:'#e1f4ee'}).setOrigin(.5).setDepth(2001);
+        const seal=this.add.text(210,225,won?'✦':'♡',{fontFamily:'Arial',fontSize:'68px',color:won?'#ffe2a0':'#d5dcf2'}).setOrigin(.5).setDepth(2001);
+        if (!this.reducedMotion) {
+            for (const object of [title,subtitle,seal]) { object.setAlpha(0); this.tweens.add({targets:object,alpha:1,y:object.y-8,duration:350,ease:'Cubic.Out'}); }
+            if (won) for(let i=0;i<22;i++) {
+                const fleck=this.add.rectangle(35+(i*67)%350,195,4,7,i%2?0xb9f2d3:0xffdda1).setDepth(2000);
+                this.tweens.add({targets:fleck,x:fleck.x+Math.sin(i)*40,y:440+(i*19)%170,angle:i*47,alpha:0,duration:1100+(i%4)*130,delay:i*18,onComplete:()=>fleck.destroy()});
+            }
+        }
+        // Scene-owned timing cancels automatically on restart/navigation; no duplicate result awards.
+        this.time.delayedCall(won?1900:1100,()=>{shade.destroy();title.destroy();subtitle.destroy();seal.destroy();this.hooks.finish(this.patrol);});
     }
     drawGround() {
         this.ground.clear().lineStyle(1, 0x84c7c2, .12);
@@ -197,8 +343,8 @@ export class PatrolScene extends Phaser.Scene {
             if(!cell.node.visible){cell.node.setVisible(true);cell.birth=time;}
             const dx=q.x-cell.node.x;
             const heading=target ? target.x<actor.x-5?1:target.x>actor.x+5?2:0 : Math.abs(dx)>.12?dx<0?1:2:0;
-            cell.body.setFrame(rank*4+(time<this.squadHitUntil?3:heading));
-            const size=rank===1?53:rank===2?43:43;
+            cell.body.setFrame(rank*4+heading);
+            const size=rank===1?53:rank===2?43:actor.variant==='zip'?37:actor.variant==='scout'?47:43;
             const wrap=actor.phase==='wrap', active=actor.phase==='approach'||wrap;
             const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.13:active?Math.sin(p.time*13+i)*.045:0;
             cell.body.setDisplaySize(size*(1+deform),size*(1-deform*.55));
@@ -206,8 +352,12 @@ export class PatrolScene extends Phaser.Scene {
             cell.body.y=-4+(this.reducedMotion||this.paused?0:Math.sin(p.time*(active?12:3)+i*1.8)*(active?1.3:.4));
             // Scene uses the same actor positions that decide contact; never a separate visual chase.
             const arrival=this.lastSquad>0?Math.max(0,1-(time-cell.birth)/430):0;
-            cell.node.setPosition(q.x,q.y).setScale(q.scale).setDepth(q.y+8).setAlpha(time<this.squadHitUntil?.7:1);
+            cell.node.setPosition(q.x,q.y).setScale(q.scale).setDepth(q.y+8).setAlpha(1);
             cell.body.clearTint();
+            if(actor.variant)cell.body.setTint(rosterOption(actor.variant).color);
+            let mark=cell.node.getByName('variant-mark') as Phaser.GameObjects.Text;
+            if(!mark){mark=this.add.text(0,-18,'',{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#fff8df',stroke:'#203849',strokeThickness:3}).setOrigin(.5).setName('variant-mark');cell.node.add(mark);}
+            mark.setText(actor.variant==='zip'?'»':actor.variant==='scout'?'◇':'');
             if(arrival>0)cell.body.setTint(0xc7ffe4);
             cell.digest.setVisible(actor.phase==='digest' && !!actor.digestKind);
             cell.vesicle.clear();
@@ -220,6 +370,7 @@ export class PatrolScene extends Phaser.Scene {
             if(wrap && target){
                 const t=project(target.x,target.y), vx=t.x-q.x,vy=t.y-q.y,d=Math.max(1,Math.hypot(vx,vy)),nx=-vy/d,ny=vx/d;
                 const progress=actor.progress, radius=(target.boss?24:16)*q.scale;
+                const contactX=vx-vx/d*radius,contactY=vy-vy/d*radius;
                 const color=rank===1?0x65c4bd:0xbadfee;
                 cell.membrane.setDepth(Math.max(q.y,t.y)+7);
                 // Two connected membrane lobes extend from this cell and curl around this target.
@@ -228,19 +379,23 @@ export class PatrolScene extends Phaser.Scene {
                     for(let j=0;j<=12;j++){
                         const u=j/12, curl=Math.sin(u*Math.PI)*radius*(rank===1?1.2:1);
                         const end=Math.min(1,progress*2.7);
-                        points.push(new Phaser.Math.Vector2(q.x+vx*u*end+nx*side*curl*end,q.y-4+vy*u*end+ny*side*curl*end));
+                        points.push(new Phaser.Math.Vector2(q.x+contactX*u*end+nx*side*curl*end,q.y-4*(1-u*end)+contactY*u*end+ny*side*curl*end));
                     }
                     cell.membrane.lineStyle((rank===1?13:10)*q.scale,color,.92).strokePoints(points,false);
                     cell.membrane.lineStyle(1.3*q.scale,0xf6fff9,.45).strokePoints(points,false);
                 }
                 if(progress>.3){
-                    cell.membrane.lineStyle(3*q.scale,color,.9).beginPath().arc(t.x,t.y,radius,Math.PI*.15,Math.PI*(.15+Math.min(1,(progress-.3)/.55)*1.8),false).strokePath();
+                    const nearAngle=Math.atan2(vy,vx)+Math.PI;
+                    const closure=Math.min(1,(progress-.3)/.65)*Math.PI;
+                    for(const side of [-1,1]){
+                        cell.membrane.lineStyle((rank===1?6:4)*q.scale,color,.92).beginPath().arc(t.x,t.y,radius,nearAngle,nearAngle+side*closure,side<0).strokePath();
+                    }
                 }
             }
         });
         for(const a of p.antibodies){
             const q=project(a.x,a.y), alpha=a.phase==='miss'?Math.max(0,1-a.age/.65):.8;
-            this.drawAntibody(q.x,q.y,4.8*q.scale,this.reducedMotion?0:Math.sin(a.age*3+a.id)*.6,alpha,a.phase==='miss'?0xb5a7b8:0xebc7ff);
+            this.drawAntibody(q.x,q.y,4.8*q.scale,this.reducedMotion?0:Math.sin(a.age*3+a.id)*.6,alpha,a.phase==='miss'?0xb5a7b8:ANTIBODY_NAMES[a.profile.epitope].color);
         }
         this.lastSquad=count;
     }
@@ -250,6 +405,7 @@ export class PatrolScene extends Phaser.Scene {
         this.molecules.lineStyle(2,color,alpha).lineBetween(a.x,a.y,p.x,p.y).lineBetween(b.x,b.y,p.x,p.y).lineBetween(p.x,p.y,c.x,c.y);
     }
     drawEnemies(time: number) {
+        const nameRects:{x:number;y:number;w:number;h:number}[]=[];
         const p = this.patrol;
         for (const e of p.enemies) {
             let v = this.views.get(e.id);
@@ -257,7 +413,7 @@ export class PatrolScene extends Phaser.Scene {
             if (!v) {
                 const shadow = this.add.ellipse(0, size * .25, size * .75, size * .24, 0x001018, .4);
                 const body = this.add.image(0, 0, organism.art.texture, idx * 4).setDisplaySize(size, size);
-                const label = this.add.text(0, -size * .57, organism.shortName + (e.boss ? ' COLONY' : ''), { fontFamily: 'Arial', fontSize: e.boss ? '12px' : '11px', color: '#e9fff4', fontStyle: 'bold', stroke: '#09232c', strokeThickness: 3 }).setOrigin(.5);
+                const label = this.add.text(0, -size * .57, organism.nickname + (e.boss ? ' COLONY' : ''), { fontFamily: 'Arial', fontSize: e.boss ? '12px' : '11px', color: '#e9fff4', fontStyle: 'bold', stroke: '#09232c', strokeThickness: 3 }).setOrigin(.5);
                 const health = this.add.rectangle(-22, size * .48, 44, 3, 0xb1f1cc).setOrigin(0, .5);
                 const tag = this.add.text(size * .35, -size * .2, '', { fontFamily: 'Arial', fontSize: '10px', color: '#e4c4ff', fontStyle: 'bold', stroke: '#472965', strokeThickness: 2 });
                 const status=this.add.text(0,size*.68,'',{fontFamily:'Arial',fontSize:'9px',color:'#f7e2b7',stroke:'#09232c',strokeThickness:3,align:'center'}).setOrigin(.5);
@@ -284,18 +440,34 @@ export class PatrolScene extends Phaser.Scene {
             v.node.setPosition(q.x, q.y).setScale(q.scale).setDepth(q.y + 5);
             v.health.width = 44 * Math.min(1, Math.max(0, e.hp / e.maxHp));
             v.health.setFillStyle(e.inhibited ? 0xc8b0ed : 0xb1f1cc);
-            v.tag.setText(e.tagged ? '' : 'C3').setColor(e.tagged ? '#e4c4ff' : '#adebff');
-            v.tag.setVisible(!!e.complementTagged); v.lastX = e.x;
+            v.tag.setText((p.level >= 5 ? ANTIBODY_NAMES[organism.epitope].glyph : '') + (e.complementTagged ? ' C3' : '')).setColor('#e4d7f4');
+            v.tag.setVisible(p.level >= 5 || !!e.complementTagged); v.lastX = e.x;
             if(e.tagged && !swallow)for(let j=0;j<3;j++){const a=j*2.1+.3;this.drawAntibody(q.x+Math.cos(a)*size*.35*q.scale,q.y+Math.sin(a)*size*.28*q.scale,4*q.scale,a+Math.PI/2,1);}
-            v.health.setVisible(e.hp<e.maxHp && !swallow);
+            v.health.setVisible(!e.boss && e.hp<e.maxHp && !swallow);
             if(showReaction && reaction.effective && reaction.effect==='kill'){
                 // A tiny broken wall contour denotes medication stress; no beam from cells.
                 this.molecules.lineStyle(2,0xf4d5b2,.8).beginPath().arc(q.x,q.y,size*.35*q.scale,.2,1.4).strokePath().beginPath().arc(q.x,q.y,size*.35*q.scale,2,3.6).strokePath();
             }
+            if (e.inhibited && !swallow) {
+                // Persistent pause badge means suppressed growth, never a projectile or a kill.
+                const bx=q.x-size*.38*q.scale, by=q.y-size*.35*q.scale;
+                this.molecules.fillStyle(0x302945,.95).fillRoundedRect(bx-8,by-8,16,16,5);
+                this.molecules.lineStyle(2,0xdcc5f5,1).lineBetween(bx-3,by-4,bx-3,by+4).lineBetween(bx+3,by-4,bx+3,by+4);
+            }
             // One name per nearby same-species clump keeps labels legible without hiding identity.
             v.label.setScale(1/q.scale);
             v.status.setScale(1/q.scale);
-            v.label.setVisible(e.boss || !p.enemies.some(other => other.id < e.id && other.kind === e.kind && Math.abs(other.x - e.x) < 95 && Math.abs(other.y - e.y) < 85));
+            const representative=!p.enemies.some(other => other.id < e.id && other.kind === e.kind && Math.abs(other.x - e.x) < 95 && Math.abs(other.y - e.y) < 85);
+            // The dedicated colony bar already provides its identity and health.
+            v.label.setVisible(false);
+            if(!e.boss && representative && q.y>160 && !swallow){
+                const w=v.label.width+5,h=v.label.height+3,cx=Phaser.Math.Clamp(q.x,w/2+7,413-w/2);
+                for(const offset of [0,-16,16,-32]){
+                    const cy=q.y-size*.57*q.scale+offset,rect={x:cx-w/2,y:cy-h/2,w,h};
+                    if(cy<160 || nameRects.some(r=>rect.x<r.x+r.w&&rect.x+rect.w>r.x&&rect.y<r.y+r.h&&rect.y+rect.h>r.y))continue;
+                    v.label.setPosition((cx-q.x)/q.scale,(cy-q.y)/q.scale).setVisible(true);nameRects.push(rect);break;
+                }
+            }
         }
         for (const [id, v] of this.views) if (!p.enemies.some(e => e.id === id)) this.dismissEnemy(id, v, false);
     }
@@ -314,20 +486,21 @@ export class PatrolScene extends Phaser.Scene {
                     const face = this.add.rectangle(0, 0, 156, 61, color, .94).setStrokeStyle(2, edge, .85);
                     const top = this.add.rectangle(0, -32, 156, 5, edge, .45);
                     const title = this.add.text(0, -10, option.label, { fontFamily: 'Arial', fontSize: option.label.length > 12 ? '14px' : '19px', color: '#f0fff7', fontStyle: 'bold' }).setOrigin(.5);
-                    const sub = this.add.text(0, 14, ({recruit:'Arriving defenders',coverage:'Wider contact zone',tempo:'Faster engulfment · 12s',shield:'Loss protection · 8s',risk:'Reassign 3 defenders'}[option.kind]), { fontFamily: 'Arial', fontSize: '11px', color: danger ? '#ffdcda' : '#daefe9' }).setOrigin(.5);
+                    const sub = this.add.text(0, 14, ({recruit:'New teammates',coverage:'Reach a little farther',tempo:'Quick catches · 12s',shield:'Loss protection · 8s',risk:'Reassign 3 defenders'}[option.kind]), { fontFamily: 'Arial', fontSize: '11px', color: danger ? '#ffdcda' : '#daefe9' }).setOrigin(.5);
                     panels.push(this.add.container(i === 0 ? -88 : 88, 0, [shadow, face, top, title, sub]));
                 }
                 v = { node: this.add.container(210, q.y, panels), panels }; this.gateViews.set(gate.id, v);
             }
             const options = p.gateOptions(gate);
             [options.left, options.right].forEach((option, i) => {
+                v!.panels[i].setVisible(!gate.layout || gate.layout === 'pair' || gate.layout === (i === 0 ? 'left' : 'right'));
                 const title = v!.panels[i].list[3] as Phaser.GameObjects.Text;
                 if (!gate.used && option.kind === 'recruit') {
                     const actual = Math.min(option.value, BALANCE.maxSquad - p.squad);
                     title.setText(actual > 0 ? '+' + actual + ' cells' : 'Squad full · 30').setFontSize(actual > 0 ? 19 : 14);
                 }
             });
-            v.node.setPosition(210, q.y).setScale(q.scale).setDepth(q.y - 10).setAlpha(gate.used ? .15 : 1);
+            v.node.setPosition(210, q.y).setScale(q.scale).setDepth(q.y - 10).setAlpha(gate.used || gate.passed ? .15 : 1);
         }
         for (const [id, v] of this.gateViews) if (!p.gates.some(g => g.id === id)) { v.node.destroy(); this.gateViews.delete(id); }
     }

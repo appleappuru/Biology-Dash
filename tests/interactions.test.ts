@@ -86,3 +86,15 @@ describe('roster and organic layouts',()=>{
         expect(p.cells.slice(0,12).map(c=>[c.x,c.y])).toEqual(before);
     });
 });
+
+describe('teamwork feedback evidence',()=>{
+    it('labels the actual assisted engulfment, never binding alone',()=>{
+        const {p,e}=encounter();e.tagged=true;e.tagAffinity=.45;
+        let assisted;
+        for(let i=0;i<100&&!assisted;i++){p.step(.05);assisted=p.drainEvents().find(e=>e.type==='engulf');}
+        expect(assisted?.assistance).toBe('antibody');expect(assisted?.cellId).toBeDefined();
+        const ordinary=encounter();let plain;
+        for(let i=0;i<100&&!plain;i++){ordinary.p.step(.05);plain=ordinary.p.drainEvents().find(e=>e.type==='engulf');}
+        expect(plain?.assistance).toBeUndefined();
+    });
+});

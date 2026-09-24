@@ -1,0 +1,9 @@
+import {chromium,expect} from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:320,height:568},reducedMotion:'reduce'});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try{
+await page.goto(process.env.GAME_URL||'http://127.0.0.1:4190');await page.evaluate(()=>__BIOLOGY__.start(1));await page.waitForFunction(()=>__BIOLOGY__.scene?.patrol?.level===1);await page.evaluate(()=>{const p=__BIOLOGY__.state;p.kills=18;p.time=89.99;p.enemies=[];p.bossSpawned=true;});await expect(page.locator('#next')).toBeVisible();
+const inScreen=async()=>{for(const id of ['next','reward-shop','result-map']){const box=await page.locator('#'+id).boundingBox();expect(box.y).toBeGreaterThanOrEqual(0);expect(box.y+box.height).toBeLessThanOrEqual(568);expect(box.height).toBeGreaterThanOrEqual(44);}};
+await inScreen();const rewardBox=await page.locator('.reward-card h3').boundingBox();expect(rewardBox.y+rewardBox.height).toBeLessThan((await page.locator('.result-actions').boundingBox()).y);await page.screenshot({path:'artifacts/results-320x568-v7.png'});
+await page.locator('.coin-receipt summary').click();await expect(page.locator('.coin-receipt')).toContainText('First patrol clear');await inScreen();await page.screenshot({path:'artifacts/results-expanded-320-v7.png'});
+await page.locator('#next').click();await expect(page.locator('#begin')).toBeVisible();await page.locator('#begin').click();await page.waitForFunction(()=>__BIOLOGY__.state?.level===2);await page.evaluate(()=>{__BIOLOGY__.state.phase='defeat';});await expect(page.locator('#next')).toHaveText('Replay patrol');await inScreen();expect(errors).toEqual([]);console.log('PASS: 320x568 victory/defeat; all actions >=44px and on screen; expanded receipt preserves actions; next patrol works; no browser errors');
+}finally{await browser.close();}

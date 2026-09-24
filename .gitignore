@@ -17,3 +17,12 @@ dist-test/
 .DS_Store
 artifacts/interaction-video/
 artifacts/*failure-v3.png
+
+# Local account-transfer snapshots (not application assets)
+handoff-backups/
+
+# Local secrets and deployment state
+.env
+.env.*
+!.env.example
+.vercel/

@@ -1,10 +1,11 @@
+import {rosterOption,upgradeEffect,type RosterId} from './roster';
 import { cellOffset } from './formation';
 import { LEVELS, PATHOGENS, medicineName, medicineEffect, antibodyMatch, type PathogenId, type MedicineId, type AntibodyProfile, type DefenderId } from './content';
-export const RULES_VERSION = 3;
+export const RULES_VERSION = 4;
 export const BALANCE = { maxEnemies: 32, maxSquad: 30, contactY: 640, breachY: 710, invulnerability: 1.15 };
 export const CONTACT_DISTANCE = 25;
 export interface CellActor {
-    id: number; x: number; y: number; role: DefenderId;
+    id: number; x: number; y: number; role: DefenderId; variant?: RosterId;
     phase: 'idle' | 'approach' | 'wrap' | 'digest' | 'return';
     progress: number; duration: number; cooldown: number; targetId?: number; digestKind?: PathogenId;
 }
@@ -44,6 +45,8 @@ export interface Gate {
     id: number;
     y: number;
     used: boolean;
+    layout?: 'pair' | 'left' | 'right';
+    passed?: boolean;
     left?: GateOption;
     right?: GateOption;
 }
@@ -53,6 +56,7 @@ export interface PatrolEvent {
     label?: string;
     enemyId?: number;
     cellId?: number;
+    assistance?: 'antibody' | 'complement' | 'both';
     cause?: 'phagocytosis' | MedicineId;
     squad?: number;
     amount?: number;
@@ -69,6 +73,8 @@ export interface Learning {
     gate: boolean;
 }
 export class Patrol {
+    loadout: RosterId[] = [];
+    upgrades: Partial<Record<RosterId,number>> = {};
     level: number;
     seed: number;
     time = 0;
@@ -99,11 +105,12 @@ export class Patrol {
     protection = 0;
     nextSpawn = 2;
     nextGate = 10;
+    wavesSpawned = 0;
     medicineCooldown = 0;
     id = 0;
     gateIndex = 0;
     learning: Learning = { medicine: false, cooperation: false, match: false, mismatch: false, affinity: false, recall: false, gate: false };
-    constructor(level: number, seed = level * 8917, strength = 0) { this.level = Math.max(1, Math.min(10, level)); this.seed = seed >>> 0; this.squad = Math.min(18, 12 + strength); this.syncCells(); }
+    constructor(level: number, seed = level * 8917, strength = 0) { this.level = Math.max(1, Math.min(10, level)); this.seed = seed >>> 0; if(this.level===1)this.nextGate=4; this.squad = Math.min(18, 12 + strength); this.syncCells(); }
     random() { this.seed = (Math.imul(1664525, this.seed) + 1013904223) >>> 0; return this.seed / 4294967296; }
     move(x: number, y = this.y) {
         const previousX = this.x, previousY = this.y;
@@ -113,18 +120,18 @@ export class Patrol {
     }
     spawn(kind?: PathogenId, boss = false) { if (this.enemies.length >= BALANCE.maxEnemies)
         return; const level = LEVELS[this.level - 1]; const k = kind ?? level.pathogens[Math.floor(this.random() * level.pathogens.length)]; const p = PATHOGENS.find(v => v.id === k)!; const hp = boss ? 105 + this.level * 3 : p.hp; this.enemies.push({ id: ++this.id, kind: k, x: boss ? 210 : 60 + this.random() * 300, y: -45, hp, maxHp: hp, tagged: false, inhibited: false, boss }); }
-    spawnCluster() {
+    spawnCluster(opening = false) {
         const level = LEVELS[this.level - 1];
         const kind = level.pathogens[Math.floor(this.random() * level.pathogens.length)];
         const count = this.level < 4 ? 2 : 2 + Math.floor(this.random() * 2);
-        const cx = 100 + this.random() * 220;
+        const cx = opening ? 210 : 100 + this.random() * 220;
         const rotation = this.random() * Math.PI * 2;
         for (let i = 0; i < count && this.enemies.length < BALANCE.maxEnemies; i++) {
             this.spawn(kind);
             const e = this.enemies[this.enemies.length - 1];
             const angle = rotation + i * 2.4;
             e.x = cx + Math.cos(angle) * (17 + this.random() * 22);
-            e.y = -55 - i * 24 - this.random() * 15;
+            e.y = (opening ? 290 : -55) - i * 24 - this.random() * 15;
         }
         return count;
     }
@@ -147,7 +154,9 @@ export class Patrol {
         return {left:gate.left ?? GATE_CYCLE[0].left, right:gate.right ?? GATE_CYCLE[0].right};
     }
     applyGate(gate: Gate, choice: 'left' | 'right' | 'recruit' | 'coverage') {
-        if (gate.used || this.phase !== 'playing') return false;
+        if (gate.used || gate.passed || this.phase !== 'playing') return false;
+        const side = choice === 'recruit' ? 'left' : choice === 'coverage' ? 'right' : choice;
+        if (gate.layout && gate.layout !== 'pair' && gate.layout !== side) return false;
         const options = this.gateOptions(gate);
         const option = choice === 'left' || choice === 'right' ? options[choice] : GATE_CYCLE[0][choice === 'recruit' ? 'left' : 'right'];
         gate.used = true;
@@ -158,8 +167,10 @@ export class Patrol {
         if (option.kind === 'coverage' || option.kind === 'risk') this.coverage = Math.min(115, this.coverage + option.value);
         if (option.kind === 'tempo') this.tempoRemaining = Math.max(this.tempoRemaining, option.value);
         if (option.kind === 'shield') this.shieldRemaining = Math.max(this.shieldRemaining, option.value);
-        this.events.push({type:'gate',text:option.detail,label:option.label,x:this.x,y:this.y,squad:this.squad});
-        if (this.squad !== before) this.events.push({type:this.squad > before ? 'recruit' : 'loss',text:option.label,x:this.x,y:this.y,squad:this.squad,amount:this.squad-before});
+        const recruited=this.squad-before;
+        const gateLabel=option.kind==='recruit'?(recruited>0?'+'+recruited+' '+(recruited===1?'cell':'cells'):'Squad full · 30 cells'):option.label;
+        this.events.push({type:'gate',text:option.kind==='recruit'?gateLabel:option.detail,label:gateLabel,x:this.x,y:this.y,squad:this.squad});
+        if (this.squad !== before) this.events.push({type:this.squad > before ? 'recruit' : 'loss',text:gateLabel,x:this.x,y:this.y,squad:this.squad,amount:this.squad-before});
         if (this.squad === 0) this.phase = 'defeat';
         return true;
     }
@@ -168,7 +179,7 @@ export class Patrol {
         enemy.hp -= amount; enemy.lastCause = cause; enemy.lastCellId = cellId;
         this.events.push({type:'hit',text:'',x:enemy.x,y:enemy.y,enemyId:enemy.id,amount,cause,cellId});
     }
-    useMedicine() { if (this.medicineCooldown > 0 || this.phase !== 'playing' || this.level < 3)
+    useMedicine() { if (this.medicineCooldown > 0 || this.phase !== 'playing' || this.level < 3 || !this.enemies.some(e => e.hp > 0))
         return false; this.medicineCooldown = 12; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.enemies) {
         const effect = medicineEffect(this.medicine, e.kind);
         if(effect.effective)affected++;else if(PATHOGENS.find(p=>p.id===e.kind)?.susceptibility[this.medicine]==='not-targeted')noTarget++;else resistant++;
@@ -180,7 +191,7 @@ export class Patrol {
             else
                 e.inhibited = true;
         }
-    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', text: this.enemies.length ? `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` : 'Wait for microbes before using external support.' }); return true; }
+    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', cause: this.medicine, text: this.enemies.length ? `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` : 'Wait for microbes before using external support.' }); return true; }
     syncCells() {
         for (const c of this.cells.slice(this.squad)) {
             const target = this.enemies.find(e => e.id === c.targetId);
@@ -191,7 +202,8 @@ export class Patrol {
             const i = this.cells.length, o = cellOffset(i);
             this.cells.push({ id: i + 1, x: this.x + o.x + (this.time>0 ? (i%2?38:-38) : 0), y: this.y + o.y + (this.time>0?20:0), phase: 'idle', progress: 0, duration: 1, cooldown: .4 + i * .043, role: this.defender });
         }
-        this.cells.forEach((c, i) => c.role = this.plasma && i === this.squad - 1 ? 'plasma' : this.defender);
+        this.cells.forEach((c,i)=>{if(this.loadout.length){c.variant=this.loadout[i%this.loadout.length];c.role=rosterOption(c.variant).role;}else c.role=this.plasma&&i===this.squad-1?'plasma':this.defender;});
+        if(this.loadout.length)this.plasma=this.cells.some(c=>c.role==='plasma');
     }
     cellHome(c: CellActor) {
         const o = cellOffset(c.id - 1);
@@ -210,29 +222,31 @@ export class Patrol {
         this.syncCells();
         for (const c of this.cells) {
             const home = this.cellHome(c);
+            const effect=upgradeEffect(c.variant??'neutro',this.upgrades[c.variant??'neutro']??0);
+            const reach=this.reach*(c.variant==='scout'?1.25:c.variant==='zip'?.82:1)+effect.reachBonus;
             c.cooldown = Math.max(0, c.cooldown - dt);
             const target = this.enemies.find(e => e.id === c.targetId && e.hp > 0);
-            if ((c.phase === 'approach' || c.phase === 'wrap') && (!target || c.role === 'plasma' || Math.hypot(target.x - home.x, target.y - home.y) > this.reach + 45)) this.release(c);
+            if ((c.phase === 'approach' || c.phase === 'wrap') && (!target || c.role === 'plasma' || Math.hypot(target.x - home.x, target.y - home.y) > reach + 45)) this.release(c);
             if (c.phase === 'idle' || c.phase === 'return') {
                 this.moveCell(c, home.x, home.y, 310, dt);
                 if (c.role === 'plasma' || c.cooldown > 0) continue;
                 // Reserve one defender per target, choosing the nearest available defender below.
-                const candidate = this.enemies.filter(e => e.hp > 0 && e.claimedBy === undefined && e.y < BALANCE.breachY && Math.hypot(e.x - c.x, e.y - c.y) <= this.reach)
+                const candidate = this.enemies.filter(e => e.hp > 0 && e.claimedBy === undefined && e.y < BALANCE.breachY && Math.hypot(e.x - c.x, e.y - c.y) <= reach)
                     .sort((a,b) => Math.hypot(a.x-c.x,a.y-c.y) - Math.hypot(b.x-c.x,b.y-c.y))[0];
                 if (candidate) {
-                    const nearer = this.cells.some(other => other.id !== c.id && other.role !== 'plasma' && (other.phase === 'idle' || other.phase === 'return') && other.cooldown === 0 && Math.hypot(candidate.x-other.x,candidate.y-other.y) + .1 < Math.hypot(candidate.x-c.x,candidate.y-c.y));
+                    const nearer = this.cells.some(other => other.id !== c.id && other.role !== 'plasma' && (other.phase === 'idle' || other.phase === 'return') && other.cooldown === 0 && Math.hypot(candidate.x-other.x,candidate.y-other.y) <= this.reach*(other.variant==='scout'?1.25:other.variant==='zip'?.82:1)+(other.variant==='scout'?(this.upgrades.scout??0)*6:0) && Math.hypot(candidate.x-other.x,candidate.y-other.y) + .1 < Math.hypot(candidate.x-c.x,candidate.y-c.y));
                     if (!nearer) { c.targetId = candidate.id; candidate.claimedBy = c.id; c.phase = 'approach'; c.progress = 0; }
                 }
             }
             if (c.phase === 'approach' && target) {
                 const distance = Math.hypot(target.x - c.x, target.y - c.y);
-                if (distance > CONTACT_DISTANCE) this.moveCell(c, target.x, target.y, c.role === 'macrophage' ? 148 : 180, dt);
+                if (distance > CONTACT_DISTANCE) this.moveCell(c, target.x, target.y, c.role === 'macrophage' ? 148 : c.variant==='zip'?234*effect.approachFactor:180, dt);
                 if (Math.hypot(target.x-c.x,target.y-c.y) <= CONTACT_DISTANCE) {
                     c.phase = 'wrap'; c.progress = 0;
                     const organism = PATHOGENS.find(p => p.id === target.kind)!;
                     const capsule = organism.capsule && !target.tagged && !target.complementTagged ? 1.85 : 1;
                     const help = (target.tagged ? 1 + (target.tagAffinity ?? .45) * .55 : 1) * (target.complementTagged ? 1.2 : 1);
-                    c.duration = (c.role === 'macrophage' ? 1.12 : .88) * capsule / help * (this.tempoRemaining > 0 ? .7 : 1) * (target.boss ? 1 : Math.max(.65, target.hp / target.maxHp));
+                    c.duration = (c.role === 'macrophage' ? 1.12 : .88) * (c.variant==='scout'?1.2:1) * (target.tagged?effect.taggedWrapFactor:1) * capsule / help * (this.tempoRemaining > 0 ? .7 : 1) * (target.boss ? 1 : Math.max(.65, target.hp / target.maxHp));
                     this.events.push({type:'contact',text:'',enemyId:target.id,cellId:c.id,x:target.x,y:target.y});
                 }
             }
@@ -244,9 +258,9 @@ export class Patrol {
                     const amount = target.boss ? (c.role === 'macrophage' ? 36 : 29) * (target.tagged ? 1 + (target.tagAffinity ?? .45) : 1) * (target.complementTagged ? 1.25 : 1) : target.hp;
                     this.damage(target, amount, 'phagocytosis', c.id);
                     c.digestKind = target.kind;
-                    c.phase = 'digest'; c.progress = 0; c.duration = c.role === 'macrophage' ? .85 : .65;
+                    c.phase = 'digest'; c.progress = 0; c.duration = c.role === 'macrophage' ? .85 : .65*effect.recoveryFactor;
                     if (target.tagged || target.complementTagged) this.learning.cooperation = true;
-                    this.events.push({type:'engulf',text:target.boss ? 'Colony fragment engulfed' : 'Microbe enclosed in a phagosome',enemyId:target.id,cellId:c.id,x:target.x,y:target.y});
+                    this.events.push({type:'engulf',assistance:target.tagged?(target.complementTagged?'both':'antibody'):target.complementTagged?'complement':undefined,text:target.boss ? 'Colony fragment engulfed' : 'Microbe enclosed in a phagosome',enemyId:target.id,cellId:c.id,x:target.x,y:target.y});
                     target.claimedBy = undefined; c.targetId = undefined;
                 }
             } else if (c.phase === 'digest') {
@@ -269,9 +283,10 @@ export class Patrol {
     tag() {
         if (!this.plasma || this.time < this.nextAntibody) return;
         this.syncCells();
-        const source = this.cells.find(c => c.role === 'plasma');
+        const sources=this.cells.filter(c=>c.role==='plasma');
+        const source=sources[this.antibodyId % Math.max(1,sources.length)];
         if (!source) return;
-        this.nextAntibody = this.time + .65;
+        this.nextAntibody = this.time + .65 / Math.min(2,Math.sqrt(sources.length)) * upgradeEffect('pluma',this.upgrades.pluma??0).secretionFactor;
         const target = this.enemies.filter(e => !e.tagged && e.hp > 0 && e.y > 100 && e.y < 675 && !this.antibodies.some(a => a.targetId === e.id))
             .sort((a,b) => b.y - a.y)[0];
         if (!target || this.antibodies.length >= 10) return;
@@ -318,16 +333,19 @@ export class Patrol {
         this.shieldRemaining = Math.max(0, this.shieldRemaining - dt);
         const level = LEVELS[this.level - 1];
         if (this.time >= this.nextSpawn && this.time < 75) {
-            const groupSize = this.spawnCluster();
+            const groupSize = this.spawnCluster(this.level===1 && this.wavesSpawned===0);
+            this.wavesSpawned++;
             const pressure = (Math.floor(this.time / 12) % 3) !== 2;
             this.nextSpawn = this.time + (pressure ? Math.max(1.65, 3.65 - this.level * .14) : 5.4) * groupSize;
         }
         if (this.time >= this.nextGate && this.nextGate < 70) {
-            const options = GATE_CYCLE[this.gateIndex++ % GATE_CYCLE.length];
-            this.gates.push({ id: ++this.id, y: -40, used: false, left:{...options.left}, right:{...options.right} });
-            this.nextGate += 17;
+            const index = this.gateIndex++;
+            const options = GATE_CYCLE[index % GATE_CYCLE.length];
+            const layout = this.level === 1 && index < 2 ? 'pair' : (['pair', 'left', 'right', 'pair'] as const)[index % 4];
+            this.gates.push({ id: ++this.id, y: this.level===1&&index===0?250:-40, used: false, layout, left:{...options.left}, right:{...options.right} });
+            this.nextGate = this.level===1&&index===0 ? 27 : this.nextGate+17;
         }
-        if (this.time >= 60 && !this.bossSpawned) {
+        if (this.time >= 60 && !this.bossSpawned && this.enemies.length < BALANCE.maxEnemies) {
             this.bossSpawned = true;
             this.spawn(level.boss === 'shield-colony' ? 'dual-resistant' : level.pathogens[0], true);
             this.events.push({ type: 'boss', text: level.boss === 'shield-colony' ? 'MRSA colony · resistant to all modeled antibiotics.' : 'Colony incoming · size does not mean resistance.' });
@@ -361,8 +379,11 @@ export class Patrol {
         this.enemies = this.enemies.filter(e => e.hp > 0);
         for (const g of this.gates) {
             g.y += dt * 78;
-            if (!g.used && g.y >= this.y - 25)
-                this.applyGate(g, this.x < 210 ? 'left' : 'right');
+            if (!g.used && !g.passed && g.y >= this.y - 25) {
+                const side = this.x < 210 ? 'left' : 'right';
+                if (!g.layout || g.layout === 'pair' || Math.abs(this.x - (g.layout === 'left' ? 122 : 298)) <= 78) this.applyGate(g, side);
+                g.passed = true;
+            }
         }
         this.gates = this.gates.filter(g => g.y < 760);
         if (this.time >= level.duration && this.phase === 'playing') {

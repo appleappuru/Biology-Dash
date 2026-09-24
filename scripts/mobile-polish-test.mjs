@@ -1,0 +1,33 @@
+import {chromium,expect} from '@playwright/test';
+import {writeFile} from 'node:fs/promises';
+const browser=await chromium.launch({channel:'chrome',headless:true});
+const page=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+try {
+await page.goto('http://127.0.0.1:4173');
+await page.evaluate(()=>__BIOLOGY__.start(10));await page.locator('#recruit-plasma').click();
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.nextSpawn=999;p.nextGate=999;p.bossSpawned=true;p.enemies=[];p.squad=30;p.syncCells();for(const [i,kind] of ['pseudomonas','candida','dual-resistant'].entries()){p.spawn(kind);Object.assign(p.enemies.at(-1),{x:100+i*100,y:240+i*70});}});
+const time=await page.evaluate(()=>__BIOLOGY__.state.time);
+await page.locator('[data-medicine="doxycycline"]').click();await page.locator('#support').click();
+await expect(page.locator('#support')).toContainText('Recharging');
+const cd=await page.evaluate(()=>__BIOLOGY__.state.medicineCooldown);
+await page.locator('[data-medicine="micafungin"]').click();
+expect(await page.evaluate(()=>__BIOLOGY__.scene.paused)).toBe(false);
+expect(await page.evaluate(()=>__BIOLOGY__.state.medicineCooldown)).toBeGreaterThan(cd-2);
+await page.waitForTimeout(350);expect(await page.evaluate(()=>__BIOLOGY__.state.time)).toBeGreaterThan(time);
+await expect(page.locator('.modal-backdrop')).toHaveCount(0);
+await page.screenshot({path:'artifacts/live-care-kit-v4.png'});
+await page.evaluate(()=>{const p=__BIOLOGY__.state;p.gates=[{id:900,y:350,used:false,layout:'left'}];});
+await page.waitForTimeout(100);expect(await page.evaluate(()=>__BIOLOGY__.scene.gateViews.get(900).panels.map(p=>p.visible))).toEqual([true,false]);
+await page.screenshot({path:'artifacts/single-gate-v4.png'});
+await page.setViewportSize({width:320,height:740});
+expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+const sizes=await page.locator('.care-kit button').evaluateAll(bs=>bs.map(b=>({w:b.getBoundingClientRect().width,h:b.getBoundingClientRect().height})));
+expect(sizes.every(s=>s.w>=44&&s.h>=44)).toBe(true);
+await page.screenshot({path:'artifacts/live-care-kit-320-v4.png'});
+await page.evaluate(()=>{__BIOLOGY__.scene.reducedMotion=true;__BIOLOGY__.state.time=34.9;});
+await page.waitForTimeout(350);expect(await page.evaluate(()=>__BIOLOGY__.scene.paused)).toBe(false);
+await expect(page.locator('.modal-backdrop')).toHaveCount(0);expect(errors).toEqual([]);
+console.log('PASS: live switching, shared cooldown, time progression, one-sided rendering, 320px touch controls, nonblocking reminder, no browser errors');
+await writeFile('artifacts/mobile-polish-results-v4.json',JSON.stringify({passed:true,errors,sizes},null,2));
+}finally{await browser.close();}

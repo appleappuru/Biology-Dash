@@ -1,0 +1,4 @@
+import {chromium,expect} from '@playwright/test';
+const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:390,height:844}});
+try{await page.goto('http://127.0.0.1:4190');await page.evaluate(()=>__BIOLOGY__.start(1));await page.waitForFunction(()=>!!__BIOLOGY__.scene?.patrol);
+const messages=await page.evaluate(()=>{const scene=__BIOLOGY__.scene,p=__BIOLOGY__.state;scene.paused=true;const messages=[];const original=scene.floatFeedback.bind(scene);scene.floatFeedback=(...args)=>{messages.push(args[0]);original(...args);};p.events=[];p.applyGate({id:999,y:p.y,used:false},'left');for(const e of p.events)scene.reaction(e);return messages;});expect(messages).toEqual(['+4 cells']);await page.screenshot({path:'artifacts/recruit-single-callout.png'});console.log('PASS one recruitment callout per gate');}finally{await Promise.race([browser.close(),new Promise(r=>setTimeout(r,2000))]);}

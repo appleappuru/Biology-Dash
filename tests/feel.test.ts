@@ -78,7 +78,7 @@ describe('authored gate abilities and tradeoffs', () => {
     });
     it('risk spends exactly three cells and increases reach once', () => {
         const {p,gates} = authoredGates();
-        p.applyGate(gates[2],'left');
+        gates[2].layout = 'pair'; p.applyGate(gates[2],'left');
         expect(p.squad).toBe(9);
         expect(p.coverage).toBe(88);
         expect(p.applyGate(gates[2],'left')).toBe(false);
@@ -87,7 +87,7 @@ describe('authored gate abilities and tradeoffs', () => {
     });
     it('risk cannot produce a negative squad or silently avoid defeat', () => {
         const {p,gates} = authoredGates(); p.squad=2;
-        p.applyGate(gates[2],'left');
+        gates[2].layout = 'pair'; p.applyGate(gates[2],'left');
         expect(p.squad).toBe(0); expect(p.phase).toBe('defeat');
     });
     it('surge recruits the actual number of remaining squad slots', () => {
@@ -156,7 +156,7 @@ describe('feedback and terminal outcomes', () => {
 describe('rules upgrade save migration', () => {
     it('retains earned progress, resources and preferences from version 1', () => {
         const save=parseSave(JSON.stringify({version:1,completed:[1,2],credits:60,stars:{1:3,2:2},reinforcement:1,muted:true,volume:.1,reducedMotion:true,tutorial:true,antibody:{epitope:'A',affinity:.9,effector:'opsonization'},checks:{affinity:true}}));
-        expect(save.version).toBe(3);
+        expect(save.version).toBe(4);
         expect(save.completed).toEqual([1,2]);
         expect(save.credits).toBe(60);
         expect(save.stars).toEqual({1:3,2:2});
@@ -184,5 +184,23 @@ describe('patrol recognition', () => {
         expect(save.credits).toBe(30);
         completeLevel(save,1,12,{},650);
         expect(parseSave(JSON.stringify(save)).bestScores[1]).toBe(650);
+    });
+});
+
+describe('single gates', () => {
+    it('never grants the absent side or a missed gate after crossing', () => {
+        const p=new Patrol(3);p.nextSpawn=999;p.nextGate=999;
+        const g={id:999,y:610,used:false,layout:'left' as const,passed:false};p.gates=[g];
+        expect(p.applyGate(g,'right')).toBe(false);
+        p.move(320,635);p.step(.05);expect(g.passed).toBe(true);expect(g.used).toBe(false);
+        p.move(110,635);p.step(.05);expect(p.squad).toBe(12);expect(p.applyGate(g,'left')).toBe(false);
+    });
+    it('collects the visible side exactly once', () => {
+        const p=new Patrol(3);p.nextSpawn=999;p.nextGate=999;
+        const g={id:999,y:610,used:false,layout:'left' as const};p.gates=[g];p.move(110,635);p.step(.05);
+        expect(g.used).toBe(true);expect(p.squad).toBe(16);p.step(.05);expect(p.squad).toBe(16);
+    });
+    it('does not spend medicine cooldown on an empty field',()=>{
+        const p=new Patrol(3);expect(p.useMedicine()).toBe(false);expect(p.medicineCooldown).toBe(0);
     });
 });

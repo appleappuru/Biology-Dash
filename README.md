@@ -1,5 +1,7 @@
 # Biology Dash: Immune Patrol
 
+**Account transfer / resume:** Start with [START_HERE.md](START_HERE.md) and [the project handoff](handoff/PROJECT_HANDOFF.md). Game work and automatic resumption are paused until explicitly resumed. Current verified release: v0.2.3.
+
 Original portrait Phaser + TypeScript game: ten 90-second authored patrols, local progression, two susceptibility-dependent medicine supports, cooperative immune roles and a playable B-cell selection/recall progression.
 
 ## Run

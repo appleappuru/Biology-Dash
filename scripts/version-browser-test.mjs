@@ -1,0 +1,5 @@
+import {chromium,expect} from '@playwright/test';
+import {readFile} from 'node:fs/promises';
+const expected=JSON.parse(await readFile('package.json','utf8')).version;
+const base=process.env.GAME_URL||'http://127.0.0.1:4182';const browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:320,height:568}});
+try{await page.goto(base);const version=await(await page.request.get(base+'/version.json')).json();expect(version.version).toBe(expected);await page.locator('[data-nav="settings"]:visible').click();await expect(page.locator('.release-version')).toHaveText('Biology Dash · v'+expected);await page.locator('.release-version').scrollIntoViewIfNeeded();await page.screenshot({path:'artifacts/version-phone.png'});await page.setViewportSize({width:1280,height:900});await expect(page.locator('.sidebar-note')).toContainText('v'+expected);console.log('PASS phone Settings, desktop sidebar and version.json agree on v'+expected);}finally{await Promise.race([browser.close(),new Promise(r=>setTimeout(r,2000))]);}

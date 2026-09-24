@@ -1,0 +1,485 @@
+{
+  "samples": [
+    {
+      "time": 2.4118233333333325,
+      "phase": "playing",
+      "squad": 12,
+      "kills": 0,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 4.411763333333332,
+      "phase": "playing",
+      "squad": 12,
+      "kills": 0,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 6.428333333333351,
+      "phase": "playing",
+      "squad": 12,
+      "kills": 0,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 8.428243333333343,
+      "phase": "playing",
+      "squad": 12,
+      "kills": 0,
+      "casualties": 0,
+      "threats": [
+        {
+          "x": 227.8704668374861,
+          "y": 594.8309317113795,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 10.6615033333333,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 12.66142333333326,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 14.661363333333226,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 16.661263333333224,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 18.66116333333325,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 20.67777333333334,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": []
+    },
+    {
+      "time": 22.677683333333338,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 2,
+      "casualties": 0,
+      "threats": [
+        {
+          "x": 259.2653249374525,
+          "y": 596.5307430917346,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 300.6815786614667,
+          "y": 570.4159428595052,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 24.694293333333476,
+      "phase": "playing",
+      "squad": 16,
+      "kills": 3,
+      "casualties": 0,
+      "threats": [
+        {
+          "x": 317.55978082640956,
+          "y": 667.2132228595041,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 26.694173333333506,
+      "phase": "playing",
+      "squad": 15,
+      "kills": 3,
+      "casualties": 1,
+      "threats": []
+    },
+    {
+      "time": 28.694113333333625,
+      "phase": "playing",
+      "squad": 15,
+      "kills": 3,
+      "casualties": 1,
+      "threats": []
+    },
+    {
+      "time": 30.694043333333635,
+      "phase": "playing",
+      "squad": 15,
+      "kills": 3,
+      "casualties": 1,
+      "threats": [
+        {
+          "x": 315.966472864995,
+          "y": 634.3940707483357,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 250.3470689761501,
+          "y": 596.34966934912,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 32.71062333333366,
+      "phase": "playing",
+      "squad": 14,
+      "kills": 4,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 34.71054333333359,
+      "phase": "playing",
+      "squad": 14,
+      "kills": 4,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 36.710473333333546,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 4,
+      "casualties": 2,
+      "threats": [
+        {
+          "x": 245.88763119346743,
+          "y": 579.6586488960279,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 243.55590232500577,
+          "y": 568.950446309208,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 38.7104033333335,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 6,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 40.71029333333347,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 6,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 42.71023333333341,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 6,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 44.72681333333335,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 7,
+      "casualties": 2,
+      "threats": [
+        {
+          "x": 249.96294256522086,
+          "y": 587.671949750352,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 46.72672333333327,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 8,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 48.72664333333321,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 8,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 50.72659333333313,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 8,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 52.726483333333064,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 8,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 54.74308333333298,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 9,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 56.74300333333292,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 10,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 58.74290333333284,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 10,
+      "casualties": 2,
+      "threats": []
+    },
+    {
+      "time": 60.742833333332804,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 10,
+      "casualties": 2,
+      "threats": [
+        {
+          "x": 302.6456075620781,
+          "y": 554.1178227332074,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 62.759433333332744,
+      "phase": "playing",
+      "squad": 20,
+      "kills": 10,
+      "casualties": 2,
+      "threats": [
+        {
+          "x": 318.3389967370404,
+          "y": 650.9146227332063,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 324.66226208419727,
+          "y": 619.7287984211692,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 64.75931333333287,
+      "phase": "playing",
+      "squad": 19,
+      "kills": 10,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 66.7592633333332,
+      "phase": "playing",
+      "squad": 19,
+      "kills": 10,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 68.75915333333357,
+      "phase": "playing",
+      "squad": 19,
+      "kills": 10,
+      "casualties": 3,
+      "threats": [
+        {
+          "x": 243.8519002467445,
+          "y": 584.463127279616,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 70.77579333333391,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 12,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 72.77567333333431,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 12,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 74.77562333333468,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 12,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 76.77552333333504,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 14,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 78.7754533333354,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 14,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 80.7753533333358,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 14,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 82.80862333333614,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 14,
+      "casualties": 3,
+      "threats": [
+        {
+          "x": 206.22557987934817,
+          "y": 550.9736999999967,
+          "kind": "susceptible",
+          "boss": true
+        }
+      ]
+    },
+    {
+      "time": 84.80853333333654,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 15,
+      "casualties": 3,
+      "threats": []
+    },
+    {
+      "time": 86.82511333333687,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 15,
+      "casualties": 3,
+      "threats": [
+        {
+          "x": 304.04980610562467,
+          "y": 608.8400359608393,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 296.5070145696524,
+          "y": 590.2718510684247,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 88.82503333333726,
+      "phase": "playing",
+      "squad": 27,
+      "kills": 15,
+      "casualties": 3,
+      "threats": [
+        {
+          "x": 293.6047655803794,
+          "y": 704.8361959608424,
+          "kind": "susceptible",
+          "boss": false
+        },
+        {
+          "x": 277.87163325416964,
+          "y": 686.2680110684278,
+          "kind": "susceptible",
+          "boss": false
+        }
+      ]
+    },
+    {
+      "time": 90.00833333333748,
+      "phase": "victory",
+      "squad": 26,
+      "kills": 15,
+      "casualties": 4,
+      "threats": []
+    }
+  ],
+  "errors": []
+}
