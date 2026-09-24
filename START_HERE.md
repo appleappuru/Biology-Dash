@@ -5,13 +5,13 @@ This folder is the project. Keep using:
 
 After signing into the new account, open this folder as a local Codex project if it is not already listed. Send:
 
-> Resume Biology Dash. Read AGENTS.md and handoff/PROJECT_HANDOFF.md, then continue from the verified v0.3.1 checkpoint. Keep the existing scope and 5% usage cutoffs.
+> Resume Biology Dash. Read AGENTS.md and handoff/PROJECT_HANDOFF.md, then continue from the verified v0.3.2 checkpoint. Keep the existing scope and 5% usage cutoffs.
 
 That message explicitly lifts the development hold. Opening the folder alone does not.
 
 Codex's project instructions in AGENTS.md point to the complete handoff, so no old chat, attachment upload, or manual context reconstruction is needed. Zero-click account-to-account chat/sidebar migration is not verified or promised.
 
-- **Live:** https://biology-dash-public-demo.vercel.app/ — v0.3.1, last verified September24,2026.
+- **Live:** https://biology-dash-public-demo.vercel.app/ — v0.3.2, last verified September24,2026.
 - **State:** explicitly resumed by user September23,2026; automatic reset-time resumption, development, milestone commits/pushes and verified releases are authorized. See STATUS.md for current work.
 - **Agent context:** [PROJECT_HANDOFF.md](handoff/PROJECT_HANDOFF.md).
 - **Original requests:** handoff/requirements (historical; newer naming/web-only/hold instructions take precedence).

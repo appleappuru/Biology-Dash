@@ -53,3 +53,9 @@ Hold/charge/release external support from Patrol3: capped1.5second charge, stron
 Deployment dpl_DM7cNeAGq1WiN29njh2NHV9E5P1D READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-opd9gihpi-applefound.vercel.app. Cache biology-6234c4c00f85.
 
 Simpler first run: one Play action plus Settings, campaign/Coins/roster/reference panels deferred until first victory, sequential single coaching cue, closer opening cluster. Natural first catch4.8s and recruitment8.7s with16cells/0casualties in the opening check.113unit tests, typecheck/build, welcome/settings/campaign-reveal/reload, first-play/result-action and opening checks pass. Live production without instrumentation verifies one-tap launch, early catch and pause; exact assets, version labels, no-index/robots and cached-player42Coins/roster/transactions/offline update pass. No save schema changes. No measured enjoyment/retention or physical-device claim.
+
+## v0.3.2 — deployed September24,2026
+
+Deployment dpl_4KB5CNjBhUFDfCYEyKECmNXM8tnY READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-18sjuls2f-applefound.vercel.app. Cache biology-21437f8cca21.
+
+Optional Call cells action in Patrols1–2 teaches hold/release before medication choices: tap calls one defender, full charge up to four,8–14second recovery,30cell cap. Gathered-cell preview, arriving squad animation and quiet recruitment feedback.115unit tests/typecheck/build pass; welcome and later medicine input regressions pass.320px reduced-motion touch cancel/full charge, pause cancellation, assistive tap and full natural90second patrol pass:20cells after first gate at8.61s, victory with15clears/29cells. Actual production charge/release/catch/pause, exact assets/version/no-index, phone/desktop versions and cached-player42Coins/roster/transactions/offline update pass. No save-schema change, clinical timing claim or measured enjoyment claim.

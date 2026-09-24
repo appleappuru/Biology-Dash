@@ -162,10 +162,10 @@ export class PatrolScene extends Phaser.Scene {
         if (event.type === 'loss') {
             if (!this.reducedMotion) this.cameras.main.shake(90, .0018);
         }
-        if (event.type === 'gate') {
+        if (event.type === 'gate' || event.type === 'summon') {
             this.soundCue('recruit');
             const p=this.patrol, q=project(p.x,p.y);
-            const message=event.label ?? 'Gate activated';
+            const message=event.label ?? event.text;
             this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
         }
         if (event.type === 'loss' && event.amount) {
@@ -335,9 +335,16 @@ export class PatrolScene extends Phaser.Scene {
         const p = this.patrol, count = p.squad;
         this.molecules.clear();
         if(p.chargingMedicine){
-            const c=p.medicineCharge,color=medicineStyle(p.medicine).color;
+            const c=p.medicineCharge,color=p.level<3?0xb8f4d8:medicineStyle(p.medicine).color;
             this.molecules.lineStyle(4,color,.9).beginPath().arc(210,260,24+c*18,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.04,c)).strokePath();
-            this.molecules.fillStyle(color,.25+c*.35).fillCircle(210,260,9+c*13);
+            if(p.level<3){
+                const gathered=Math.min(30-p.squad,1+Math.floor(c*3));
+                for(let i=0;i<gathered;i++){
+                    const x=210+(i-(gathered-1)/2)*17;
+                    this.molecules.fillStyle(color,.95).fillCircle(x,260,8);
+                    this.molecules.fillStyle(0x427b75,1).fillCircle(x-2,259,3);
+                }
+            }else this.molecules.fillStyle(color,.25+c*.35).fillCircle(210,260,9+c*13);
         }
         this.cells.forEach((cell, i) => {
             const actor = p.cells[i];

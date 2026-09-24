@@ -18,3 +18,20 @@ it('charged support cannot bypass susceptibility or turn growth suppression into
  const p=fixture();p.spawn('dual-resistant');p.spawn('candida');const hp=p.enemies.slice(1).map(e=>e.hp);p.useMedicine(1);expect(p.enemies.slice(1).map(e=>e.hp)).toEqual(hp);
  const q=fixture();q.medicine='doxycycline';q.useMedicine(1);expect(q.enemies[0].hp).toBe(100);expect(q.enemies[0].inhibited).toBe(true);expect(q.medicineCooldown).toBe(8);
 });
+it('early support calls arriving cells without medicine and respects capacity',()=>{
+ const p=new Patrol(1);p.nextSpawn=999;p.nextGate=999;
+ expect(p.beginMedicineCharge()).toBe(true);
+ for(let i=0;i<31;i++)p.step(.05);
+ expect(p.squad).toBe(12);expect(p.releaseMedicineCharge()).toBe(true);
+ expect(p.squad).toBe(16);expect(p.cells).toHaveLength(16);expect(p.medicineCooldown).toBe(14);
+ expect(p.learning.medicine).toBe(false);expect(p.events.filter(e=>e.type==='summon')).toHaveLength(1);
+ expect(p.releaseMedicineCharge()).toBe(false);expect(p.useSupport()).toBe(false);
+ p.squad=29;p.medicineCooldown=0;expect(p.useSupport(1)).toBe(true);expect(p.squad).toBe(30);
+ expect(p.events.at(-1)?.amount).toBe(1);p.medicineCooldown=0;expect(p.beginMedicineCharge()).toBe(false);expect(p.useSupport()).toBe(false);
+});
+it('early calls cancel safely, tap recruits one, and terminal patrols reject calls',()=>{
+ const p=new Patrol(2);p.beginMedicineCharge();p.cancelMedicineCharge();expect(p.releaseMedicineCharge()).toBe(false);expect(p.squad).toBe(12);
+ expect(p.useSupport()).toBe(true);expect(p.squad).toBe(13);expect(p.medicineCooldown).toBe(8);
+ p.medicineCooldown=0;p.beginMedicineCharge();p.phase='defeat';expect(p.releaseMedicineCharge()).toBe(false);expect(p.squad).toBe(13);
+ expect(p.useMedicine(1)).toBe(false);
+});

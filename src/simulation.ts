@@ -53,7 +53,7 @@ export interface Gate {
     right?: GateOption;
 }
 export interface PatrolEvent {
-    type: 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit' | 'complement' | 'contact';
+    type: 'summon' | 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit' | 'complement' | 'contact';
     text: string;
     label?: string;
     enemyId?: number;
@@ -114,13 +114,30 @@ export class Patrol {
     medicineCharge = 0;
     chargingMedicine = false;
     beginMedicineCharge() {
-        if(this.chargingMedicine || this.phase!=='playing' || this.level<3 || this.medicineCooldown>0 || !this.enemies.some(e=>e.hp>0))return false;
+        if(this.chargingMedicine || this.phase!=='playing' || !this.supportReady)return false;
         this.chargingMedicine=true;this.medicineCharge=0;return true;
     }
     cancelMedicineCharge() { this.chargingMedicine=false;this.medicineCharge=0; }
     releaseMedicineCharge() {
         if(!this.chargingMedicine)return false;
-        const charge=this.medicineCharge;this.cancelMedicineCharge();return this.useMedicine(charge);
+        const charge=this.medicineCharge;this.cancelMedicineCharge();return this.useSupport(charge);
+    }
+    get supportReady() {
+        return this.phase==='playing' && this.medicineCooldown<=0 && (this.level<3 ? this.squad<BALANCE.maxSquad : this.enemies.some(e=>e.hp>0));
+    }
+    useSupport(charge = 0) {
+        if(this.level>=3)return this.useMedicine(charge);
+        if(!this.supportReady)return false;
+        charge=Number.isFinite(charge)?Math.max(0,Math.min(1,charge)):0;
+        this.cancelMedicineCharge();
+        const amount=Math.min(BALANCE.maxSquad-this.squad,1+Math.floor(charge*3));
+        this.squad+=amount;
+        this.syncCells();
+        // Arcade call for arriving defenders, never cell division or medication.
+        this.medicineCooldownTotal=8+6*charge;
+        this.medicineCooldown=this.medicineCooldownTotal;
+        this.events.push({type:'summon',charge,amount,squad:this.squad,text:'+'+amount+' arriving '+(amount===1?'cell':'cells'),x:this.x,y:this.y});
+        return true;
     }
     id = 0;
     gateIndex = 0;

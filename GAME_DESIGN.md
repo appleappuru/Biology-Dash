@@ -71,3 +71,6 @@ From Patrol3, hold the support button or Space to charge for up to1.5seconds; re
 
 ## Simple first run — September24
 Before the first victory, the launch screen presents one Play action and Settings. Campaign, Coins, roster and reference panels appear after the first win; players with a prior victory retain their full map. First-patrol coaching reveals one cue at a time. The opening cluster starts closer so a centered squad makes contact in roughly5seconds; recruitment remains a subsequent visible choice. No new mechanics must be learned before playing. This implements the user priority for a less complicated, engaging first experience; it does not establish measured enjoyment or retention.
+
+## First-session reinforcement release — September24
+Patrols1–2 provide one optional Call cells button, sharing the later support hold/release interaction. Tap calls one arriving defender; a1.5second hold calls up to four, with8–14second recovery and a30cell cap. A gathered-cell preview, accurate squad increase, arrival animation and quiet recruitment cue make the result visible. No medicine picker or added setup. This is an arcade recruitment abstraction, not cell division, a clinical timing claim or a medication effect. Existing automatic engulfment and gate choices remain. Pausing/canceled input spends nothing; permanent roster and save schema are unchanged.
