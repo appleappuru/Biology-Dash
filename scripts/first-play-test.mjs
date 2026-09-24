@@ -23,7 +23,16 @@ try{
  await expect(page.locator('.next-discovery')).toContainText('Macrophage');
  for(const id of ['next','reward-shop','result-map']){const b=await page.locator('#'+id).boundingBox();expect(b.height).toBeGreaterThanOrEqual(44);expect(b.y+b.height).toBeLessThanOrEqual(568);}
  await page.screenshot({path:'artifacts/next-discovery-phone.png'});
- await page.locator('#next').click();await expect(page.locator('#begin')).toBeVisible();
+ const earned=await page.evaluate(()=>({credits:__BIOLOGY__.save.credits,team:[...__BIOLOGY__.save.roster.loadout],transactions:__BIOLOGY__.save.economy.transactions.length}));
+ await page.locator('#next').click();await page.waitForFunction(()=>__BIOLOGY__.state?.level===2 && !!__BIOLOGY__.scene?.patrol);
+ await expect(page.locator('.modal-backdrop')).toHaveCount(0);await expect(page.locator('#support')).toBeEnabled();
+ expect(await page.evaluate(()=>__BIOLOGY__.state.loadout)).toEqual(earned.team);
+ expect(await page.evaluate(()=>__BIOLOGY__.save.credits)).toBe(earned.credits);
+ expect(await page.evaluate(()=>__BIOLOGY__.save.economy.transactions.length)).toBe(earned.transactions);
+ await page.screenshot({path:'artifacts/direct-second-patrol.png'});
+ // A later victory still offers medicine preparation before Patrol3.
+ await page.evaluate(()=>{const p=__BIOLOGY__.state;p.time=89.99;p.enemies=[];p.bossSpawned=true;});
+ await page.locator('#next').click();await expect(page.locator('#begin')).toBeVisible();await expect(page.locator('.choice-list')).toBeVisible();
  await page.reload();await page.waitForFunction(()=>!!window.__BIOLOGY__);
  expect(await page.evaluate(()=>__BIOLOGY__.save.tutorial)).toBe(true);
  await page.evaluate(()=>__BIOLOGY__.start(1));await page.waitForFunction(()=>!!__BIOLOGY__.scene?.patrol);

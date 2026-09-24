@@ -74,3 +74,6 @@ Before the first victory, the launch screen presents one Play action and Setting
 
 ## First-session reinforcement release — September24
 Patrols1–2 provide one optional Call cells button, sharing the later support hold/release interaction. Tap calls one arriving defender; a1.5second hold calls up to four, with8–14second recovery and a30cell cap. A gathered-cell preview, accurate squad increase, arrival animation and quiet recruitment cue make the result visible. No medicine picker or added setup. This is an arcade recruitment abstraction, not cell division, a clinical timing claim or a medication effect. Existing automatic engulfment and gate choices remain. Pausing/canceled input spends nothing; permanent roster and save schema are unchanged.
+
+## First victory momentum — September24
+Next patrol after Patrol1 launches Patrol2 immediately with the saved lineup. Recruitment/upgrade remains an optional result action, and the map still offers detailed preparation. Patrol3 and later retain preflight choices for newly introduced systems. No automatic purchases, lineup changes or extra reward settlements.
