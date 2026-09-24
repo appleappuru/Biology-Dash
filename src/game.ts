@@ -39,6 +39,7 @@ export class PatrolScene extends Phaser.Scene {
     patrol!: Patrol;
     hooks!: GameHooks;
     held = false;
+    medicineKeyHeld = false;
     dragX = 0;
     dragY = 0;
     dragStart = 0;
@@ -114,16 +115,18 @@ export class PatrolScene extends Phaser.Scene {
         for (const name of ['pointerup', 'pointerupoutside', 'gameout']) this.input.on(name, this.cancelDrag);
         this.keys = this.input.keyboard!.addKeys('LEFT,RIGHT,UP,DOWN,A,D,W,S,SPACE,ESC') as typeof this.keys;
         this.input.keyboard!.on('keydown-ESC', () => this.hooks?.pause());
-        this.input.keyboard!.on('keydown-SPACE', (event: KeyboardEvent) => { if (!this.paused && !(event.target as HTMLElement)?.closest('button,input,select')) this.patrol?.useMedicine(); });
+        this.input.keyboard!.on('keydown-SPACE', (event: KeyboardEvent) => { if (!this.paused && !(event.target as HTMLElement)?.closest('button,input,select')) {event.preventDefault();if(!event.repeat)this.medicineKeyHeld=this.patrol?.beginMedicineCharge()??false;} });
+        this.input.keyboard!.on('keyup-SPACE', () => { if(this.medicineKeyHeld && !this.paused)this.patrol?.releaseMedicineCharge();this.medicineKeyHeld=false; });
         this.game.canvas.addEventListener('pointercancel', this.cancelDrag);
         this.game.events.on(Phaser.Core.Events.BLUR, this.onBlur);
         const cleanup = () => { this.game.canvas?.removeEventListener('pointercancel', this.cancelDrag); this.game.events.off(Phaser.Core.Events.BLUR, this.onBlur); };
         this.events.once('shutdown', cleanup); this.events.once('destroy', cleanup);
     }
-    onBlur = () => { this.cancelDrag(); if (!this.paused) this.hooks?.pause(); };
+    cancelControls = () => {this.medicineKeyHeld=false;this.patrol?.cancelMedicineCharge();this.cancelDrag();};
+    onBlur = () => { this.cancelControls(); if (!this.paused) this.hooks?.pause(); };
     cancelDrag = () => { this.held = false; this.input.keyboard?.resetKeys(); };
     startPatrol(p: Patrol, hooks: GameHooks) {
-        this.patrol = p; this.hooks = hooks; this.finished = false; this.soundTimes.clear(); this.lastTeamworkCue=-Infinity;this.teamworkAnnounced=false; this.paused = false; this.cancelDrag();
+        this.patrol = p; this.hooks = hooks; this.finished = false; this.soundTimes.clear(); this.lastTeamworkCue=-Infinity;this.teamworkAnnounced=false; this.paused = false; this.cancelControls();
         for (const v of this.views.values()) v.node.destroy();
         for (const v of this.gateViews.values()) v.node.destroy();
         this.views.clear(); this.gateViews.clear(); this.lastSquad = 0;
@@ -199,18 +202,21 @@ export class PatrolScene extends Phaser.Scene {
     careBurst(event: PatrolEvent) {
         const med=medicineStyle(event.cause && event.cause!=='phagocytosis'?event.cause:this.patrol.medicine);
         const reduced=this.reducedMotion;
+        const charge=event.charge??0;
         // An external care-package emblem is a UI metaphor, not a literal drug route or cell weapon.
         const banner=this.add.container(210,182).setDepth(1800);
         const ribbon=this.add.graphics().fillStyle(0x092b39,.96).fillRoundedRect(-150,-35,300,70,22).lineStyle(2,med.color,.95).strokeRoundedRect(-150,-35,300,70,22);
         const pod=this.add.graphics().fillStyle(med.color).fillRoundedRect(-134,-25,47,50,17).fillStyle(0xffffff,.75).fillRoundedRect(-130,-22,39,18,12);
         pod.fillStyle(0x173945).fillCircle(-121,3,2.5).fillCircle(-102,3,2.5).lineStyle(2,0x173945).beginPath().arc(-111,7,5,0,Math.PI).strokePath();
         pod.fillStyle(0xf197ae,.8).fillEllipse(-126,9,6,3).fillEllipse(-97,9,6,3);
-        const title=this.add.text(-73,-22,med.nickname.toUpperCase()+' ASSIST!',{fontFamily:'Arial',fontSize:'22px',fontStyle:'bold',color:'#f0fff7'});
-        const label=this.add.text(-73,7,med.effect==='inhibit'?'Ⅱ  GROWTH PAUSE':'✦  WALL BREAK',{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#'+med.color.toString(16)});
+        const title=this.add.text(-73,-22,med.nickname,{fontFamily:'Arial',fontSize:'20px',fontStyle:'bold',color:'#f0fff7'});
+        const label=this.add.text(-73,7,(charge>=.85?'CHARGED · ':'')+(med.effect==='inhibit'?'GROWTH PAUSE':'WALL BREAK'),{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#'+med.color.toString(16)});
         banner.add([ribbon,pod,title,label]);
         if(!reduced){banner.setScale(.82);this.tweens.add({targets:banner,scale:1,duration:260,ease:'Back.Out'});}
         this.tweens.add({targets:banner,alpha:0,delay:1400,duration:reduced?0:280,onComplete:()=>banner.destroy()});
-        this.soundCue('soft');
+        this.soundCue(charge>.7?'recruit':'soft',med.effect==='inhibit'?1.1:.85);
+        const wave=this.add.graphics().setPosition(210,390).setDepth(850).lineStyle(3+charge*3,med.color,.7).strokeEllipse(0,0,120+charge*180,80+charge*120);
+        this.tweens.add({targets:wave,scaleX:reduced?1:1.6,scaleY:reduced?1:1.6,alpha:0,duration:reduced?350:650,onComplete:()=>wave.destroy()});
         for(const enemy of this.patrol.enemies){
             const reaction=enemy.medicineReaction;
             if(!reaction || reaction.id!==med.id)continue;
@@ -294,7 +300,7 @@ export class PatrolScene extends Phaser.Scene {
     }
     endPatrol() {
         if (this.finished) return;
-        this.finished = true; this.cancelDrag();
+        this.finished = true; this.cancelControls();
         const won = this.patrol.phase === 'victory';
         if (won) this.soundCue('finish');
         document.querySelector('.care-kit')?.classList.add('patrol-ended');
@@ -328,6 +334,11 @@ export class PatrolScene extends Phaser.Scene {
     drawSquad(time: number) {
         const p = this.patrol, count = p.squad;
         this.molecules.clear();
+        if(p.chargingMedicine){
+            const c=p.medicineCharge,color=medicineStyle(p.medicine).color;
+            this.molecules.lineStyle(4,color,.9).beginPath().arc(210,260,24+c*18,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.04,c)).strokePath();
+            this.molecules.fillStyle(color,.25+c*.35).fillCircle(210,260,9+c*13);
+        }
         this.cells.forEach((cell, i) => {
             const actor = p.cells[i];
             cell.membrane.clear();

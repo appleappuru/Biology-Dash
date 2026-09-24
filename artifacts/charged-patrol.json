@@ -1,0 +1,28 @@
+{
+  "result": {
+    "time": 90.00862000000437,
+    "phase": "victory",
+    "kills": 21,
+    "events": [
+      {
+        "time": 4.71201,
+        "charge": 1
+      },
+      {
+        "time": 24.41124000000016,
+        "charge": 1
+      },
+      {
+        "time": 44.110440000000004,
+        "charge": 1
+      },
+      {
+        "time": 64.17628999999951,
+        "charge": 1
+      }
+    ],
+    "settled": 1
+  },
+  "errors": [],
+  "note": "Natural clock/spawns; level unlocked by test entry only; keyboard charged support from center."
+}

@@ -4,6 +4,8 @@ import { LEVELS, PATHOGENS, medicineName, medicineEffect, antibodyMatch, type Pa
 export const RULES_VERSION = 4;
 export const BALANCE = { maxEnemies: 32, maxSquad: 30, contactY: 640, breachY: 710, invulnerability: 1.15 };
 export const CONTACT_DISTANCE = 25;
+// Arcade charge tuning, never a medication dose or clinical potency model.
+export const MEDICINE_CHARGE_SECONDS = 1.5;
 export interface CellActor {
     id: number; x: number; y: number; role: DefenderId; variant?: RosterId;
     phase: 'idle' | 'approach' | 'wrap' | 'digest' | 'return';
@@ -60,6 +62,7 @@ export interface PatrolEvent {
     cause?: 'phagocytosis' | MedicineId;
     squad?: number;
     amount?: number;
+    charge?: number;
     x?: number;
     y?: number;
 }
@@ -107,6 +110,18 @@ export class Patrol {
     nextGate = 10;
     wavesSpawned = 0;
     medicineCooldown = 0;
+    medicineCooldownTotal = 12;
+    medicineCharge = 0;
+    chargingMedicine = false;
+    beginMedicineCharge() {
+        if(this.chargingMedicine || this.phase!=='playing' || this.level<3 || this.medicineCooldown>0 || !this.enemies.some(e=>e.hp>0))return false;
+        this.chargingMedicine=true;this.medicineCharge=0;return true;
+    }
+    cancelMedicineCharge() { this.chargingMedicine=false;this.medicineCharge=0; }
+    releaseMedicineCharge() {
+        if(!this.chargingMedicine)return false;
+        const charge=this.medicineCharge;this.cancelMedicineCharge();return this.useMedicine(charge);
+    }
     id = 0;
     gateIndex = 0;
     learning: Learning = { medicine: false, cooperation: false, match: false, mismatch: false, affinity: false, recall: false, gate: false };
@@ -179,19 +194,25 @@ export class Patrol {
         enemy.hp -= amount; enemy.lastCause = cause; enemy.lastCellId = cellId;
         this.events.push({type:'hit',text:'',x:enemy.x,y:enemy.y,enemyId:enemy.id,amount,cause,cellId});
     }
-    useMedicine() { if (this.medicineCooldown > 0 || this.phase !== 'playing' || this.level < 3 || !this.enemies.some(e => e.hp > 0))
-        return false; this.medicineCooldown = 12; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.enemies) {
+    useMedicine(charge = 0) { if (this.medicineCooldown > 0 || this.phase !== 'playing' || this.level < 3 || !this.enemies.some(e => e.hp > 0))
+        return false;
+        charge=Number.isFinite(charge)?Math.max(0,Math.min(1,charge)):0;
+        this.cancelMedicineCharge();
+        // Wall bursts gain impact at a longer recovery cost. Growth suppression
+        // gains repeat availability instead of pretending to kill microbes.
+        this.medicineCooldownTotal=this.medicine==='doxycycline'?12-4*charge:12+6*charge;
+        this.medicineCooldown = this.medicineCooldownTotal; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.enemies) {
         const effect = medicineEffect(this.medicine, e.kind);
         if(effect.effective)affected++;else if(PATHOGENS.find(p=>p.id===e.kind)?.susceptibility[this.medicine]==='not-targeted')noTarget++;else resistant++;
         e.medicineReaction = { id: this.medicine, until: this.time + 2.2, effective: effect.effective, effect: effect.effect };
         if (effect.effective) {
             success = true;
             if (effect.effect === 'kill')
-                this.damage(e, 18, this.medicine);
+                this.damage(e, 18*(1+charge), this.medicine);
             else
                 e.inhibited = true;
         }
-    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', cause: this.medicine, text: this.enemies.length ? `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` : 'Wait for microbes before using external support.' }); return true; }
+    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', charge, cause: this.medicine, text: `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` }); return true; }
     syncCells() {
         for (const c of this.cells.slice(this.squad)) {
             const target = this.enemies.find(e => e.id === c.targetId);
@@ -325,6 +346,7 @@ export class Patrol {
         if (!Number.isFinite(delta) || delta <= 0) return;
         const dt = Math.min(delta, .05);
         this.time += dt;
+        if(this.chargingMedicine)this.medicineCharge=Math.min(1,this.medicineCharge+dt/MEDICINE_CHARGE_SECONDS);
         this.complementRemaining = Math.max(0, this.complementRemaining - dt);
         this.complementCooldown = Math.max(0, this.complementCooldown - dt);
         this.protection = Math.max(0, this.protection - dt);

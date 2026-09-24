@@ -1,12 +1,12 @@
 # Project handoff — September23,2026
 
 ## Status and priority
-User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The old heartbeat `resume-biology-dash-after-usage-reset` remains PAUSED; do not restart it without a new user request. No chat/account database manipulation is needed.
+User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.2.4**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_7aczzfy6owBfPkyjhhM5JTjUZSQR` (READY when verified).
-Immutable URL: https://biology-dash-public-demo-qe9odzu4d-applefound.vercel.app.
-Service worker cache: `biology-1442e1a886df`.
+Current application/package version: **0.3.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_EruA92RgdcjyE4NevUjnxem2Kj9N` (READY when verified).
+Immutable URL: https://biology-dash-public-demo-mf33qtlkb-applefound.vercel.app.
+Service worker cache: `biology-91e485084939`.
 No pending application changes after that release; handoff documentation is newer. Check live state before making a new release.
 
 ## What exists
@@ -19,13 +19,15 @@ v0.2.3: failed/stalled art recovery with retry/exit; first cluster and gate brou
 
 v0.2.4: quiet directional tissue-interception cues and up to3 local markers, excluded during wrapping. Later patrol warnings sit above the medicine kit. See RELEASES.md and STATUS.md for full verification and next review.
 
+v0.3.0: charged medicine support from Patrol3 with tested pointer/key cancellation and full natural-patrol verification. Follow ROADMAP.md and the full continuous-product objective; first-patrol active charge and richer weapon/progression systems remain pending.
+
 ## Validation at last release
-110 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.2.3. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
+113 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.3.0. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
 Not verified: real-device performance, subjective sound quality, human enjoyment/retention, educational efficacy, clinician review, native readiness. The broad improvement objective is not complete.
 
 ## Resume work after explicit permission
 1. Read latest STATUS.md tail, RELEASES.md, GAME_DESIGN.md, ECONOMY.md and MEDICAL_EVIDENCE.md; inspect git status. Earlier documents may contain stale names, Sites/native plans or timestamps; current instructions win.
-2. Check new account usage (not old reset timestamps). No development at<=25% remaining in either window. Do not redeem credits or restart schedules without authorization.
+2. Check new account usage (not old reset timestamps). No development at<=5% remaining in either window. Do not redeem credits or restart schedules without authorization.
 3. Verify current source/build/live state and select a substantive gameplay/visual/audio improvement grounded in actual playtest findings. The0.2.4 tissue-warning batch is complete; do not repeat it as unfinished work. Reserve capacity for deployment checks. No mandate to endlessly rerun unchanged suites.
 4. Useful next review: play full patrols naturally; refine action readability and cadence in crowds; test touch play on phones; evaluate restrained audio by listening. Startup recovery and opening pace are already fixed. Avoid small unrelated housekeeping as a substitute for improving the game.
 
@@ -76,4 +78,4 @@ Local source/files and this handoff are the durable context. Do not assume old c
 Official documentation consulted: https://learn.chatgpt.com/docs/app and https://learn.chatgpt.com/docs/agent-configuration/agents-md. They document local project work and AGENTS.md instructions; they do not establish guaranteed zero-step cross-account chat migration.
 
 ## GitHub milestone backup policy
-User authorized committing and pushing all game source and assets after each verified milestone to appleappuru/biology-dash. Existing origin uses https://github.com/appleappuru/Biology-Dash.git. Follow AGENTS.md inclusion/exclusion and verification rules; no force pushes or scheduled automation. At setup, command-line HTTPS authentication was unavailable. See STATUS.md for backup state; verify remote access before claiming a push succeeded.
+User authorized committing and pushing all game source and assets after each verified milestone to appleappuru/biology-dash. Existing origin uses https://github.com/appleappuru/Biology-Dash.git. Follow AGENTS.md inclusion/exclusion and verification rules; no force pushes; scheduled development is now explicitly authorized. At setup, command-line HTTPS authentication was unavailable. See STATUS.md for backup state; verify remote access before claiming a push succeeded.

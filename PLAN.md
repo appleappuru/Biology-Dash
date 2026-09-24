@@ -1,3 +1,6 @@
+# Current priority — September24,2026
+Follow ROADMAP.md and handoff/requirements/CONTINUOUS_PRODUCT_GOAL.md. Earlier planning below is historical; verified deployments and milestone GitHub pushes are authorized.
+
 # Active scope — September 13, 2026
 Finish and locally verify the individual-cell interaction revision and expanded named microbe roster. Preserve two-axis controls, organic formations, accessibility and save migration. Do not publish until explicitly requested. Native development remains deferred.
 

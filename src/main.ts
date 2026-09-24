@@ -1,3 +1,4 @@
+import {bindChargeControl} from './charge-control';
 import {ROSTER,rosterOption,upgradePreview,deploymentFor,type RosterId} from './roster';
 import {buy,price,swapMember,settleRun,unlockRoster,applyFormation} from './economy';
 import './style.css';
@@ -179,8 +180,14 @@ function start(id: number) {
     bootControls.forEach(({button})=>button.disabled=true);
     game = createGame();
     root.querySelector('#pause')!.addEventListener('click', pause);
-    root.querySelector('#support')?.addEventListener('click', () => patrol?.useMedicine());
-    root.querySelectorAll<HTMLButtonElement>('[data-medicine]').forEach(b => b.onclick = () => { if (!patrol || scene?.paused) return; patrol.medicine = b.dataset.medicine as MedicineId; medicine = patrol.medicine; feedback(medicineStyle(medicine).action + ' · ' + medicineName(medicine)); tick(patrol,true); });
+    const fire=root.querySelector<HTMLButtonElement>('#support');
+    if(fire)bindChargeControl(fire,{
+        begin:()=>{if(!patrol || !scene || scene.paused)return false;scene.hooks.gesture();return patrol.beginMedicineCharge();},
+        release:()=>{if(scene?.paused)patrol?.cancelMedicineCharge();else patrol?.releaseMedicineCharge();},
+        cancel:()=>patrol?.cancelMedicineCharge(),
+        tap:()=>{if(scene && !scene.paused)patrol?.useMedicine();}
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-medicine]').forEach(b => b.onclick = () => { if (!patrol || scene?.paused) return; patrol.cancelMedicineCharge(); patrol.medicine = b.dataset.medicine as MedicineId; medicine = patrol.medicine; feedback(medicineStyle(medicine).action + ' · ' + medicineName(medicine)); tick(patrol,true); });
     root.querySelector('#antibody')?.addEventListener('click', antibodyPanel);
     root.querySelector('#equip-a')?.addEventListener('click',()=>equipAntibody('A'));
     root.querySelector('#equip-b')?.addEventListener('click',()=>equipAntibody('B'));
@@ -246,9 +253,11 @@ function tick(p: Patrol,force=false) {
     document.querySelector('#cleared')!.textContent = String(p.kills);
     const b = document.querySelector<HTMLButtonElement>('#support');
     if (b) {
-        b.textContent = `${p.medicineCooldown > 0 ? 'Recharging · ' + Math.ceil(p.medicineCooldown) + 's' : 'Send ' + medicineStyle(p.medicine).nickname}`;
-        b.disabled = p.medicineCooldown > 0 || !p.enemies.length;
-        b.style.setProperty('--charge', `${100 * (1-p.medicineCooldown/12)}%`);
+        b.textContent = p.chargingMedicine ? (p.medicineCharge>=1?'FULL · RELEASE!':'Charging '+Math.round(p.medicineCharge*100)+'% · Release') : p.medicineCooldown>0?'Recharging · '+Math.ceil(p.medicineCooldown)+'s':'Hold / release · '+medicineStyle(p.medicine).nickname;
+        b.disabled = p.medicineCooldown > 0 || (!p.enemies.length && !p.chargingMedicine);
+        b.classList.toggle('charging',p.chargingMedicine);
+        b.setAttribute('aria-label',p.chargingMedicine?b.textContent:'Hold to charge and release to fire '+medicineStyle(p.medicine).nickname);
+        b.style.setProperty('--charge', `${100 * (p.chargingMedicine?p.medicineCharge:1-p.medicineCooldown/p.medicineCooldownTotal)}%`);
         root.querySelectorAll<HTMLButtonElement>('[data-medicine]').forEach(card => {
             const id = card.dataset.medicine as MedicineId;
             card.setAttribute('aria-pressed', String(id === p.medicine));
@@ -289,7 +298,7 @@ function tick(p: Patrol,force=false) {
         if (selected >= 5)
             feedback('Spot a Clover or Crown crest. Tap your tag name to choose its match.');
         else if (selected >= 3)
-            feedback('External support: tap the medicine when bacteria are present.');
+            feedback('Hold support to charge. Release to fire. A quick tap also works.');
     }
     if (p.time >= nextQuiz) {
         nextQuiz = 999;
@@ -299,11 +308,11 @@ function tick(p: Patrol,force=false) {
 }
 function encounterDecision() {
     if (!patrol) return;
-    feedback(selected >= 5 ? 'Match Clover or Crown crests. Your care kit stays live while you steer.' : 'Tap a care card, then Send. Look for wall cracks or the growth-pause mark.');
+    feedback(selected >= 5 ? 'Match Clover or Crown crests. Your care kit stays live while you steer.' : 'Choose a care card. Hold to charge, release to fire. Look for wall cracks or a growth-pause mark.');
 }
 function antibodyPanel() {
     if(!scene||!patrol||scene.paused||patrol.phase!=='playing')return;
-    scene.cancelDrag();
+    scene.cancelControls();
     const picker=document.getElementById('tag-picker')!;
     picker.hidden=!picker.hidden;
     document.getElementById('antibody')!.setAttribute('aria-expanded',String(!picker.hidden));
@@ -318,7 +327,7 @@ function equipAntibody(epitope:'A'|'B') {
     feedback(`${antibodyName(epitope)} selected for new tags. Match the crest!`);tick(patrol,true);
 }
 function pause() { if (!scene || !patrol || patrol.phase !== 'playing' || document.querySelector('.modal-backdrop'))
-    return; scene.paused = true; scene.cancelDrag(); modal(`<span class="eyebrow">TAKE A BREATHER</span><h2>Patrol paused</h2><p>Your team will wait here. Come back when you’re ready.</p><div class="pause-snapshot" aria-label="Patrol status"><span><strong>${Math.max(0, Math.ceil(90-patrol.time))}s</strong> left to defend</span><span><strong>${patrol.squad}</strong> defenders together</span></div><button id="resume" class="primary">Resume patrol</button><button id="pause-sound" class="secondary" aria-pressed="${!save.muted}">Sound: ${save.muted?'Off':'On'}</button><button id="restart" class="secondary">Restart level</button><button id="leave" class="secondary">Return to map</button>`, { 'pause-sound': () => { save.muted=!save.muted;scene!.muted=save.muted;if(save.muted)scene!.sound.stopAll();persist();const button=document.querySelector<HTMLButtonElement>('#pause-sound')!;button.textContent=save.muted?'Sound: Off':'Sound: On';button.setAttribute('aria-pressed',String(!save.muted)); }, resume: () => { closeModal(); scene!.paused = false; }, restart: () => { stopGame(); start(selected); }, leave: () => { stopGame(); page = 'patrol'; render(); } }); }
+    return; scene.paused = true; scene.cancelControls(); modal(`<span class="eyebrow">TAKE A BREATHER</span><h2>Patrol paused</h2><p>Your team will wait here. Come back when you’re ready.</p><div class="pause-snapshot" aria-label="Patrol status"><span><strong>${Math.max(0, Math.ceil(90-patrol.time))}s</strong> left to defend</span><span><strong>${patrol.squad}</strong> defenders together</span></div><button id="resume" class="primary">Resume patrol</button><button id="pause-sound" class="secondary" aria-pressed="${!save.muted}">Sound: ${save.muted?'Off':'On'}</button><button id="restart" class="secondary">Restart level</button><button id="leave" class="secondary">Return to map</button>`, { 'pause-sound': () => { save.muted=!save.muted;scene!.muted=save.muted;if(save.muted)scene!.sound.stopAll();persist();const button=document.querySelector<HTMLButtonElement>('#pause-sound')!;button.textContent=save.muted?'Sound: Off':'Sound: On';button.setAttribute('aria-pressed',String(!save.muted)); }, resume: () => { closeModal(); scene!.paused = false; }, restart: () => { stopGame(); start(selected); }, leave: () => { stopGame(); page = 'patrol'; render(); } }); }
 function stopGame() { closeModal(); scene?.sound.stopAll(); game?.destroy(true); game = null; scene = null; patrol = null; }
 function finish(p: Patrol) { settleRun(save,p,runId);persist(); const reward=save.economy.pending; const won = p.phase === 'victory'; const newBest = won && p.score > previousBest; if (won) {
     settleRun(save,p,runId);
@@ -338,7 +347,7 @@ document.addEventListener('visibilitychange', () => { if (document.hidden) {
 window.addEventListener('pagehide', persist);
 if (Capacitor.isNativePlatform()) {
     App.addListener('appStateChange', ({ isActive }) => { if (!isActive) {
-        scene?.cancelDrag();
+        scene?.cancelControls();
         pause();
         persist();
     } });

@@ -2,9 +2,9 @@
   "touch": "Relative touch + cancel + no jump on next touch passed",
   "performance": {
     "frames": 180,
-    "p50ms": 16.700000000000045,
+    "p50ms": 16.699999999999818,
     "p95ms": 33.40000000000009,
-    "phaserFps": 51.08203125,
+    "phaserFps": 49.02734375,
     "enemies": 24,
     "children": 92,
     "renderer": 2
