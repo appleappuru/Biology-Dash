@@ -219,6 +219,7 @@ export class Patrol {
         // gains repeat availability instead of pretending to kill microbes.
         this.medicineCooldownTotal=this.medicine==='doxycycline'?12-4*charge:12+6*charge;
         this.medicineCooldown = this.medicineCooldownTotal; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.enemies) {
+        if(e.hp<=0)continue;
         const effect = medicineEffect(this.medicine, e.kind);
         if(effect.effective)affected++;else if(PATHOGENS.find(p=>p.id===e.kind)?.susceptibility[this.medicine]==='not-targeted')noTarget++;else resistant++;
         e.medicineReaction = { id: this.medicine, until: this.time + 2.2, effective: effect.effective, effect: effect.effect };

@@ -35,3 +35,7 @@ it('early calls cancel safely, tap recruits one, and terminal patrols reject cal
  p.medicineCooldown=0;p.beginMedicineCharge();p.phase='defeat';expect(p.releaseMedicineCharge()).toBe(false);expect(p.squad).toBe(13);
  expect(p.useMedicine(1)).toBe(false);
 });
+it('medicine feedback excludes already-cleared enemies waiting for cleanup',()=>{
+ const p=fixture();p.spawn('dual-resistant');p.enemies[1].hp=0;p.useMedicine();
+ const event=p.events.find(e=>e.type==='medicine');expect(event?.text).toContain('1 wall stress');expect(event?.text).not.toContain('resistant');expect(p.enemies[1].medicineReaction).toBeUndefined();
+});

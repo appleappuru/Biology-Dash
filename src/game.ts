@@ -1,7 +1,7 @@
 import {rosterOption} from './roster';
 import * as Phaser from 'phaser';
 import { Patrol, BALANCE, type PatrolEvent } from './simulation';
-import { PATHOGENS, ANTIBODY_NAMES, medicineStyle } from './content';
+import { PATHOGENS, ANTIBODY_NAMES, medicineEffect, medicineStyle } from './content';
 
 
 
@@ -13,7 +13,7 @@ export interface GameHooks {
     gesture: () => void;
 }
 interface CellView { node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; shadow: Phaser.GameObjects.Ellipse; digest: Phaser.GameObjects.Image; vesicle: Phaser.GameObjects.Graphics; membrane: Phaser.GameObjects.Graphics; birth: number }
-interface EnemyView { node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; health: Phaser.GameObjects.Rectangle; tag: Phaser.GameObjects.Text; label: Phaser.GameObjects.Text; status: Phaser.GameObjects.Text; row: number; hitUntil: number; lastX: number; heading: number }
+interface EnemyView { preview: Phaser.GameObjects.Graphics; node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; health: Phaser.GameObjects.Rectangle; tag: Phaser.GameObjects.Text; label: Phaser.GameObjects.Text; status: Phaser.GameObjects.Text; row: number; hitUntil: number; lastX: number; heading: number }
 interface GateView { node: Phaser.GameObjects.Container; panels: Phaser.GameObjects.Container[] }
 /** One orthographic-style perspective shared by sprites, gates, ground and input. */
 export function project(x: number, y: number) {
@@ -334,7 +334,7 @@ export class PatrolScene extends Phaser.Scene {
     drawSquad(time: number) {
         const p = this.patrol, count = p.squad;
         this.molecules.clear();
-        if(p.chargingMedicine){
+        if(p.chargingMedicine && p.phase==='playing'){
             const c=p.medicineCharge,color=p.level<3?0xb8f4d8:medicineStyle(p.medicine).color;
             this.molecules.lineStyle(4,color,.9).beginPath().arc(210,260,24+c*18,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.04,c)).strokePath();
             if(p.level<3){
@@ -435,8 +435,9 @@ export class PatrolScene extends Phaser.Scene {
                 const health = this.add.rectangle(-22, size * .48, 44, 3, 0xb1f1cc).setOrigin(0, .5);
                 const tag = this.add.text(size * .35, -size * .2, '', { fontFamily: 'Arial', fontSize: '10px', color: '#e4c4ff', fontStyle: 'bold', stroke: '#472965', strokeThickness: 2 });
                 const status=this.add.text(0,size*.68,'',{fontFamily:'Arial',fontSize:'9px',color:'#f7e2b7',stroke:'#09232c',strokeThickness:3,align:'center'}).setOrigin(.5);
-                const node = this.add.container(q.x, q.y, [shadow, body, label, health, tag,status]);
-                v = { node, body, health, tag, label, status, row: idx, hitUntil: 0, lastX: e.x, heading: 0 }; this.views.set(e.id, v);
+                const preview=this.add.graphics().setName('support-preview-'+e.id);
+                const node = this.add.container(q.x, q.y, [shadow, body, preview, label, health, tag,status]);
+                v = { preview, node, body, health, tag, label, status, row: idx, hitUntil: 0, lastX: e.x, heading: 0 }; this.views.set(e.id, v);
             }
             v.heading = e.x < v.lastX - .025 ? 1 : e.x > v.lastX + .025 ? 2 : 0;
             const pose = time < v.hitUntil ? 3 : v.heading;
@@ -447,6 +448,23 @@ export class PatrolScene extends Phaser.Scene {
             const localY=actor?(project(actor.x,actor.y).y-q.y)/q.scale:0;
             v.body.setDisplaySize(size*(1-swallow*.86),size*(1-swallow*.86)).setX(localX*swallow).setAlpha(1-swallow*.65);
             if(actor)v.body.y=localY*swallow;
+            v.preview.clear().setVisible(p.phase==='playing' && p.chargingMedicine && p.level>=3 && e.hp>0 && !swallow);
+            if(v.preview.visible){
+                const effect=medicineEffect(p.medicine,e.kind),radius=size*.49;
+                v.preview.setData('effect',effect.effective?effect.effect:'unaffected');
+                if(effect.effective){
+                    const color=medicineStyle(p.medicine).color;
+                    v.preview.lineStyle(2+p.medicineCharge*2,color,.85);
+                    // Brackets anticipate wall stress; pause bars anticipate growth suppression.
+                    for(const [sx,sy] of [[-1,-1],[1,-1],[-1,1],[1,1]]){
+                        v.preview.lineBetween(sx*radius,sy*(radius-9),sx*radius,sy*radius);
+                        v.preview.lineBetween(sx*radius,sy*radius,sx*(radius-9),sy*radius);
+                    }
+                    if(effect.effect==='inhibit')v.preview.lineBetween(-4,radius-6,-4,radius+4).lineBetween(4,radius-6,4,radius+4);
+                }else{
+                    v.preview.lineStyle(2,0xa8bbc0,.8).strokeCircle(0,radius,6).lineBetween(-4,radius+4,4,radius-4);
+                }
+            }
             const reaction=e.medicineReaction;
             const showReaction=reaction && reaction.until>p.time;
             v.status.setText(showReaction ? !reaction.effective ? (organism.kind==='fungus' && reaction.id!=='micafungin' || organism.kind==='bacterium' && reaction.id==='micafungin'?'No target':'Resistant') : reaction.effect==='inhibit'?'Growth paused':'Wall stress' : e.inhibited?'Growth paused':'');

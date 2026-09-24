@@ -266,7 +266,8 @@ function tick(p: Patrol,force=false) {
     const b = document.querySelector<HTMLButtonElement>('#support');
     if (b) {
         const supportName=p.level<3?'Call cells':medicineStyle(p.medicine).nickname;
-        b.textContent = p.level<3 && p.squad>=30 && !p.chargingMedicine?'Squad full · 30 cells':p.chargingMedicine ? (p.level<3?'+'+Math.min(30-p.squad,1+Math.floor(p.medicineCharge*3))+' cells · '+(p.medicineCharge>=1?'RELEASE!':'Keep holding'):p.medicineCharge>=1?'FULL · RELEASE!':'Charging '+Math.round(p.medicineCharge*100)+'% · Release') : p.medicineCooldown>0?'Recharging · '+Math.ceil(p.medicineCooldown)+'s':'Hold / release · '+supportName;
+        const matches=p.enemies.filter(e=>e.hp>0&&medicineEffect(p.medicine,e.kind).effective).length;
+        b.textContent = p.level<3 && p.squad>=30 && !p.chargingMedicine?'Squad full · 30 cells':p.chargingMedicine ? (p.level<3?'+'+Math.min(30-p.squad,1+Math.floor(p.medicineCharge*3))+' cells · '+(p.medicineCharge>=1?'RELEASE!':'Keep holding'):!matches?'No match · switch support':p.medicineCharge>=1?'FULL · RELEASE!':Math.round(p.medicineCharge*100)+'% · '+matches+' matched') : p.medicineCooldown>0?'Recharging · '+Math.ceil(p.medicineCooldown)+'s':'Hold / release · '+supportName;
         b.disabled = !p.supportReady && !p.chargingMedicine;
         b.classList.toggle('charging',p.chargingMedicine);
         b.setAttribute('aria-label',p.chargingMedicine?b.textContent:'Hold to charge and release · '+supportName);
