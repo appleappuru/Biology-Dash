@@ -77,3 +77,6 @@ Patrols1–2 provide one optional Call cells button, sharing the later support h
 
 ## First victory momentum — September24
 Next patrol after Patrol1 launches Patrol2 immediately with the saved lineup. Recruitment/upgrade remains an optional result action, and the map still offers detailed preparation. Patrol3 and later retain preflight choices for newly introduced systems. No automatic purchases, lineup changes or extra reward settlements.
+
+## Optional patrol configuration — September24
+Play, map level cards, shop Play and Next patrol launch immediately using level-appropriate support defaults. Advanced configuration is an explicit optional Patrol setup action on the returning-player map and result screen. The initial welcome stays Play-only plus Settings. B-cell selection is optional inside setup rather than a mandatory interruption. Suggested squads use only owned, level-appropriate cells: three Macrophages after unlocking, two Plasma cells fromPatrol5, and one of each purchased Neutrophil variant where available. Suggestions do not overwrite saved slots or spend Coins. Manual formations/slot swaps persist customLoadout, including deliberately all-Neutrophil teams. Older mixed lineups are treated as custom; missing/default lineups use suggestions. Suggested squad restores automatic choices. Save schema remains4 with an additive flag.

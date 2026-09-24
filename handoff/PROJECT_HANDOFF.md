@@ -3,11 +3,11 @@
 ## Status and priority
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.3.2**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_4KB5CNjBhUFDfCYEyKECmNXM8tnY` (READY when verified).
-Immutable URL: https://biology-dash-public-demo-18sjuls2f-applefound.vercel.app.
-Service worker cache: `biology-21437f8cca21`.
-Newer verified local change: first-victory Next patrol starts Patrol2 directly with saved lineup. Pending next release batch; public remains0.3.2. See STATUS.md.
+Current application/package version: **0.3.3**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_D4DXk3oixJv7ajSqr4nAmp4pDfXh` (READY when verified).
+Immutable URL: https://biology-dash-public-demo-2zquhq33i-applefound.vercel.app.
+Service worker cache: `biology-069dd1db6bf6`.
+No pending application changes after0.3.3. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
 
 ## What exists
 Portrait Phaser4 + TypeScript + Vite web game, ten90-second levels. Kawaii elevated rear-view2.5D sprites with directional/hit frames; individually rendered defenders, organic formations, two-axis movement, single/pair gates with recruit/reach/tempo/shield/tradeoffs. Local approach/wrap/digest animations tied to actual cell-target interactions. Plasma antibody binding/opsonization and external medicine mechanisms, named microbes and isolate susceptibility. Explicit educational abstractions and evidence in MEDICAL_EVIDENCE.md.
@@ -25,8 +25,10 @@ v0.3.1: one-button first-run welcome, one cue at a time, first contact around4.8
 
 v0.3.2: optional reinforcement hold/release in Patrols1–2, with one-to-four arriving cells, bounded recovery/cap and gathered-cell preview. Full natural90second opening patrol and public charge/release checks pass. No upfront setup or medicine choices added.
 
+v0.3.3: configuration is optional for all patrols. Play/Next/map level cards launch directly. Suggested squads add owned, level-appropriate roles; manual squads and a restore-suggestions option persist. B-cell selection is optional in setup. Fresh welcome stays uncluttered.
+
 ## Validation at last release
-115 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.3.2. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
+117 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.3.3. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
 Not verified: real-device performance, subjective sound quality, human enjoyment/retention, educational efficacy, clinician review, native readiness. The broad improvement objective is not complete.
 
 ## Resume work after explicit permission

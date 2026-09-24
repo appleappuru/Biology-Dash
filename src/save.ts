@@ -5,6 +5,7 @@ import type { AntibodyProfile } from './content';
 export interface Save {
     version: number;
     roster: RosterState;
+    customLoadout: boolean;
     economy: EconomyState;
     completed: number[];
     stars: Record<string, number>;
@@ -19,7 +20,7 @@ export interface Save {
     antibody: AntibodyProfile;
     checks: Partial<Learning>;
 }
-export const freshSave = (): Save => ({ version: RULES_VERSION, roster:defaultRoster(), economy:freshEconomy(), completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, showReach: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
+export const freshSave = (): Save => ({ version: RULES_VERSION, roster:defaultRoster(), customLoadout:false, economy:freshEconomy(), completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, showReach: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
 export function parseSave(raw: string | null): Save { try {
     const v = JSON.parse(raw ?? 'null');
     // Encounter revisions preserve the progression schema.
@@ -58,6 +59,7 @@ export function parseSave(raw: string | null): Save { try {
         d.economy.transactions.push({id:'legacy-conversion',source:'legacy-credits-1-to-1',amount:d.credits});
     }
     for(const r of ROSTER)if(!r.cost&&(r.level===1||d.completed.includes(r.level-1))&&!d.roster.owned.includes(r.id))d.roster.owned.push(r.id);
+    d.customLoadout=typeof v.customLoadout==='boolean'?v.customLoadout:d.roster.loadout.some(id=>id!=='neutro');
     return d;
 }
 catch {

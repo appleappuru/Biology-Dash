@@ -31,7 +31,16 @@ export function upgradePreview(id:RosterId,level:number){
 }
 
 /** Resolve a replay's available cast without mutating the player's saved team. */
-export function deploymentFor(roster:RosterState,level:number){
+export function deploymentFor(roster:RosterState,level:number,suggested=false){
+ if(suggested){
+  const members:RosterId[]=Array(roster.loadout.length).fill('neutro');
+  const has=(id:RosterId)=>roster.owned.includes(id)&&rosterOption(id).level<=level;
+  if(has('maco'))members.splice(0,3,'maco','maco','maco');
+  if(has('pluma'))members.splice(members.length-2,2,'pluma','pluma');
+  if(has('zip'))members[3]='zip';
+  if(has('scout'))members[4]='scout';
+  return deploymentFor({...roster,loadout:members},level);
+ }
  const members=roster.loadout.map(id=>roster.owned.includes(id)&&rosterOption(id).level<=level?id:'neutro') as RosterId[];
  const substitutions=members.filter((id,i)=>id!==roster.loadout[i]).length;
  const taggers=members.filter(id=>rosterOption(id).role==='plasma').length;
