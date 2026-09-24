@@ -146,7 +146,7 @@ export class Patrol {
             const e = this.enemies[this.enemies.length - 1];
             const angle = rotation + i * 2.4;
             e.x = cx + Math.cos(angle) * (17 + this.random() * 22);
-            e.y = (opening ? 290 : -55) - i * 24 - this.random() * 15;
+            e.y = (opening ? 440 : -55) - i * 24 - this.random() * 15;
         }
         return count;
     }

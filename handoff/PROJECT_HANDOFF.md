@@ -3,10 +3,10 @@
 ## Status and priority
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.3.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_EruA92RgdcjyE4NevUjnxem2Kj9N` (READY when verified).
-Immutable URL: https://biology-dash-public-demo-mf33qtlkb-applefound.vercel.app.
-Service worker cache: `biology-91e485084939`.
+Current application/package version: **0.3.1**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_DM7cNeAGq1WiN29njh2NHV9E5P1D` (READY when verified).
+Immutable URL: https://biology-dash-public-demo-opd9gihpi-applefound.vercel.app.
+Service worker cache: `biology-6234c4c00f85`.
 No pending application changes after that release; handoff documentation is newer. Check live state before making a new release.
 
 ## What exists
@@ -21,8 +21,10 @@ v0.2.4: quiet directional tissue-interception cues and up to3 local markers, exc
 
 v0.3.0: charged medicine support from Patrol3 with tested pointer/key cancellation and full natural-patrol verification. Follow ROADMAP.md and the full continuous-product objective; first-patrol active charge and richer weapon/progression systems remain pending.
 
+v0.3.1: one-button first-run welcome, one cue at a time, first contact around4.8s. Campaign opens after first win. Natural opening and actual public first-play/save/offline checks pass. User priority: simpler and more engaging first play; evaluate fun through human observation rather than claiming it from automated checks.
+
 ## Validation at last release
-113 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.3.0. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
+113 unit tests, typecheck and production build passed. Latest browser tests: breach-warning (320px including medicine kit), input-performance (touch/crowd), full local production patrol/rewards/reload/offline, public version and cache-upgrade. Prior startup/opening tests remain recorded for0.2.3. Production exact-byte files/version manifest/no-index+robots verified. Phone Settings/desktop version labels show0.3.1. Returning service-worker client kept42Coins, roster/upgrades/loadout/transactions and reloaded offline. Screenshots/JSON artifacts retained.
 Not verified: real-device performance, subjective sound quality, human enjoyment/retention, educational efficacy, clinician review, native readiness. The broad improvement objective is not complete.
 
 ## Resume work after explicit permission
