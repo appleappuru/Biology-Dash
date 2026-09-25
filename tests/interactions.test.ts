@@ -41,7 +41,7 @@ describe('individual phagocytosis',()=>{
     });
     it('medication interruption never produces a false engulfment/digestion',()=>{
         const {p,e}=encounter();while(!p.cells.some(c=>c.phase==='wrap'))p.step(.05);
-        e.hp=10;p.useMedicine();p.step(.05);
+        e.hp=.2;p.useMedicine();p.step(.05);
         expect(p.events.find(e=>e.type==='death')).toMatchObject({cause:'amoxicillin'});
         expect(p.cells.some(c=>c.phase==='digest')).toBe(false);
     });

@@ -1,0 +1,15 @@
+{
+  "initial": {
+    "squad": 1,
+    "id": 1,
+    "size": 83.47898269360925
+  },
+  "result": {
+    "time": 32.00505999998255,
+    "kills": 9,
+    "spent": 4,
+    "phase": "victory",
+    "settled": 1
+  },
+  "errors": []
+}

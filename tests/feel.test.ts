@@ -6,7 +6,7 @@ const tick = (p: Patrol, seconds: number) => {
     for (let i = 0; i < Math.round(seconds / .05); i++) p.step(.05);
 };
 const authoredGates = () => {
-    const p = new Patrol(1);
+    const p = new Patrol(2);
     const gates: Gate[] = [];
     p.nextSpawn = Infinity;
     p.bossSpawned = true;
@@ -22,7 +22,7 @@ const authoredGates = () => {
 
 describe('two-axis patrol', () => {
     it('moves on both axes while keeping the entire squad in the corridor', () => {
-        const p = new Patrol(1);
+        const p = new Patrol(2);
         p.move(-100, -100);
         expect([p.x,p.y]).toEqual([82,460]);
         p.move(900,900);
@@ -33,7 +33,7 @@ describe('two-axis patrol', () => {
         expect([p.x,p.y]).toEqual([180,635]);
     });
     it('advancing brings individual cells within approach reach', () => {
-        const forward = new Patrol(1), rear = new Patrol(1);
+        const forward = new Patrol(2), rear = new Patrol(2);
         for (const p of [forward,rear]) {
             p.spawn('susceptible');
             p.enemies[0].x = 210; p.enemies[0].y = 390;
@@ -46,7 +46,7 @@ describe('two-axis patrol', () => {
         expect(rear.events.some(e=>e.type==='hit')).toBe(false);
     });
     it('collects a passed gate once even after retreat and advance', () => {
-        const p = new Patrol(1);
+        const p = new Patrol(2);
         const g = {id:1,y:500,used:false};
         p.gates.push(g);
         p.move(110,635); p.step(.05);
@@ -60,7 +60,7 @@ describe('two-axis patrol', () => {
         expect(p.events.filter(e=>e.type==='gate')).toHaveLength(1);
     });
     it('does not erase an enemy simply because the squad moved ahead of it', () => {
-        const p = new Patrol(1);
+        const p = new Patrol(2);
         p.spawn('susceptible');
         p.enemies[0].x = p.x; p.enemies[0].y = 620;
         p.move(p.x,460); p.step(.05);
@@ -107,7 +107,7 @@ describe('authored gate abilities and tradeoffs', () => {
     });
     it('tempo accelerates engulfment and expires without a permanent upgrade', () => {
         const {p,gates} = authoredGates();
-        const ordinary = new Patrol(1);
+        const ordinary = new Patrol(2);p.time=0;p.nextSpawn=999;p.nextGate=999;ordinary.nextSpawn=999;ordinary.nextGate=999;
         p.applyGate(gates[1],'right');
         for (const patrol of [p,ordinary]) {
             patrol.spawn('susceptible',true);
@@ -133,20 +133,20 @@ describe('feedback and terminal outcomes', () => {
     });
     it('medicine kills are not resurrected by growth before the death pass', () => {
         const p = new Patrol(3); p.spawn('susceptible');
-        p.enemies[0].hp=18; p.enemies[0].y=200;
+        p.enemies[0].hp=.2; p.enemies[0].y=200;
         p.useMedicine(); p.step(.05);
         expect(p.enemies).toHaveLength(0); expect(p.kills).toBe(1);
         expect(p.events.filter(e=>e.type==='death')).toHaveLength(1);
     });
     it('a breached boss loses the patrol even in the squad lane under a shield', () => {
-        const p = new Patrol(1); p.shieldRemaining=8;
+        const p = new Patrol(2); p.shieldRemaining=8;
         p.spawn('susceptible',true);
         p.enemies[0].x=p.x; p.enemies[0].y=714;
         p.step(.05);
         expect(p.phase).toBe('defeat'); expect(p.kills).toBe(0);
     });
     it('nonfinite and zero frames do not mutate simulation or attack timers', () => {
-        const p=new Patrol(1); const before=JSON.stringify(p);
+        const p=new Patrol(2); const before=JSON.stringify(p);
         p.step(NaN); p.step(Infinity); p.step(0);
         expect(JSON.stringify(p)).toBe(before);
     });
@@ -168,7 +168,7 @@ describe('rules upgrade save migration', () => {
 
 describe('patrol recognition', () => {
     it('records actual casualties without penalizing strategic reassignment or shielded contact', () => {
-        const p=new Patrol(1);
+        const p=new Patrol(2);
         p.applyGate({id:1,y:500,used:false,left:{id:'risk',label:'Trade',detail:'Trade',kind:'risk',cost:3,value:36}},'left');
         expect(p.casualties).toBe(0);
         p.shieldRemaining=8;p.lose('shielded');

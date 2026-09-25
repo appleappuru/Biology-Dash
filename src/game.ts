@@ -12,7 +12,7 @@ export interface GameHooks {
     pause: () => void;
     gesture: () => void;
 }
-interface CellView { node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; shadow: Phaser.GameObjects.Ellipse; digest: Phaser.GameObjects.Image; vesicle: Phaser.GameObjects.Graphics; membrane: Phaser.GameObjects.Graphics; birth: number }
+interface CellView { boundId?:number; node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; shadow: Phaser.GameObjects.Ellipse; digest: Phaser.GameObjects.Image; vesicle: Phaser.GameObjects.Graphics; membrane: Phaser.GameObjects.Graphics; birth: number }
 interface EnemyView { preview: Phaser.GameObjects.Graphics; node: Phaser.GameObjects.Container; body: Phaser.GameObjects.Image; health: Phaser.GameObjects.Rectangle; tag: Phaser.GameObjects.Text; label: Phaser.GameObjects.Text; status: Phaser.GameObjects.Text; row: number; hitUntil: number; lastX: number; heading: number }
 interface GateView { node: Phaser.GameObjects.Container; panels: Phaser.GameObjects.Container[] }
 /** One orthographic-style perspective shared by sprites, gates, ground and input. */
@@ -156,9 +156,10 @@ export class PatrolScene extends Phaser.Scene {
             const v = this.views.get(event.enemyId);
             if (v) {
                 if(event.cause==='phagocytosis'){v.node.destroy();this.views.delete(event.enemyId);}
-                else {this.floatFeedback(event.cause==='micafungin'?'Fungal wall disrupted':'Cell wall disrupted',v.node.x,v.node.y-30,0xf4dfbd);this.dismissEnemy(event.enemyId,v,true);}
+                else {this.floatFeedback(event.cause==='defensin'?'Membrane disrupted':event.cause==='micafungin'?'Fungal wall disrupted':'Cell wall disrupted',v.node.x,v.node.y-30,0xf4dfbd);this.dismissEnemy(event.enemyId,v,true);}
             }
         }
+        if(event.type==='retire' && this.patrol.level===1){const q=project(event.x!,event.y!);this.floatFeedback('Hug complete!',q.x,q.y-75,0xc7ffe4);}
         if (event.type === 'loss') {
             if (!this.reducedMotion) this.cameras.main.shake(90, .0018);
         }
@@ -200,7 +201,7 @@ export class PatrolScene extends Phaser.Scene {
         this.tweens.add({targets:badge,alpha:0,delay:900,duration:this.reducedMotion?0:250,onComplete:()=>badge.destroy()});
     }
     careBurst(event: PatrolEvent) {
-        const med=medicineStyle(event.cause && event.cause!=='phagocytosis'?event.cause:this.patrol.medicine);
+        const med=medicineStyle(event.cause && event.cause!=='phagocytosis' && event.cause!=='defensin'?event.cause:this.patrol.medicine);
         const reduced=this.reducedMotion;
         const charge=event.charge??0;
         // An external care-package emblem is a UI metaphor, not a literal drug route or cell weapon.
@@ -210,7 +211,7 @@ export class PatrolScene extends Phaser.Scene {
         pod.fillStyle(0x173945).fillCircle(-121,3,2.5).fillCircle(-102,3,2.5).lineStyle(2,0x173945).beginPath().arc(-111,7,5,0,Math.PI).strokePath();
         pod.fillStyle(0xf197ae,.8).fillEllipse(-126,9,6,3).fillEllipse(-97,9,6,3);
         const title=this.add.text(-73,-22,med.nickname,{fontFamily:'Arial',fontSize:'20px',fontStyle:'bold',color:'#f0fff7'});
-        const label=this.add.text(-73,7,(charge>=.85?'CHARGED · ':'')+(med.effect==='inhibit'?'GROWTH PAUSE':'WALL BREAK'),{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#'+med.color.toString(16)});
+        const label=this.add.text(-73,7,Math.round(3+charge*3)+'s · '+(med.effect==='inhibit'?'GROWTH PAUSE':'WALL BREAK'),{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#'+med.color.toString(16)});
         banner.add([ribbon,pod,title,label]);
         if(!reduced){banner.setScale(.82);this.tweens.add({targets:banner,scale:1,duration:260,ease:'Back.Out'});}
         this.tweens.add({targets:banner,alpha:0,delay:1400,duration:reduced?0:280,onComplete:()=>banner.destroy()});
@@ -335,9 +336,9 @@ export class PatrolScene extends Phaser.Scene {
         const p = this.patrol, count = p.squad;
         this.molecules.clear();
         if(p.chargingMedicine && p.phase==='playing'){
-            const c=p.medicineCharge,color=p.level<3?0xb8f4d8:medicineStyle(p.medicine).color;
+            const c=p.medicineCharge,color=p.level<1?0xb8f4d8:medicineStyle(p.medicine).color;
             this.molecules.lineStyle(4,color,.9).beginPath().arc(210,260,24+c*18,-Math.PI/2,-Math.PI/2+Math.PI*2*Math.max(.04,c)).strokePath();
-            if(p.level<3){
+            if(p.level<1){
                 const gathered=Math.min(30-p.squad,1+Math.floor(c*3));
                 for(let i=0;i<gathered;i++){
                     const x=210+(i-(gathered-1)/2)*17;
@@ -346,10 +347,20 @@ export class PatrolScene extends Phaser.Scene {
                 }
             }else this.molecules.fillStyle(color,.25+c*.35).fillCircle(210,260,9+c*13);
         }
+        const bound=new Set(this.cells.map(v=>v.boundId).filter(id=>p.cells.some(c=>c.id===id)));
         this.cells.forEach((cell, i) => {
-            const actor = p.cells[i];
+            let actor=p.cells.find(c=>c.id===cell.boundId);
+            if(!actor && cell.boundId!==undefined){
+                if(cell.node.visible){
+                    const ghost=this.add.image(cell.node.x,cell.node.y,'defenders-v2',Number(cell.body.frame.name)).setDisplaySize(p.level===1?110:43,p.level===1?110:43).setDepth(900);
+                    this.tweens.add({targets:ghost,alpha:0,scaleX:ghost.scaleX*.6,scaleY:ghost.scaleY*.6,duration:this.reducedMotion?150:400,onComplete:()=>ghost.destroy()});
+                }
+                cell.node.setVisible(false);cell.boundId=undefined;
+            }
+            if(!actor){actor=p.cells.find(c=>!bound.has(c.id));if(actor){cell.boundId=actor.id;bound.add(actor.id);cell.birth=time;}}
+
             cell.membrane.clear();
-            if (!actor || i >= count) {
+            if (!actor) {
                 if (cell.node.visible && i < this.lastSquad) {
                     const ghost=this.add.image(cell.node.x,cell.node.y,'defenders-v2',Math.floor(Number(cell.body.frame.name)/4)*4+3).setDisplaySize(38,38).setDepth(900);
                     this.tweens.add({targets:ghost,alpha:0,y:ghost.y+12,duration:this.reducedMotion?1:320,onComplete:()=>ghost.destroy()});
@@ -362,7 +373,7 @@ export class PatrolScene extends Phaser.Scene {
             const dx=q.x-cell.node.x;
             const heading=target ? target.x<actor.x-5?1:target.x>actor.x+5?2:0 : Math.abs(dx)>.12?dx<0?1:2:0;
             cell.body.setFrame(rank*4+heading);
-            const size=rank===1?53:rank===2?43:actor.variant==='zip'?37:actor.variant==='scout'?47:43;
+            const size=(rank===1?53:rank===2?43:actor.variant==='zip'?37:actor.variant==='scout'?47:43)*(p.level===1?2.8:1);
             const wrap=actor.phase==='wrap', active=actor.phase==='approach'||wrap;
             const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.13:active?Math.sin(p.time*13+i)*.045:0;
             cell.body.setDisplaySize(size*(1+deform),size*(1-deform*.55));
@@ -375,7 +386,7 @@ export class PatrolScene extends Phaser.Scene {
             if(actor.variant)cell.body.setTint(rosterOption(actor.variant).color);
             let mark=cell.node.getByName('variant-mark') as Phaser.GameObjects.Text;
             if(!mark){mark=this.add.text(0,-18,'',{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#fff8df',stroke:'#203849',strokeThickness:3}).setOrigin(.5).setName('variant-mark');cell.node.add(mark);}
-            mark.setText(actor.variant==='zip'?'»':actor.variant==='scout'?'◇':'');
+            mark.setText(actor.variant==='neutro'&&(p.upgrades.neutro??0)>0?String(1+(p.upgrades.neutro??0)-(actor.captures??0)):actor.variant==='zip'?'»':actor.variant==='scout'?'◇':'');
             if(arrival>0)cell.body.setTint(0xc7ffe4);
             cell.digest.setVisible(actor.phase==='digest' && !!actor.digestKind);
             cell.vesicle.clear();
@@ -387,7 +398,7 @@ export class PatrolScene extends Phaser.Scene {
             }
             if(wrap && target){
                 const t=project(target.x,target.y), vx=t.x-q.x,vy=t.y-q.y,d=Math.max(1,Math.hypot(vx,vy)),nx=-vy/d,ny=vx/d;
-                const progress=actor.progress, radius=(target.boss?24:16)*q.scale;
+                const progress=actor.progress, radius=(target.boss?24:16)*q.scale*(p.level===1?2.8:1);
                 const contactX=vx-vx/d*radius,contactY=vy-vy/d*radius;
                 const color=rank===1?0x65c4bd:0xbadfee;
                 cell.membrane.setDepth(Math.max(q.y,t.y)+7);
@@ -411,6 +422,10 @@ export class PatrolScene extends Phaser.Scene {
                 }
             }
         });
+        for(const shot of p.defensins){
+            const q=project(shot.x,shot.y);
+            this.molecules.fillStyle(0x94ffcf,.2).fillCircle(q.x,q.y,11).fillStyle(0xbaffdf,.95).fillCircle(q.x,q.y,4);
+        }
         for(const a of p.antibodies){
             const q=project(a.x,a.y), alpha=a.phase==='miss'?Math.max(0,1-a.age/.65):.8;
             this.drawAntibody(q.x,q.y,4.8*q.scale,this.reducedMotion?0:Math.sin(a.age*3+a.id)*.6,alpha,a.phase==='miss'?0xb5a7b8:ANTIBODY_NAMES[a.profile.epitope].color);
@@ -427,7 +442,7 @@ export class PatrolScene extends Phaser.Scene {
         const p = this.patrol;
         for (const e of p.enemies) {
             let v = this.views.get(e.id);
-            const organism = PATHOGENS.find(k => k.id === e.kind)!, idx = organism.art.row, q = project(e.x, e.y), size = e.boss ? 96 : organism.kind === 'fungus' ? 64 : 57;
+            const organism = PATHOGENS.find(k => k.id === e.kind)!, idx = organism.art.row, q = project(e.x, e.y), size = (e.boss ? 96 : organism.kind === 'fungus' ? 64 : 57)*(p.level===1?1.7:1);
             if (!v) {
                 const shadow = this.add.ellipse(0, size * .25, size * .75, size * .24, 0x001018, .4);
                 const body = this.add.image(0, 0, organism.art.texture, idx * 4).setDisplaySize(size, size);
@@ -448,7 +463,7 @@ export class PatrolScene extends Phaser.Scene {
             const localY=actor?(project(actor.x,actor.y).y-q.y)/q.scale:0;
             v.body.setDisplaySize(size*(1-swallow*.86),size*(1-swallow*.86)).setX(localX*swallow).setAlpha(1-swallow*.65);
             if(actor)v.body.y=localY*swallow;
-            v.preview.clear().setVisible(p.phase==='playing' && p.chargingMedicine && p.level>=3 && e.hp>0 && !swallow);
+            v.preview.clear().setVisible(p.phase==='playing' && p.chargingMedicine && e.hp>0 && !swallow);
             if(v.preview.visible){
                 const effect=medicineEffect(p.medicine,e.kind),radius=size*.49;
                 v.preview.setData('effect',effect.effective?effect.effect:'unaffected');

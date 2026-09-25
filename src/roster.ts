@@ -1,7 +1,7 @@
 import type { DefenderId } from './content';
 export type RosterId = 'neutro'|'zip'|'scout'|'maco'|'pluma';
 export const ROSTER: {id:RosterId;name:string;role:DefenderId;level:number;cost:number;mark:string;color:number;detail:string;upgrade:string}[] = [
- {id:'neutro',name:'Neutrophil',role:'neutrophil',level:1,cost:0,mark:'●',color:0xc4e5f5,detail:'Balanced catcher. Reliable reach and recovery.',upgrade:'Recovery time −8% per level'},
+ {id:'neutro',name:'Neutrophil',role:'neutrophil',level:1,cost:0,mark:'●',color:0xc4e5f5,detail:'One engulfment per cell. Upgrades add more hugs.',upgrade:'One extra engulfment per upgrade'},
  {id:'zip',name:'Fast neutrophil',role:'neutrophil',level:2,cost:60,mark:'»',color:0xffd897,detail:'30% faster approach; 18% less reach. Great close up.',upgrade:'Approach 8% faster per level'},
  {id:'scout',name:'Long-reach neutrophil',role:'neutrophil',level:3,cost:90,mark:'◇',color:0xc9b4ed,detail:'25% more reach; 20% slower wrapping. Finds stragglers.',upgrade:'Reach +6 per level'},
  {id:'maco',name:'Macrophage',role:'macrophage',level:2,cost:0,mark:'♥',color:0x86d6c1,detail:'Broad hugs; stronger colony bites, slower approach.',upgrade:'Tagged wrapping time −10% per level'},
@@ -21,7 +21,7 @@ export function upgradePreview(id:RosterId,level:number){
  const current=Math.max(0,Math.min(2,Math.floor(level))),next=Math.min(2,current+1);
  const format=(n:number)=>{
   const e=upgradeEffect(id,n);
-  if(id==='neutro')return `${Math.round((1-e.recoveryFactor)*100)}% shorter recovery`;
+  if(id==='neutro')return `${1+n} engulfment${n?'s':''} per cell`;
   if(id==='zip')return `+${Math.round((e.approachFactor-1)*100)}% approach speed`;
   if(id==='scout')return `+${e.reachBonus} reach`;
   if(id==='maco')return `${Math.round((1-e.taggedWrapFactor)*100)}% shorter tagged wraps`;

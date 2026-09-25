@@ -7,7 +7,7 @@ export const CONTACT_DISTANCE = 25;
 // Arcade charge tuning, never a medication dose or clinical potency model.
 export const MEDICINE_CHARGE_SECONDS = 1.5;
 export interface CellActor {
-    id: number; x: number; y: number; role: DefenderId; variant?: RosterId;
+    id: number; slot: number; captures?: number; spent?: boolean; x: number; y: number; role: DefenderId; variant?: RosterId;
     phase: 'idle' | 'approach' | 'wrap' | 'digest' | 'return';
     progress: number; duration: number; cooldown: number; targetId?: number; digestKind?: PathogenId;
 }
@@ -23,9 +23,10 @@ export interface Enemy {
     hp: number;
     maxHp: number;
     claimedBy?: number;
-    lastCause?: 'phagocytosis' | MedicineId;
+    lastCause?: 'phagocytosis' | 'defensin' | MedicineId;
     lastCellId?: number;
     medicineReaction?: { id: MedicineId; until: number; effective: boolean; effect: 'kill' | 'inhibit' | 'none' };
+    exposure?: {id: MedicineId; remaining: number; rate: number};
     tagged: boolean;
     complementTagged?: boolean;
     tagAffinity?: number;
@@ -53,13 +54,13 @@ export interface Gate {
     right?: GateOption;
 }
 export interface PatrolEvent {
-    type: 'summon' | 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit' | 'complement' | 'contact';
+    type: 'peptide' | 'retire' | 'summon' | 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit' | 'complement' | 'contact';
     text: string;
     label?: string;
     enemyId?: number;
     cellId?: number;
     assistance?: 'antibody' | 'complement' | 'both';
-    cause?: 'phagocytosis' | MedicineId;
+    cause?: 'phagocytosis' | 'defensin' | MedicineId;
     squad?: number;
     amount?: number;
     charge?: number;
@@ -109,6 +110,14 @@ export class Patrol {
     nextSpawn = 2;
     nextGate = 10;
     wavesSpawned = 0;
+    spentCells = 0;
+    nextCellId = 0;
+    nextDefensin = 6;
+    defensins: {id:number; targetId:number; x:number; y:number; age:number}[] = [];
+    get duration(){return LEVELS[this.level-1].duration;}
+    get visibleTargets(){return this.enemies.filter(e=>e.hp>0&&e.y>100&&e.y<680);}
+    activeMedicine:MedicineId='amoxicillin';
+    medicineActive = 0;
     medicineCooldown = 0;
     medicineCooldownTotal = 12;
     medicineCharge = 0;
@@ -123,26 +132,13 @@ export class Patrol {
         const charge=this.medicineCharge;this.cancelMedicineCharge();return this.useSupport(charge);
     }
     get supportReady() {
-        return this.phase==='playing' && this.medicineCooldown<=0 && (this.level<3 ? this.squad<BALANCE.maxSquad : this.enemies.some(e=>e.hp>0));
+        return this.phase==='playing' && this.medicineCooldown<=0 && this.visibleTargets.length>0 && (this.level!==1 || this.spentCells>0 || this.time>6);
     }
-    useSupport(charge = 0) {
-        if(this.level>=3)return this.useMedicine(charge);
-        if(!this.supportReady)return false;
-        charge=Number.isFinite(charge)?Math.max(0,Math.min(1,charge)):0;
-        this.cancelMedicineCharge();
-        const amount=Math.min(BALANCE.maxSquad-this.squad,1+Math.floor(charge*3));
-        this.squad+=amount;
-        this.syncCells();
-        // Arcade call for arriving defenders, never cell division or medication.
-        this.medicineCooldownTotal=8+6*charge;
-        this.medicineCooldown=this.medicineCooldownTotal;
-        this.events.push({type:'summon',charge,amount,squad:this.squad,text:'+'+amount+' arriving '+(amount===1?'cell':'cells'),x:this.x,y:this.y});
-        return true;
-    }
+    useSupport(charge = 0) { return this.useMedicine(charge); }
     id = 0;
     gateIndex = 0;
     learning: Learning = { medicine: false, cooperation: false, match: false, mismatch: false, affinity: false, recall: false, gate: false };
-    constructor(level: number, seed = level * 8917, strength = 0) { this.level = Math.max(1, Math.min(10, level)); this.seed = seed >>> 0; if(this.level===1)this.nextGate=4; this.squad = Math.min(18, 12 + strength); this.syncCells(); }
+    constructor(level: number, seed = level * 8917, strength = 0) { this.level = Math.max(1, Math.min(10, level)); this.seed = seed >>> 0; if(this.level===1)this.nextGate=4; this.squad = this.level===1?1:Math.min(18, 12 + strength);if(this.level===1){this.y=550;this.nextSpawn=.5;} this.syncCells(); }
     random() { this.seed = (Math.imul(1664525, this.seed) + 1013904223) >>> 0; return this.seed / 4294967296; }
     move(x: number, y = this.y) {
         const previousX = this.x, previousY = this.y;
@@ -155,7 +151,7 @@ export class Patrol {
     spawnCluster(opening = false) {
         const level = LEVELS[this.level - 1];
         const kind = level.pathogens[Math.floor(this.random() * level.pathogens.length)];
-        const count = this.level < 4 ? 2 : 2 + Math.floor(this.random() * 2);
+        const count = this.level===1 ? (opening?1:3) : this.level < 4 ? 2 : 2 + Math.floor(this.random() * 2);
         const cx = opening ? 210 : 100 + this.random() * 220;
         const rotation = this.random() * Math.PI * 2;
         for (let i = 0; i < count && this.enemies.length < BALANCE.maxEnemies; i++) {
@@ -163,7 +159,8 @@ export class Patrol {
             const e = this.enemies[this.enemies.length - 1];
             const angle = rotation + i * 2.4;
             e.x = cx + Math.cos(angle) * (17 + this.random() * 22);
-            e.y = (opening ? 440 : -55) - i * 24 - this.random() * 15;
+            if(opening)e.x=210;
+            e.y = (this.level===1 ? (opening?480:280) : -55) - i * 24 - this.random() * 15;
         }
         return count;
     }
@@ -206,29 +203,29 @@ export class Patrol {
         if (this.squad === 0) this.phase = 'defeat';
         return true;
     }
-    damage(enemy: Enemy, amount: number, cause: 'phagocytosis' | MedicineId, cellId?: number) {
+    damage(enemy: Enemy, amount: number, cause: 'phagocytosis' | 'defensin' | MedicineId, cellId?: number) {
         if (enemy.hp <= 0) return;
         enemy.hp -= amount; enemy.lastCause = cause; enemy.lastCellId = cellId;
         this.events.push({type:'hit',text:'',x:enemy.x,y:enemy.y,enemyId:enemy.id,amount,cause,cellId});
     }
-    useMedicine(charge = 0) { if (this.medicineCooldown > 0 || this.phase !== 'playing' || this.level < 3 || !this.enemies.some(e => e.hp > 0))
+    useMedicine(charge = 0) { if (this.medicineCooldown > 0 || this.phase !== 'playing' || !this.visibleTargets.length)
         return false;
         charge=Number.isFinite(charge)?Math.max(0,Math.min(1,charge)):0;
         this.cancelMedicineCharge();
-        // Wall bursts gain impact at a longer recovery cost. Growth suppression
-        // gains repeat availability instead of pretending to kill microbes.
-        this.medicineCooldownTotal=this.medicine==='doxycycline'?12-4*charge:12+6*charge;
-        this.medicineCooldown = this.medicineCooldownTotal; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.enemies) {
-        if(e.hp<=0)continue;
+        // Charged exposure lasts longer; suppression remains nonlethal.
+        // Durations and rates are arcade abstractions, never clinical doses.
+        const duration=3+3*charge;
+        this.activeMedicine=this.medicine;
+        this.medicineActive=duration;
+        this.medicineCooldownTotal=duration+3;
+        this.medicineCooldown = this.medicineCooldownTotal; let success = false; let affected=0, resistant=0, noTarget=0; for (const e of this.visibleTargets) {
         const effect = medicineEffect(this.medicine, e.kind);
         if(effect.effective)affected++;else if(PATHOGENS.find(p=>p.id===e.kind)?.susceptibility[this.medicine]==='not-targeted')noTarget++;else resistant++;
-        e.medicineReaction = { id: this.medicine, until: this.time + 2.2, effective: effect.effective, effect: effect.effect };
+        e.medicineReaction = { id: this.medicine, until: this.time + duration, effective: effect.effective, effect: effect.effect };
         if (effect.effective) {
             success = true;
-            if (effect.effect === 'kill')
-                this.damage(e, 18*(1+charge), this.medicine);
-            else
-                e.inhibited = true;
+            e.exposure={id:this.medicine,remaining:duration,rate:effect.effect==='kill'?10:0};
+            if(effect.effect==='inhibit')e.inhibited=true;
         }
     } this.learning.medicine ||= success; this.events.push({ type: 'medicine', charge, cause: this.medicine, text: `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` }); return true; }
     syncCells() {
@@ -239,13 +236,14 @@ export class Patrol {
         this.cells.length = Math.min(this.cells.length, this.squad);
         while (this.cells.length < this.squad) {
             const i = this.cells.length, o = cellOffset(i);
-            this.cells.push({ id: i + 1, x: this.x + o.x + (this.time>0 ? (i%2?38:-38) : 0), y: this.y + o.y + (this.time>0?20:0), phase: 'idle', progress: 0, duration: 1, cooldown: .4 + i * .043, role: this.defender });
+            this.cells.push({ id: ++this.nextCellId, slot:i, x: this.x + o.x + (this.time>0 ? (i%2?38:-38) : 0), y: this.y + o.y + (this.time>0?20:0), phase: 'idle', progress: 0, duration: 1, cooldown: .4 + i * .043, role: this.defender });
         }
-        this.cells.forEach((c,i)=>{if(this.loadout.length){c.variant=this.loadout[i%this.loadout.length];c.role=rosterOption(c.variant).role;}else c.role=this.plasma&&i===this.squad-1?'plasma':this.defender;});
+        this.cells.forEach((c,i)=>{if(this.loadout.length){c.variant=this.loadout[c.slot%this.loadout.length];c.role=rosterOption(c.variant).role;}else c.role=this.plasma&&i===this.squad-1?'plasma':this.defender;});
         if(this.loadout.length)this.plasma=this.cells.some(c=>c.role==='plasma');
     }
     cellHome(c: CellActor) {
-        const o = cellOffset(c.id - 1);
+        const o = cellOffset(this.cells.indexOf(c));
+        if(this.level===1){o.x*=1.8;o.y*=1.8;}
         return { x: Math.max(20, Math.min(400, this.x + o.x)), y: this.y + o.y };
     }
     release(c: CellActor) {
@@ -305,9 +303,11 @@ export class Patrol {
             } else if (c.phase === 'digest') {
                 c.progress = Math.min(1,c.progress + dt / c.duration);
                 this.moveCell(c, home.x, home.y, 125, dt);
-                if (c.progress >= 1) { c.digestKind = undefined; this.release(c); }
+                if (c.progress >= 1) { c.digestKind = undefined;c.captures=(c.captures??0)+1;const capacity=1+(c.variant==='neutro'?Math.min(2,this.upgrades.neutro??0):0);if(c.captures<capacity){this.release(c);}else{c.spent=true;this.spentCells++;this.events.push({type:'retire',text:'Cell used · bring fresh defenders',cellId:c.id,x:c.x,y:c.y});} }
             }
         }
+        const retired=this.cells.filter(c=>c.spent).length;
+        this.cells=this.cells.filter(c=>!c.spent);this.squad=Math.max(0,this.squad-retired);
         // Gentle separation avoids idle sprites piling up while leaving contact geometry intact.
         for (let i=0;i<this.cells.length;i++) for (let j=i+1;j<this.cells.length;j++) {
             const a=this.cells[i], b=this.cells[j], dx=a.x-b.x, dy=a.y-b.y, d=Math.hypot(dx,dy);
@@ -358,6 +358,20 @@ export class Patrol {
         }
         this.antibodies=this.antibodies.filter(a => a.phase==='diffuse' ? a.age<a.duration+.1 : a.phase==='miss' && a.age<.65);
     }
+    stepDefensins(dt:number){
+        if(this.level<2)return;
+        if(this.time>=this.nextDefensin){
+            const target=this.visibleTargets.sort((a,b)=>b.y-a.y)[0];
+            if(target){if(this.nextDefensin===6)this.events.push({type:'peptide',text:'Defensins · membrane-targeting tissue support'});this.defensins.push({id:++this.id,targetId:target.id,x:this.id%2?35:385,y:550,age:0});this.nextDefensin=this.time+1.5;}
+        }
+        for(const shot of this.defensins){
+            shot.age+=dt;const target=this.enemies.find(e=>e.id===shot.targetId&&e.hp>0);
+            if(!target){shot.age=2;continue;}
+            const dx=target.x-shot.x,dy=target.y-shot.y,d=Math.hypot(dx,dy),k=Math.min(1,dt*480/Math.max(1,d));shot.x+=dx*k;shot.y+=dy*k;
+            if(d<18){this.damage(target,10,'defensin');shot.age=2;}
+        }
+        this.defensins=this.defensins.filter(s=>s.age<2);
+    }
     step(delta: number) {
         if (this.phase !== 'playing')
             return;
@@ -368,22 +382,23 @@ export class Patrol {
         this.complementRemaining = Math.max(0, this.complementRemaining - dt);
         this.complementCooldown = Math.max(0, this.complementCooldown - dt);
         this.protection = Math.max(0, this.protection - dt);
+        this.medicineActive=Math.max(0,this.medicineActive-dt);
         this.medicineCooldown = Math.max(0, this.medicineCooldown - dt);
         this.tempoRemaining = Math.max(0, this.tempoRemaining - dt);
         this.shieldRemaining = Math.max(0, this.shieldRemaining - dt);
         const level = LEVELS[this.level - 1];
-        if (this.time >= this.nextSpawn && this.time < 75) {
+        if (this.time >= this.nextSpawn && this.time < this.duration-10) {
             const groupSize = this.spawnCluster(this.level===1 && this.wavesSpawned===0);
             this.wavesSpawned++;
             const pressure = (Math.floor(this.time / 12) % 3) !== 2;
-            this.nextSpawn = this.time + (pressure ? Math.max(1.65, 3.65 - this.level * .14) : 5.4) * groupSize;
+            this.nextSpawn = this.time + (this.level===1?6:(pressure ? Math.max(1.65, 3.65 - this.level * .14) : 5.4) * groupSize);
         }
         if (this.time >= this.nextGate && this.nextGate < 70) {
             const index = this.gateIndex++;
-            const options = GATE_CYCLE[index % GATE_CYCLE.length];
+            const options = this.level===1?{left:GATE_CYCLE[0].left,right:GATE_CYCLE[0].left}:GATE_CYCLE[index % GATE_CYCLE.length];
             const layout = this.level === 1 && index < 2 ? 'pair' : (['pair', 'left', 'right', 'pair'] as const)[index % 4];
             this.gates.push({ id: ++this.id, y: this.level===1&&index===0?250:-40, used: false, layout, left:{...options.left}, right:{...options.right} });
-            this.nextGate = this.level===1&&index===0 ? 27 : this.nextGate+17;
+            this.nextGate = this.level===1 ? this.nextGate+10 : this.nextGate+17;
         }
         if (this.time >= 60 && !this.bossSpawned && this.enemies.length < BALANCE.maxEnemies) {
             this.bossSpawned = true;
@@ -401,6 +416,14 @@ export class Patrol {
             e.x = Math.max(45, Math.min(375, e.x + Math.sin(this.time * 1.2 + e.id) * dt * (e.boss ? 6 : 12)));
             if (!e.inhibited && !e.boss) e.hp = Math.min(e.maxHp + 10, e.hp + dt * .65);
         }
+        for(const e of this.enemies){
+            if(!e.exposure)continue;
+            const exposure=e.exposure, elapsed=Math.min(dt,exposure.remaining);
+            if(exposure.rate)this.damage(e,exposure.rate*elapsed,exposure.id);
+            exposure.remaining-=dt;
+            if(exposure.remaining<=0){if(exposure.id==='doxycycline')e.inhibited=false;e.exposure=undefined;}
+        }
+        this.stepDefensins(dt);
         this.stepCells(dt);
         for (const e of this.enemies) {
             if (e.hp <= 0) {
