@@ -17,3 +17,9 @@ it('keeps twenty minutes of dense successes bounded with periodic musical space'
  for(let i=0;i<60000;i++){now=i*.02;if(i%5===0){for(let k=0;k<30;k++)director.clearance(now);director.cue('hug',now);director.cue('bind',now);}if(i%250===0)director.cue('wall',now,false,1);director.update(now);}
  expect(director.pending).toBeLessThanOrEqual(30);expect(director.combo).toBeLessThanOrEqual(64);expect(maxWindow).toBeLessThanOrEqual(33);expect(count).toBeLessThan(36000);
 });
+
+it('never celebrates a medicine discharge that affects no visible target',()=>{
+ const {d,notes}=harness();
+ for(const cause of ['amoxicillin','doxycycline','micafungin'] as const){d.reset();notes.length=0;d.event({type:'medicine',cause,charge:1,affected:0,text:''},0);expect(notes.map(n=>n.cue)).toEqual(['noMatch']);expect(d.combo).toBe(0);expect(notes[0].gain).toBeLessThan(.09);}
+ d.reset();notes.length=0;d.event({type:'medicine',cause:'amoxicillin',charge:1,affected:1,text:''},1);expect(notes.map(n=>n.cue)).toEqual(['wall','wall','ready']);expect(d.combo).toBe(0);
+});

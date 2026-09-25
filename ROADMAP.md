@@ -13,3 +13,5 @@ Authority: handoff/requirements/CONTINUOUS_PRODUCT_GOAL.md preserves the full us
 6. Conduct human touch, subjective audio, enjoyment and learning evaluation when available; automated tests do not prove these outcomes.
 
 Keep STATUS.md/RELEASES.md as evidence and release records. No claim of overall product completion.
+
+September25: verified no-match medicine audio correction is committed locally for the next release batch. Preserve outcome-specific cues; next listen and tune later-patrol crowd feedback rather than adding more sound density.

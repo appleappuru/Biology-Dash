@@ -2,7 +2,7 @@
  * Director owns musical/density policy; renderer owns Web Audio voices and lifecycle.
  */
 import type {PatrolEvent} from './simulation';
-export type Cue = 'hug'|'clear'|'bind'|'complement'|'wall'|'growth'|'fungal'|'peptide'|'threat'|'heal'|'reward'|'victory'|'ready'|'cytotoxic';
+export type Cue = 'hug'|'clear'|'bind'|'complement'|'wall'|'growth'|'fungal'|'peptide'|'threat'|'heal'|'reward'|'victory'|'ready'|'cytotoxic'|'noMatch';
 export type Bus = 'sfx'|'music'|'focus';
 export interface Note {cue:Cue; frequency:number; end?:number; duration:number; gain:number; delay?:number; priority:number; bus:Bus; variant:number;}
 export interface AudioOptions {muted:boolean;volume:number;sfxVolume:number;musicVolume:number;}
@@ -30,6 +30,7 @@ export class AudioDirector {
             case 'wall':this.note(cue,260,.26,.18,3,'focus',0,120);this.note(cue,523,.17,.08,3,'focus',.035);break;
             case 'fungal':this.note(cue,196,.3,.17,3,'focus',0,98);this.note(cue,392,.22,.09,3,'focus',.06);break;
             case 'growth':this.note(cue,440,.22,.13,3,'focus',0,330);this.note(cue,660,.18,.07,3,'focus',.07);break;
+            case 'noMatch':this.note(cue,220,.16,.08,3,'focus',0,185);break;
             case 'ready':this.note(cue,659,.18,.07,3,'focus');this.note(cue,784,.18,.05,3,'focus',.055);break;
             case 'threat':this.note(cue,130,.22,.09,2,'sfx',0,115);break;
             case 'heal':[0,7].forEach((n,i)=>this.note(cue,196*2**(n/12),.4,.10,2,'focus',i*.06));break;
@@ -59,7 +60,7 @@ export class AudioDirector {
         if(event.type==='death'){this.clearance(now);if(event.boss)this.cue('reward',now);}
         if(event.type==='tag')this.cue('bind',now);
         if(event.type==='complement')this.cue('complement',now);
-        if(event.type==='medicine')this.cue(event.cause==='doxycycline'?'growth':event.cause==='micafungin'?'fungal':'wall',now,false,event.charge);
+        if(event.type==='medicine')this.cue(event.affected===0?'noMatch':event.cause==='doxycycline'?'growth':event.cause==='micafungin'?'fungal':'wall',now,false,event.charge);
         if(event.type==='hit'&&event.cause==='defensin')this.cue('peptide',now);
         if(event.type==='gate'||event.type==='summon')this.cue('heal',now);
         if(event.type==='loss'||event.type==='boss')this.cue('threat',now);

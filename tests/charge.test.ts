@@ -35,3 +35,7 @@ it('a purchased Neutrophil strength upgrade permits two hugs, then retires that 
  for(let n=0;n<2;n++){p.spawn('susceptible');p.enemies.at(-1)!.x=p.x;p.enemies.at(-1)!.y=570;for(let i=0;i<90&&p.spentCells===0&&(p.cells[0]?.captures??0)<=n;i++)p.step(.05);if(n===0){expect(p.cells[0].id).toBe(id);expect(p.cells[0].captures).toBe(1);expect(p.squad).toBe(1);}}
  expect(p.kills).toBe(2);expect(p.spentCells).toBe(1);expect(p.squad).toBe(0);
 });
+it('reports actual affected targets for medicine feedback, excluding resistant and absent targets',()=>{
+ const p=fixture();p.enemies[0].kind='dual-resistant';p.useMedicine(1);expect(p.events.find(e=>e.type==='medicine')?.affected).toBe(0);
+ p.events=[];p.medicineCooldown=0;p.spawn('susceptible');p.enemies.at(-1)!.y=250;p.useMedicine(1);expect(p.events.find(e=>e.type==='medicine')?.affected).toBe(1);
+});

@@ -65,6 +65,7 @@ export interface PatrolEvent {
     squad?: number;
     amount?: number;
     charge?: number;
+    affected?: number;
     x?: number;
     y?: number;
 }
@@ -228,7 +229,7 @@ export class Patrol {
             e.exposure={id:this.medicine,remaining:duration,rate:effect.effect==='kill'?10:0};
             if(effect.effect==='inhibit')e.inhibited=true;
         }
-    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', charge, cause: this.medicine, text: `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` }); return true; }
+    } this.learning.medicine ||= success; this.events.push({ type: 'medicine', charge, affected, cause: this.medicine, text: `${medicineName(this.medicine)} · ${affected} ${this.medicine==='doxycycline'?'growth paused':'wall stress'}${resistant?' · '+resistant+' resistant':''}${noTarget?' · '+noTarget+' no target':''}` }); return true; }
     syncCells() {
         for (const c of this.cells.slice(this.squad)) {
             const target = this.enemies.find(e => e.id === c.targetId);

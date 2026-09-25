@@ -1,0 +1,54 @@
+{
+  "results": [
+    {
+      "medicine": "amoxicillin",
+      "kinds": [
+        "dual-resistant"
+      ],
+      "heard": [
+        "noMatch"
+      ],
+      "combo": 0,
+      "exposures": 0
+    },
+    {
+      "medicine": "amoxicillin",
+      "kinds": [
+        "candida"
+      ],
+      "heard": [
+        "noMatch"
+      ],
+      "combo": 0,
+      "exposures": 0
+    },
+    {
+      "medicine": "amoxicillin",
+      "kinds": [
+        "dual-resistant",
+        "susceptible"
+      ],
+      "heard": [
+        "wall",
+        "wall",
+        "ready"
+      ],
+      "combo": 0,
+      "exposures": 1
+    },
+    {
+      "medicine": "doxycycline",
+      "kinds": [
+        "susceptible"
+      ],
+      "heard": [
+        "growth",
+        "growth",
+        "ready"
+      ],
+      "combo": 0,
+      "exposures": 1
+    }
+  ],
+  "errors": []
+}

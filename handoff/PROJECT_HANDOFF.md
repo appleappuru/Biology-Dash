@@ -8,7 +8,7 @@ Current application/package version: **0.5.0**. Last verified production: https:
 Deployment: `dpl_FgqYVhFFhNRuJhJBzgNQcWgzXzMt` (READY when verified).
 Immutable URL: https://biology-dash-public-demo-1o721u71w-applefound.vercel.app.
 Service worker cache: `biology-b36df3432e83`.
-No pending application changes after0.5.0. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
+Pending verified local refinement: zero-affected medicine releases use a quiet no-match cue instead of success confirmation. See latest STATUS.md; public remains0.5.0. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
 
 ## v0.5.0 sound system
 src/audio.ts owns original procedural synthesis, event mapping, short musical combinations, density/voice limits and sound preferences. It shares the context passed to Phaser; no runtime sound downloads. Historical WAV assets remain unused. Master/effects/musical-reward sliders live only in Settings. No looping music. Existing mute/master values migrate; new channels are additive without changing save schema4. See AUDIO_DESIGN.md for palette, limits and test artifacts.
