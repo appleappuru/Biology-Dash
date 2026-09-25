@@ -1,6 +1,7 @@
 # Project handoff — September23,2026
 
 ## Status and priority
+Latest user priority: implement the comprehensive original, adaptive, fatigue-resistant sound design in `handoff/requirements/AUDIO_DIRECTION.md` before other feature work. Initial inspection only; no audio implementation yet. Resume after capacity reset with verification/release reserve.
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
 Current application/package version: **0.4.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.

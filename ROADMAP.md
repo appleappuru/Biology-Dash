@@ -1,5 +1,7 @@
 # Continuous product roadmap
 
+Next priority: original adaptive sound design per handoff/requirements/AUDIO_DIRECTION.md. Centralize existing audio, implement biological palettes, musical aggregation/combos, charge lifecycle and anti-fatigue mixing; playtest and refine before release.
+
 Authority: handoff/requirements/CONTINUOUS_PRODUCT_GOAL.md preserves the full user objective. This backlog is sequencing, not a reduced definition of success.
 
 1. Latest user redesign: First Hug close-up opening, limited-use cells, one-button timed medicine and tissue Defensin particles verified and deployed in0.4.0. Future: source-checked granuloma/TB formations and further visible strength/weapon upgrades.
