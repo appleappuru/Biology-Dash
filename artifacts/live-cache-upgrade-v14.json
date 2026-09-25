@@ -1,10 +1,8 @@
 {
-  "oldCaches": [
-    "biology-b36df3432e83"
-  ],
   "currentCaches": [
-    "biology-b51d50fc9b54"
+    "biology-f63786102e07"
   ],
   "offline": true,
-  "errors": []
+  "savedCredits": 42,
+  "version": "0.6.1"
 }

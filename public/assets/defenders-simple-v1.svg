@@ -1,91 +1,109 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="384" viewBox="0 0 512 384">
 <!-- Original Biology Dash characters: circles, oval arms, two eyes and a smile. Columns: forward, left, right, reaction. Rows: Neutrophil, Macrophage, Plasma cell. -->
-<g transform="translate(0 0)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="37" ry="36" fill="#fffefa"/>
-<path d="M 31 64 Q 11 44 18 38 M 97 64 Q 117 44 110 38" fill="none" stroke="#fffefa" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="51" cy="66" rx="3" ry="4"/><ellipse cx="77" cy="66" rx="3" ry="4"/></g>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+
+<!-- ROW 0: NEUTROPHIL (Smaller, faster, nimble, chubby round kawaii cell) -->
+<!-- Neutrophil Forward -->
+<g transform="translate(0 0)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="66" rx="34" ry="33" fill="#ffffff"/>
+<path d="M 33 65 Q 16 48 23 40 M 95 65 Q 112 48 105 40" fill="none" stroke="#ffffff" stroke-width="11"/>
+<ellipse cx="49" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="51" cy="65" rx="3" ry="4"/><ellipse cx="77" cy="65" rx="3" ry="4"/></g>
+<path d="M 59 75 Q 64 81 69 75" fill="none" stroke="#334b56" stroke-width="2.5"/>
 </g>
-<g transform="translate(128 0)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="37" ry="36" fill="#fffefa"/>
-<path d="M 31 64 Q 11 44 18 38 M 97 64 Q 117 44 110 38" fill="none" stroke="#fffefa" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="46" cy="66" rx="3" ry="4"/><ellipse cx="72" cy="66" rx="3" ry="4"/></g>
-<path d="M 54 76 Q 59 82 64 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Neutrophil Left -->
+<g transform="translate(128 0)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="66" rx="34" ry="33" fill="#ffffff"/>
+<path d="M 33 65 Q 16 48 23 40 M 95 65 Q 112 48 105 40" fill="none" stroke="#ffffff" stroke-width="11"/>
+<ellipse cx="49" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="46" cy="65" rx="3" ry="4"/><ellipse cx="72" cy="65" rx="3" ry="4"/></g>
+<path d="M 54 75 Q 59 81 64 75" fill="none" stroke="#334b56" stroke-width="2.5"/>
 </g>
-<g transform="translate(256 0)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="37" ry="36" fill="#fffefa"/>
-<path d="M 31 64 Q 11 44 18 38 M 97 64 Q 117 44 110 38" fill="none" stroke="#fffefa" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="56" cy="66" rx="3" ry="4"/><ellipse cx="82" cy="66" rx="3" ry="4"/></g>
-<path d="M 64 76 Q 69 82 74 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Neutrophil Right -->
+<g transform="translate(256 0)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="66" rx="34" ry="33" fill="#ffffff"/>
+<path d="M 33 65 Q 16 48 23 40 M 95 65 Q 112 48 105 40" fill="none" stroke="#ffffff" stroke-width="11"/>
+<ellipse cx="49" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="56" cy="65" rx="3" ry="4"/><ellipse cx="82" cy="65" rx="3" ry="4"/></g>
+<path d="M 64 75 Q 69 81 74 75" fill="none" stroke="#334b56" stroke-width="2.5"/>
 </g>
-<g transform="translate(384 0)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="37" ry="36" fill="#fffefa"/>
-<path d="M 31 64 Q 11 44 18 38 M 97 64 Q 117 44 110 38" fill="none" stroke="#fffefa" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<path d="M 47 63 L 53 67 L 47 70 M 81 63 L 75 67 L 81 70" fill="none" stroke="#354b56"/>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Neutrophil Reaction -->
+<g transform="translate(384 0)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="66" rx="34" ry="33" fill="#ffffff"/>
+<path d="M 33 65 Q 16 48 23 40 M 95 65 Q 112 48 105 40" fill="none" stroke="#ffffff" stroke-width="11"/>
+<ellipse cx="49" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="76" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<path d="M 47 62 L 53 66 L 47 69 M 81 62 L 75 66 L 81 69" fill="none" stroke="#334b56" stroke-width="2.5"/>
+<path d="M 59 75 Q 64 81 69 75" fill="none" stroke="#334b56" stroke-width="2.5"/>
 </g>
-<g transform="translate(0 128)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="47" ry="40" fill="#fffdf6"/>
-<path d="M 21 64 Q 11 44 18 38 M 107 64 Q 117 44 110 38" fill="none" stroke="#fffdf6" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="51" cy="66" rx="3" ry="4"/><ellipse cx="77" cy="66" rx="3" ry="4"/></g>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+
+<!-- ROW 1: MACROPHAGE (Larger, chubbier, wider hug arms, warm giant protector) -->
+<!-- Macrophage Forward -->
+<g transform="translate(0 128)" stroke="#5e8284" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="65" rx="50" ry="44" fill="#fffef7"/>
+<path d="M 16 63 Q 4 39 16 32 M 112 63 Q 124 39 112 32" fill="none" stroke="#fffef7" stroke-width="14"/>
+<ellipse cx="44" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/>
+<g fill="#2e444f" stroke="none"><ellipse cx="49" cy="65" rx="3.8" ry="4.8"/><ellipse cx="79" cy="65" rx="3.8" ry="4.8"/></g>
+<path d="M 57 76 Q 64 84 71 76" fill="none" stroke="#2e444f" stroke-width="2.8"/>
 </g>
-<g transform="translate(128 128)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="47" ry="40" fill="#fffdf6"/>
-<path d="M 21 64 Q 11 44 18 38 M 107 64 Q 117 44 110 38" fill="none" stroke="#fffdf6" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="46" cy="66" rx="3" ry="4"/><ellipse cx="72" cy="66" rx="3" ry="4"/></g>
-<path d="M 54 76 Q 59 82 64 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Macrophage Left -->
+<g transform="translate(128 128)" stroke="#5e8284" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="65" rx="50" ry="44" fill="#fffef7"/>
+<path d="M 16 63 Q 4 39 16 32 M 112 63 Q 124 39 112 32" fill="none" stroke="#fffef7" stroke-width="14"/>
+<ellipse cx="44" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/>
+<g fill="#2e444f" stroke="none"><ellipse cx="44" cy="65" rx="3.8" ry="4.8"/><ellipse cx="74" cy="65" rx="3.8" ry="4.8"/></g>
+<path d="M 52 76 Q 59 84 66 76" fill="none" stroke="#2e444f" stroke-width="2.8"/>
 </g>
-<g transform="translate(256 128)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="47" ry="40" fill="#fffdf6"/>
-<path d="M 21 64 Q 11 44 18 38 M 107 64 Q 117 44 110 38" fill="none" stroke="#fffdf6" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="56" cy="66" rx="3" ry="4"/><ellipse cx="82" cy="66" rx="3" ry="4"/></g>
-<path d="M 64 76 Q 69 82 74 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Macrophage Right -->
+<g transform="translate(256 128)" stroke="#5e8284" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="65" rx="50" ry="44" fill="#fffef7"/>
+<path d="M 16 63 Q 4 39 16 32 M 112 63 Q 124 39 112 32" fill="none" stroke="#fffef7" stroke-width="14"/>
+<ellipse cx="44" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/>
+<g fill="#2e444f" stroke="none"><ellipse cx="54" cy="65" rx="3.8" ry="4.8"/><ellipse cx="84" cy="65" rx="3.8" ry="4.8"/></g>
+<path d="M 62 76 Q 69 84 76 76" fill="none" stroke="#2e444f" stroke-width="2.8"/>
 </g>
-<g transform="translate(384 128)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
-<ellipse cx="64" cy="66" rx="47" ry="40" fill="#fffdf6"/>
-<path d="M 21 64 Q 11 44 18 38 M 107 64 Q 117 44 110 38" fill="none" stroke="#fffdf6" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<path d="M 47 63 L 53 67 L 47 70 M 81 63 L 75 67 L 81 70" fill="none" stroke="#354b56"/>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<!-- Macrophage Reaction -->
+<g transform="translate(384 128)" stroke="#5e8284" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round">
+<ellipse cx="64" cy="65" rx="50" ry="44" fill="#fffef7"/>
+<path d="M 16 63 Q 4 39 16 32 M 112 63 Q 124 39 112 32" fill="none" stroke="#fffef7" stroke-width="14"/>
+<ellipse cx="44" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/><ellipse cx="84" cy="78" rx="7" ry="4.5" fill="#f9cfce" stroke="none"/>
+<path d="M 45 61 L 52 66 L 45 70 M 83 61 L 76 66 L 83 70" fill="none" stroke="#2e444f" stroke-width="2.8"/>
+<path d="M 57 76 Q 64 84 71 76" fill="none" stroke="#2e444f" stroke-width="2.8"/>
 </g>
-<g transform="translate(0 256)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+
+<!-- ROW 2: PLASMA CELL (Round body, antibody Y receptor crest) -->
+<!-- Plasma Forward -->
+<g transform="translate(0 256)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
 <ellipse cx="64" cy="66" rx="38" ry="36" fill="#faf8ff"/>
 <path d="M 30 64 Q 11 44 18 38 M 98 64 Q 117 44 110 38" fill="none" stroke="#faf8ff" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="51" cy="66" rx="3" ry="4"/><ellipse cx="77" cy="66" rx="3" ry="4"/></g>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="51" cy="66" rx="3" ry="4"/><ellipse cx="77" cy="66" rx="3" ry="4"/></g>
+<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#334b56" stroke-width="2.5"/>
 <path d="M 61 35 L 64 39 L 68 35 M 64 39 L 64 44" fill="none" stroke="#b2a5d2" stroke-width="3"/>
 </g>
-<g transform="translate(128 256)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+<!-- Plasma Left -->
+<g transform="translate(128 256)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
 <ellipse cx="64" cy="66" rx="38" ry="36" fill="#faf8ff"/>
 <path d="M 30 64 Q 11 44 18 38 M 98 64 Q 117 44 110 38" fill="none" stroke="#faf8ff" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="46" cy="66" rx="3" ry="4"/><ellipse cx="72" cy="66" rx="3" ry="4"/></g>
-<path d="M 54 76 Q 59 82 64 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="46" cy="66" rx="3" ry="4"/><ellipse cx="72" cy="66" rx="3" ry="4"/></g>
+<path d="M 54 76 Q 59 82 64 76" fill="none" stroke="#334b56" stroke-width="2.5"/>
 <path d="M 61 35 L 64 39 L 68 35 M 64 39 L 64 44" fill="none" stroke="#b2a5d2" stroke-width="3"/>
 </g>
-<g transform="translate(256 256)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+<!-- Plasma Right -->
+<g transform="translate(256 256)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
 <ellipse cx="64" cy="66" rx="38" ry="36" fill="#faf8ff"/>
 <path d="M 30 64 Q 11 44 18 38 M 98 64 Q 117 44 110 38" fill="none" stroke="#faf8ff" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<g fill="#354b56" stroke="none"><ellipse cx="56" cy="66" rx="3" ry="4"/><ellipse cx="82" cy="66" rx="3" ry="4"/></g>
-<path d="M 64 76 Q 69 82 74 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<g fill="#334b56" stroke="none"><ellipse cx="56" cy="66" rx="3" ry="4"/><ellipse cx="82" cy="66" rx="3" ry="4"/></g>
+<path d="M 64 76 Q 69 82 74 76" fill="none" stroke="#334b56" stroke-width="2.5"/>
 <path d="M 61 35 L 64 39 L 68 35 M 64 39 L 64 44" fill="none" stroke="#b2a5d2" stroke-width="3"/>
 </g>
-<g transform="translate(384 256)" stroke="#729697" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+<!-- Plasma Reaction -->
+<g transform="translate(384 256)" stroke="#688b8d" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
 <ellipse cx="64" cy="66" rx="38" ry="36" fill="#faf8ff"/>
 <path d="M 30 64 Q 11 44 18 38 M 98 64 Q 117 44 110 38" fill="none" stroke="#faf8ff" stroke-width="12"/>
-<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f6d8d7" stroke="none"/>
-<path d="M 47 63 L 53 67 L 47 70 M 81 63 L 75 67 L 81 70" fill="none" stroke="#354b56"/>
-<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#354b56" stroke-width="2.5"/>
+<ellipse cx="49" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/><ellipse cx="79" cy="77" rx="5" ry="3" fill="#f8cfce" stroke="none"/>
+<path d="M 47 62 L 53 66 L 47 69 M 81 62 L 75 66 L 81 69" fill="none" stroke="#334b56" stroke-width="2.5"/>
+<path d="M 59 76 Q 64 82 69 76" fill="none" stroke="#334b56" stroke-width="2.5"/>
 <path d="M 61 35 L 64 39 L 68 35 M 64 39 L 64 44" fill="none" stroke="#b2a5d2" stroke-width="3"/>
 </g>
 </svg>

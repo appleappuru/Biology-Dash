@@ -269,3 +269,17 @@ Complete implementation and verification of the latest user requirements in hand
    - Integrates commit `a431bbe`: zero-affected medicine releases trigger a restrained no-match cue rather than a success chord.
 
 All 137 unit tests pass across 11 test suites. TypeScript 0 errors. Phone Settings, desktop sidebar, and `version.json` agree on v0.6.0. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified. Production deployment `dpl_C2VbiCrX4YCMxXwTT4YXjTAxZm9v` verified on https://biology-dash-public-demo.vercel.app/ (immutable https://biology-dash-public-demo-ocw3h3mtj-applefound.vercel.app) with offline cache `biology-b51d50fc9b54`. Returning v0.5.0 cached player verified to upgrade with 42 Coins, roster loadout, upgrades, and transactions preserved.
+
+## v0.6.1 — Kawaii defender sizes, speeds, and enlarged translucent three-lane gates
+
+Follow-up polish directly fulfilling user design priorities:
+1. **Chubbier Macrophage & Faster Neutrophil**:
+   - Macrophage SVG expanded with broader body (`rx="50" ry="44"`), thicker hug arms (`stroke-width="14"`), prominent rosy cheeks (`rx="7" ry="4.5"`), and horizontal chubbiness multiplier (`chubbyX = 1.08`, `displayWidth: 82.08` vs Neutrophil `45.00` — Macrophage is 1.82x wider and visibly chubby).
+   - Speed & pacing differentiation: Macrophage approaches at 140 px/s with 1.18s wrap and 0.92s digest, while nimble Neutrophils approach at 180 px/s with 0.88s wrap and 0.65s digest (29% faster reach, 34% faster wrap, 42% faster recovery).
+2. **Enlarged Translucent Three-Lane Gates & Frosted Glass Shimmer**:
+   - Gate panels enlarged to 102px width (3-lane) / 166px (pair) and 80px height.
+   - Added frosted glass specular reflection line and luminous pulse response (fill alpha 0.84-0.92, scale 1.03-1.06 over 0.38s).
+   - Meaningful unreachable dilemmas and Patrol 1 onboarding gate at y=250 preserved.
+
+All 137 unit tests pass across 11 test suites. TypeScript 0 errors. Phone Settings, desktop sidebar, and `version.json` agree on v0.6.1. Clean compiled distribution in `/tmp/biology-dash-0.6.1` verified against live production: public bytes, version.json (`0.6.1`), no-index headers, robots.txt. Production deployment `dpl_77R4J3JT8qTfNo5uxB6WcVBeG1Rp` verified on https://biology-dash-public-demo.vercel.app/ (immutable https://biology-dash-public-demo-dneu4jlpk-applefound.vercel.app) with offline cache `biology-f63786102e07`. Returning player verified to update with 42 Coins, roster loadout, upgrades, and offline reload preserved.
+

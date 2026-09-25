@@ -290,13 +290,13 @@ export class Patrol {
             }
             if (c.phase === 'approach' && target) {
                 const distance = Math.hypot(target.x - c.x, target.y - c.y);
-                if (distance > CONTACT_DISTANCE) this.moveCell(c, target.x, target.y, c.role === 'macrophage' ? 148 : c.variant==='zip'?234*effect.approachFactor:180, dt);
+                if (distance > CONTACT_DISTANCE) this.moveCell(c, target.x, target.y, c.role === 'macrophage' ? 140 : c.variant==='zip'?234*effect.approachFactor:180, dt);
                 if (Math.hypot(target.x-c.x,target.y-c.y) <= CONTACT_DISTANCE) {
                     c.phase = 'wrap'; c.progress = 0;
                     const organism = PATHOGENS.find(p => p.id === target.kind)!;
                     const capsule = organism.capsule && !target.tagged && !target.complementTagged ? 1.85 : 1;
                     const help = (target.tagged ? 1 + (target.tagAffinity ?? .45) * .55 : 1) * (target.complementTagged ? 1.2 : 1);
-                    c.duration = (c.role === 'macrophage' ? 1.12 : .88) * (c.variant==='scout'?1.2:1) * (target.tagged?effect.taggedWrapFactor:1) * capsule / help * (this.tempoRemaining > 0 ? .7 : 1) * (target.boss ? 1 : Math.max(.65, target.hp / target.maxHp));
+                    c.duration = (c.role === 'macrophage' ? 1.18 : .88) * (c.variant==='scout'?1.2:1) * (target.tagged?effect.taggedWrapFactor:1) * capsule / help * (this.tempoRemaining > 0 ? .7 : 1) * (target.boss ? 1 : Math.max(.65, target.hp / target.maxHp));
                     this.events.push({type:'contact',text:'',enemyId:target.id,cellId:c.id,x:target.x,y:target.y});
                 }
             }
@@ -308,14 +308,14 @@ export class Patrol {
                     const amount = target.boss ? (c.role === 'macrophage' ? 36 : 29) * (target.tagged ? 1 + (target.tagAffinity ?? .45) : 1) * (target.complementTagged ? 1.25 : 1) : target.hp;
                     this.damage(target, amount, 'phagocytosis', c.id);
                     c.digestKind = target.kind;
-                    c.phase = 'digest'; c.progress = 0; c.duration = c.role === 'macrophage' ? .85 : .65*effect.recoveryFactor;
+                    c.phase = 'digest'; c.progress = 0; c.duration = c.role === 'macrophage' ? .92 : .65*effect.recoveryFactor;
                     if (target.tagged || target.complementTagged) this.learning.cooperation = true;
                     this.events.push({type:'engulf',assistance:target.tagged?(target.complementTagged?'both':'antibody'):target.complementTagged?'complement':undefined,text:target.boss ? 'Colony fragment engulfed' : 'Microbe enclosed in a phagosome',enemyId:target.id,cellId:c.id,x:target.x,y:target.y});
                     target.claimedBy = undefined; c.targetId = undefined;
                 }
             } else if (c.phase === 'digest') {
                 c.progress = Math.min(1,c.progress + dt / c.duration);
-                this.moveCell(c, home.x, home.y, 125, dt);
+                this.moveCell(c, home.x, home.y, c.role === 'macrophage' ? 105 : 125, dt);
                 if (c.progress >= 1) { c.digestKind = undefined;c.captures=(c.captures??0)+1;const capacity=1+(c.variant==='neutro'?Math.min(2,this.upgrades.neutro??0):0);if(c.captures<capacity){this.release(c);}else{c.spent=true;this.spentCells++;this.events.push({type:'retire',text:'Cell used · bring fresh defenders',cellId:c.id,x:c.x,y:c.y});} }
             }
         }

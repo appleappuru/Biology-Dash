@@ -363,10 +363,11 @@ export class PatrolScene extends Phaser.Scene {
             const dx=q.x-cell.node.x;
             const heading=target ? target.x<actor.x-5?1:target.x>actor.x+5?2:0 : Math.abs(dx)>.12?dx<0?1:2:0;
             cell.body.setFrame(rank*4+heading);
-            const size=(rank===1?66:rank===2?52:actor.variant==='zip'?46:actor.variant==='scout'?54:50)*(p.level===1?2.4:1);
+            const size=(rank===1?76:rank===2?50:actor.variant==='zip'?42:actor.variant==='scout'?48:45)*(p.level===1?2.68:1);
             const wrap=actor.phase==='wrap', active=actor.phase==='approach'||wrap;
             const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.13:active?Math.sin(p.time*13+i)*.045:0;
-            cell.body.setDisplaySize(size*(1+deform),size*(1-deform*.55));
+            const chubbyX = rank === 1 ? 1.08 : 1.0;
+            cell.body.setDisplaySize(size*(1+deform)*chubbyX,size*(1-deform*.55));
             cell.body.setAngle(this.reducedMotion?0:active?Math.max(-12,Math.min(12,(target?.x??actor.x)-actor.x))*.5:0);
             cell.body.y=-4+(this.reducedMotion||this.paused?0:Math.sin(p.time*(active?12:3)+i*1.8)*(active?1.3:.4));
             // Scene uses the same actor positions that decide contact; never a separate visual chase.
@@ -531,8 +532,8 @@ export class PatrolScene extends Phaser.Scene {
                         { option: choices.right, lane: 'right', xOffset: 88 },
                     ];
 
-                const panelWidth = isThreeLane ? 98 : 158;
-                const panelHeight = 74;
+                const panelWidth = isThreeLane ? 102 : 166;
+                const panelHeight = 80;
 
                 for (const item of optionList) {
                     const option = item.option;
@@ -541,24 +542,25 @@ export class PatrolScene extends Phaser.Scene {
                     const edge = danger ? 0xf2a6a0 : option.kind === 'recruit' ? 0xb4f9df : 0xe1d1ff;
                     const shadow = this.add.ellipse(0, panelHeight / 2 - 2, panelWidth - 4, 22, 0x001720, .22);
                     const face = this.add.rectangle(0, 0, panelWidth, panelHeight, color, .52).setStrokeStyle(2.5, edge, .88);
-                    const top = this.add.rectangle(0, -panelHeight / 2, panelWidth, 5, edge, .80);
-                    const title = this.add.text(0, -10, option.label, {
+                    const top = this.add.rectangle(0, -panelHeight / 2, panelWidth, 6, edge, .82);
+                    const title = this.add.text(0, -12, option.label, {
                         fontFamily: 'Arial',
-                        fontSize: isThreeLane ? (option.label.length > 10 ? '12px' : '16px') : (option.label.length > 12 ? '14px' : '19px'),
+                        fontSize: isThreeLane ? (option.label.length > 10 ? '13px' : '17px') : (option.label.length > 12 ? '15px' : '20px'),
                         color: '#f0fff7',
                         fontStyle: 'bold',
                         stroke: '#071f28',
                         strokeThickness: 3
                     }).setOrigin(.5);
                     const subText = ({ recruit: 'New teammates', coverage: 'Reach farther', tempo: 'Quick catches · 12s', shield: 'Loss shield · 8s', risk: 'Reassign 3' }[option.kind] ?? option.detail);
-                    const sub = this.add.text(0, 15, subText, {
+                    const sub = this.add.text(0, 16, subText, {
                         fontFamily: 'Arial',
                         fontSize: isThreeLane ? '10px' : '11px',
                         color: danger ? '#ffdcda' : '#daefe9',
                         stroke: '#071f28',
                         strokeThickness: 2
                     }).setOrigin(.5);
-                    panels.push(this.add.container(item.xOffset, 0, [shadow, face, top, title, sub]));
+                    const shimmer = this.add.rectangle(0, -panelHeight * 0.22, panelWidth - 8, 1.5, 0xffffff, 0.25);
+                    panels.push(this.add.container(item.xOffset, 0, [shadow, face, top, title, sub, shimmer]));
                 }
                 v = { node: this.add.container(210, q.y, panels), panels };
                 this.gateViews.set(gate.id, v);
@@ -588,12 +590,12 @@ export class PatrolScene extends Phaser.Scene {
                 // Contact reaction pulse (projectile or defender reach)
                 const face = panel.list[1] as Phaser.GameObjects.Rectangle;
                 const top = panel.list[2] as Phaser.GameObjects.Rectangle;
-                const isReacting = gate.hitReaction && gate.hitReaction.lane === lane && (p.time - gate.hitReaction.time) < 0.35;
+                const isReacting = gate.hitReaction && gate.hitReaction.lane === lane && (p.time - gate.hitReaction.time) < 0.38;
                 if (isReacting) {
                     const isProj = gate.hitReaction?.kind === 'projectile';
-                    face.setFillStyle(face.fillColor, isProj ? 0.82 : 0.90);
+                    face.setFillStyle(face.fillColor, isProj ? 0.84 : 0.92);
                     top.setFillStyle(top.fillColor, 1.0);
-                    panel.setScale(isProj ? 1.02 : 1.05);
+                    panel.setScale(isProj ? 1.03 : 1.06);
                 } else {
                     face.setFillStyle(face.fillColor, 0.52);
                     top.setFillStyle(top.fillColor, 0.80);

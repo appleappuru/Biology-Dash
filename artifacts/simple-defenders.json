@@ -4,38 +4,38 @@
     "frameTotal": 13,
     "frameWidth": 128,
     "frameHeight": 128,
-    "blobSrc": "blob:http://127.0.0.1:4190/0545103f-d3d7-4c50-aad9-c915092d0197",
-    "width": 128.67843496708676
+    "blobSrc": "blob:http://127.0.0.1:4190/15cbe806-8ca7-4b4b-85ad-6a4a6db611bf",
+    "width": 129.32150265464412
   },
   "sizes": [
     {
       "role": "neutrophil",
-      "size": 50,
+      "size": 45,
       "tint": 16777215
     },
     {
       "role": "macrophage",
-      "size": 66,
+      "size": 82.08000000000001,
       "tint": 16777215
     },
     {
       "role": "plasma",
-      "size": 52,
+      "size": 50,
       "tint": 16777215
     },
     {
       "role": "neutrophil",
-      "size": 50,
+      "size": 45,
       "tint": 16777215
     },
     {
       "role": "macrophage",
-      "size": 66,
+      "size": 82.08000000000001,
       "tint": 16777215
     },
     {
       "role": "plasma",
-      "size": 52,
+      "size": 50,
       "tint": 16777215
     }
   ],
