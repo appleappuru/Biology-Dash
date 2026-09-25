@@ -1,14 +1,14 @@
 # Project handoff — September23,2026
 
 ## Status and priority
-Latest sound-design priority is implemented and released in0.5.0. Read AUDIO_DESIGN.md and handoff/requirements/AUDIO_DIRECTION.md. Browser/render/density checks pass; subjective listening and real-device long-session tuning remain outstanding. Continue the full product objective without claiming perceptual comfort from automated evidence.
+Latest user priority: simpler larger mostly-white kawaii defenders and translucent staggered three-lane gates (handoff/requirements/DEFENDERS_AND_GATES.md) are completed and verified in v0.6.0 alongside the prior verified medicine-audio refinement (commit a431bbe). All 137 unit tests and browser fixtures (defenders-and-gates-test.mjs, simple-defenders-test.mjs, first-hug-test.mjs, medicine-audio-match-test.mjs) pass with zero errors. Visual evidence saved in artifacts/.
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.5.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_FgqYVhFFhNRuJhJBzgNQcWgzXzMt` (READY when verified).
-Immutable URL: https://biology-dash-public-demo-1o721u71w-applefound.vercel.app.
-Service worker cache: `biology-b36df3432e83`.
-Pending verified local refinement: zero-affected medicine releases use a quiet no-match cue instead of success confirmation. See latest STATUS.md; public remains0.5.0. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
+Current application/package version: **0.6.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_C2VbiCrX4YCMxXwTT4YXjTAxZm9v` (READY when verified).
+Immutable URL: https://biology-dash-public-demo-ocw3h3mtj-applefound.vercel.app.
+Service worker cache: `biology-b51d50fc9b54`.
+v0.6.0 integrates simplified kawaii white SVG defenders, translucent staggered three-lane interactive gates with dilemma mechanics and contact reactions, and ineffective-medicine no-match audio feedback. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
 
 ## v0.5.0 sound system
 src/audio.ts owns original procedural synthesis, event mapping, short musical combinations, density/voice limits and sound preferences. It shares the context passed to Phaser; no runtime sound downloads. Historical WAV assets remain unused. Master/effects/musical-reward sliders live only in Settings. No looping music. Existing mute/master values migrate; new channels are additive without changing save schema4. See AUDIO_DESIGN.md for palette, limits and test artifacts.

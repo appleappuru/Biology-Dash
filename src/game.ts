@@ -1,7 +1,6 @@
 import {bioAudio} from './audio';
-import {rosterOption} from './roster';
 import * as Phaser from 'phaser';
-import { Patrol, BALANCE, type PatrolEvent } from './simulation';
+import { Patrol, BALANCE, type PatrolEvent, type GateOption, type GateLane } from './simulation';
 import { PATHOGENS, ANTIBODY_NAMES, medicineEffect, medicineStyle } from './content';
 
 
@@ -67,7 +66,7 @@ export class PatrolScene extends Phaser.Scene {
     startupFailed = false;
     preload() {
         this.load.on('loaderror', (file: Phaser.Loader.File) => { if (['defenders-v2','enemies-v2','microbes-v3','tissue-v2'].includes(file.key)) this.startupFailed = true; });
-        this.load.spritesheet('defenders-v2', 'assets/defenders-v2.png', {frameWidth:362, frameHeight:362});
+        this.load.spritesheet('defenders-v2', 'assets/defenders-simple-v1.svg', {frameWidth:128, frameHeight:128});
         this.load.image('enemies-v2', 'assets/enemies-v2.png');
         this.load.image('microbes-v3', 'assets/microbes-v3.png');
         this.load.image('tissue-v2', 'assets/tissue-perspective-v2.png');
@@ -154,6 +153,11 @@ export class PatrolScene extends Phaser.Scene {
             const p=this.patrol, q=project(p.x,p.y);
             const message=event.label ?? event.text;
             this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
+            if (!this.reducedMotion && event.type === 'gate') {
+                const wave = this.add.graphics().setDepth(q.y + 10);
+                wave.lineStyle(3, 0x8df8cf, .85).strokeEllipse(q.x, q.y, 85, 42);
+                this.tweens.add({ targets: wave, scaleX: 1.7, scaleY: 1.7, alpha: 0, duration: 420, onComplete: () => wave.destroy() });
+            }
         }
         if (event.type === 'loss' && event.amount) {
             const q=project(this.patrol.x,this.patrol.y);
@@ -359,7 +363,7 @@ export class PatrolScene extends Phaser.Scene {
             const dx=q.x-cell.node.x;
             const heading=target ? target.x<actor.x-5?1:target.x>actor.x+5?2:0 : Math.abs(dx)>.12?dx<0?1:2:0;
             cell.body.setFrame(rank*4+heading);
-            const size=(rank===1?53:rank===2?43:actor.variant==='zip'?37:actor.variant==='scout'?47:43)*(p.level===1?2.8:1);
+            const size=(rank===1?66:rank===2?52:actor.variant==='zip'?46:actor.variant==='scout'?54:50)*(p.level===1?2.4:1);
             const wrap=actor.phase==='wrap', active=actor.phase==='approach'||wrap;
             const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.13:active?Math.sin(p.time*13+i)*.045:0;
             cell.body.setDisplaySize(size*(1+deform),size*(1-deform*.55));
@@ -369,7 +373,7 @@ export class PatrolScene extends Phaser.Scene {
             const arrival=this.lastSquad>0?Math.max(0,1-(time-cell.birth)/430):0;
             cell.node.setPosition(q.x,q.y).setScale(q.scale).setDepth(q.y+8).setAlpha(1);
             cell.body.clearTint();
-            if(actor.variant)cell.body.setTint(rosterOption(actor.variant).color);
+            // White bodies stay white; small symbols distinguish gameplay variants.
             let mark=cell.node.getByName('variant-mark') as Phaser.GameObjects.Text;
             if(!mark){mark=this.add.text(0,-18,'',{fontFamily:'Arial',fontSize:'12px',fontStyle:'bold',color:'#fff8df',stroke:'#203849',strokeThickness:3}).setOrigin(.5).setName('variant-mark');cell.node.add(mark);}
             mark.setText(actor.variant==='neutro'&&(p.upgrades.neutro??0)>0?String(1+(p.upgrades.neutro??0)-(actor.captures??0)):actor.variant==='zip'?'»':actor.variant==='scout'?'◇':'');
@@ -513,31 +517,91 @@ export class PatrolScene extends Phaser.Scene {
         for (const gate of p.gates) {
             let v = this.gateViews.get(gate.id);
             const q = project(210, gate.y);
+            const isThreeLane = gate.layout === 'triple' || (gate.layout === 'staggered' && !!gate.center);
             if (!v) {
                 const choices = p.gateOptions(gate), panels: Phaser.GameObjects.Container[] = [];
-                for (const [i, option] of [choices.left, choices.right].entries()) {
+                const optionList: Array<{ option: GateOption; lane: GateLane; xOffset: number }> = isThreeLane
+                    ? [
+                        { option: choices.left, lane: 'left', xOffset: -95 },
+                        { option: choices.right, lane: 'right', xOffset: 95 },
+                        { option: choices.center ?? choices.left, lane: 'center', xOffset: 0 },
+                    ]
+                    : [
+                        { option: choices.left, lane: 'left', xOffset: -88 },
+                        { option: choices.right, lane: 'right', xOffset: 88 },
+                    ];
+
+                const panelWidth = isThreeLane ? 98 : 158;
+                const panelHeight = 74;
+
+                for (const item of optionList) {
+                    const option = item.option;
                     const danger = (option.cost ?? 0) > 0 || option.value < 0;
-                    const color = danger ? 0x804c52 : option.kind === 'recruit' ? 0x2c776c : option.kind === 'tempo' ? 0x786138 : 0x535787;
+                    const color = danger ? 0x804c52 : option.kind === 'recruit' ? 0x246b60 : option.kind === 'tempo' ? 0x6e562c : 0x474972;
                     const edge = danger ? 0xf2a6a0 : option.kind === 'recruit' ? 0xb4f9df : 0xe1d1ff;
-                    const shadow = this.add.ellipse(0, 29, 153, 23, 0x001f29, .3);
-                    const face = this.add.rectangle(0, 0, 156, 61, color, .94).setStrokeStyle(2, edge, .85);
-                    const top = this.add.rectangle(0, -32, 156, 5, edge, .45);
-                    const title = this.add.text(0, -10, option.label, { fontFamily: 'Arial', fontSize: option.label.length > 12 ? '14px' : '19px', color: '#f0fff7', fontStyle: 'bold' }).setOrigin(.5);
-                    const sub = this.add.text(0, 14, ({recruit:'New teammates',coverage:'Reach a little farther',tempo:'Quick catches · 12s',shield:'Loss protection · 8s',risk:'Reassign 3 defenders'}[option.kind]), { fontFamily: 'Arial', fontSize: '11px', color: danger ? '#ffdcda' : '#daefe9' }).setOrigin(.5);
-                    panels.push(this.add.container(i === 0 ? -88 : 88, 0, [shadow, face, top, title, sub]));
+                    const shadow = this.add.ellipse(0, panelHeight / 2 - 2, panelWidth - 4, 22, 0x001720, .22);
+                    const face = this.add.rectangle(0, 0, panelWidth, panelHeight, color, .52).setStrokeStyle(2.5, edge, .88);
+                    const top = this.add.rectangle(0, -panelHeight / 2, panelWidth, 5, edge, .80);
+                    const title = this.add.text(0, -10, option.label, {
+                        fontFamily: 'Arial',
+                        fontSize: isThreeLane ? (option.label.length > 10 ? '12px' : '16px') : (option.label.length > 12 ? '14px' : '19px'),
+                        color: '#f0fff7',
+                        fontStyle: 'bold',
+                        stroke: '#071f28',
+                        strokeThickness: 3
+                    }).setOrigin(.5);
+                    const subText = ({ recruit: 'New teammates', coverage: 'Reach farther', tempo: 'Quick catches · 12s', shield: 'Loss shield · 8s', risk: 'Reassign 3' }[option.kind] ?? option.detail);
+                    const sub = this.add.text(0, 15, subText, {
+                        fontFamily: 'Arial',
+                        fontSize: isThreeLane ? '10px' : '11px',
+                        color: danger ? '#ffdcda' : '#daefe9',
+                        stroke: '#071f28',
+                        strokeThickness: 2
+                    }).setOrigin(.5);
+                    panels.push(this.add.container(item.xOffset, 0, [shadow, face, top, title, sub]));
                 }
-                v = { node: this.add.container(210, q.y, panels), panels }; this.gateViews.set(gate.id, v);
+                v = { node: this.add.container(210, q.y, panels), panels };
+                this.gateViews.set(gate.id, v);
             }
             const options = p.gateOptions(gate);
-            [options.left, options.right].forEach((option, i) => {
-                v!.panels[i].setVisible(!gate.layout || gate.layout === 'pair' || gate.layout === (i === 0 ? 'left' : 'right'));
-                const title = v!.panels[i].list[3] as Phaser.GameObjects.Text;
-                if (!gate.used && option.kind === 'recruit') {
-                    const actual = Math.min(option.value, BALANCE.maxSquad - p.squad);
-                    title.setText(actual > 0 ? '+' + actual + ' cells' : 'Squad full · 30').setFontSize(actual > 0 ? 19 : 14);
+            const activeOptions = [options.left, options.right, options.center ?? options.left];
+
+            v.panels.forEach((panel, i) => {
+                const lane: GateLane = i === 0 ? 'left' : i === 1 ? 'right' : 'center';
+                const isVisible = !gate.layout || gate.layout === 'pair' || gate.layout === 'triple' || gate.layout === 'staggered' || gate.layout === lane;
+                panel.setVisible(isVisible);
+
+                // Vertical stagger positioning
+                const staggerY = (gate.stagger?.[lane] ?? 0) * q.scale;
+                panel.setY(staggerY);
+
+                // Update title for recruit capacity
+                const option = activeOptions[i];
+                if (option) {
+                    const title = panel.list[3] as Phaser.GameObjects.Text;
+                    if (!gate.used && option.kind === 'recruit') {
+                        const actual = Math.min(option.value, BALANCE.maxSquad - p.squad);
+                        title.setText(actual > 0 ? '+' + actual + ' cells' : 'Squad full · 30').setFontSize(isThreeLane ? (actual > 0 ? 16 : 12) : (actual > 0 ? 19 : 14));
+                    }
+                }
+
+                // Contact reaction pulse (projectile or defender reach)
+                const face = panel.list[1] as Phaser.GameObjects.Rectangle;
+                const top = panel.list[2] as Phaser.GameObjects.Rectangle;
+                const isReacting = gate.hitReaction && gate.hitReaction.lane === lane && (p.time - gate.hitReaction.time) < 0.35;
+                if (isReacting) {
+                    const isProj = gate.hitReaction?.kind === 'projectile';
+                    face.setFillStyle(face.fillColor, isProj ? 0.82 : 0.90);
+                    top.setFillStyle(top.fillColor, 1.0);
+                    panel.setScale(isProj ? 1.02 : 1.05);
+                } else {
+                    face.setFillStyle(face.fillColor, 0.52);
+                    top.setFillStyle(top.fillColor, 0.80);
+                    panel.setScale(1.0);
                 }
             });
-            v.node.setPosition(210, q.y).setScale(q.scale).setDepth(q.y - 10).setAlpha(gate.used || gate.passed ? .15 : 1);
+
+            v.node.setPosition(210, q.y).setScale(q.scale).setDepth(q.y - 10).setAlpha(gate.used || gate.passed ? .18 : 1);
         }
         for (const [id, v] of this.gateViews) if (!p.gates.some(g => g.id === id)) { v.node.destroy(); this.gateViews.delete(id); }
     }

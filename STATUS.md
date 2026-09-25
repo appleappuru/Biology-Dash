@@ -245,3 +245,27 @@ Automation refreshed from actual reset1790323344: next check04:04America/New_Yor
 Medicine discharge now carries its actual affected-target count to the audio director. A fully charged shot with zero susceptible visible targets produces one short low no-match cue, without the richer success confirmation. Mixed groups retain the mechanism-specific cue if at least one living visible target is affected. Charge readiness remains feedback about charge only. This prevents resistance/non-target outcomes sounding like successful therapy; no combat, susceptibility, timing, economy or save changes.
 
 Typecheck,16 focused audio/charge tests and test build pass. New320px Chrome keyboard charge/release fixtures cover all-resistant, non-target fungal, mixed and Doxycycline growth-suppression cases; event audio agrees with actual exposure, combo remains zero and no browser errors. Evidence: scripts/medicine-audio-match-test.mjs and artifacts/medicine-audio-match.json. Public remains0.5.0; batch this verified correction into the next meaningful release. Subjective listening remains outstanding. Fresh capacity9%weekly/76%five-hour. Reset1790341477; heartbeat scheduled09:06Eastern after reset, with a fresh check in both windows required.
+
+## v0.6.0 — Kawaii white defenders & translucent staggered three-lane gates
+
+Complete implementation and verification of the latest user requirements in handoff/requirements/DEFENDERS_AND_GATES.md:
+1. **Simplified Kawaii White Defenders**:
+   - Original code-native SVG atlas in `public/assets/defenders-simple-v1.svg` with twelve frames (Neutrophil/Macrophage/Plasma rows; forward/left/right/reaction columns), round chubby white bodies (`0xffffff`), rosy cheeks, and open hugging arms.
+   - Macrophage is distinctly larger/fatter (displayWidth 66) than Neutrophil (displayWidth 50). All defenders enlarged on screen for visual prominence and readability.
+   - Preserves directional poses, original artwork compatibility, natural engulfment, and scientific mechanisms.
+   - Menu preview in `src/style.css` uses the simplified SVG atlas.
+   - Verified via `scripts/simple-defenders-test.mjs`, `scripts/first-hug-test.mjs`, and `scripts/defenders-and-gates-test.mjs`. Visual evidence: `artifacts/simple-white-defenders.png`, `artifacts/simple-defender-squad.png`, `artifacts/simple-defenders-sheet.png`.
+
+2. **Translucent Staggered Three-Lane Gates**:
+   - Three lanes across the corridor (`left` at x=115, `center` at x=210, `right` at x=305).
+   - Dynamic layouts: cycling `pair`, `left`, `right`, and `staggered` waves with vertical stagger offsets (e.g. `{ left: 0, center: -30, right: -55 }`).
+   - Dilemma mechanics: opposite-lane gates with tight vertical stagger (<=25px) cannot both be caught given squad horizontal speed (255 px/s) and gate descent (78 px/s), forcing tactical decision-making; wider stagger allows agile multi-gate collection.
+   - Onboarding preservation: Patrol 1 index 0 gate preserved at `y=250` with `+4 cells` for immediate first-run learning.
+   - Translucency: panel face alpha set to `0.52` with glowing stroke border (`alpha: 0.88`, 2.5px), neon top glow strip (`alpha: 0.80`), and soft shadow (`alpha: 0.22`), allowing underlying tissue, microbes, and cells to show through.
+   - Dynamic contact feedback: approaching within 38px of a gate or intersecting with defensin/antibody projectiles triggers an immediate luminous pulse on the panel face (alpha increases to `0.82-0.90`, scale increases `1.02-1.05`). Crossing triggers an expanding glowing energy ring.
+   - Verified via 8 unit tests in `tests/gates.test.ts` and browser fixture `scripts/defenders-and-gates-test.mjs`. Visual evidence: `artifacts/translucent-three-lane-gates.png`, `artifacts/staggered-gates-reaction.png`, and `artifacts/defenders-and-gates-result.json`.
+
+3. **Batched Audio Refinement**:
+   - Integrates commit `a431bbe`: zero-affected medicine releases trigger a restrained no-match cue rather than a success chord.
+
+All 137 unit tests pass across 11 test suites. TypeScript 0 errors. Phone Settings, desktop sidebar, and `version.json` agree on v0.6.0. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified. Production deployment `dpl_C2VbiCrX4YCMxXwTT4YXjTAxZm9v` verified on https://biology-dash-public-demo.vercel.app/ (immutable https://biology-dash-public-demo-ocw3h3mtj-applefound.vercel.app) with offline cache `biology-b51d50fc9b54`. Returning v0.5.0 cached player verified to upgrade with 42 Coins, roster loadout, upgrades, and transactions preserved.

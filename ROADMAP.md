@@ -14,4 +14,4 @@ Authority: handoff/requirements/CONTINUOUS_PRODUCT_GOAL.md preserves the full us
 
 Keep STATUS.md/RELEASES.md as evidence and release records. No claim of overall product completion.
 
-September25: verified no-match medicine audio correction is committed locally for the next release batch. Preserve outcome-specific cues; next listen and tune later-patrol crowd feedback rather than adding more sound density.
+September25: verified no-match medicine audio correction (commit a431bbe) and handoff/requirements/DEFENDERS_AND_GATES.md are implemented and verified in v0.6.0: simplified kawaii white defenders (round chubby shapes, directional hugs, enlarged bodies, Macrophage > Neutrophil) and translucent staggered three-lane interactive gates (left/center/right options, vertical stagger dilemmas, contact reaction pulses for projectiles and approaching defenders, and Patrol 1 onboarding preservation). Next: subjective phone listening, later-patrol crowd pacing, and source-checked granuloma/TB formations.

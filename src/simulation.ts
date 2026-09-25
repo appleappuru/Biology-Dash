@@ -38,21 +38,27 @@ export interface GateOption {
     kind: 'recruit' | 'coverage' | 'tempo' | 'shield' | 'risk';
     value: number; cost?: number;
 }
-const GATE_CYCLE: Array<{left: GateOption; right: GateOption}> = [
-    {left:{id:'recruit',label:'+4 cells',detail:'Arriving defenders join your squad.',kind:'recruit',value:4},right:{id:'reach',label:'+18 reach',detail:'Increase individual cells’ approach reach.',kind:'coverage',value:18}},
-    {left:{id:'reinforce',label:'+6 cells',detail:'Recruit six arriving defenders.',kind:'recruit',value:6},right:{id:'tempo',label:'Rapid response',detail:'Faster engulfment for 12 seconds.',kind:'tempo',value:12}},
-    {left:{id:'risk',label:'−3 cells · +36 reach',detail:'Send three defenders to nearby tissue; extend coverage.',kind:'risk',value:36,cost:3},right:{id:'shield',label:'Rescue shield',detail:'Protect your squad from casualties for 8 seconds.',kind:'shield',value:8}},
-    {left:{id:'surge',label:'+8 cells',detail:'A surge of arriving defenders joins the patrol.',kind:'recruit',value:8},right:{id:'tradeoff',label:'−2 cells · +28 reach',detail:'Send two defenders to nearby tissue; extend coverage.',kind:'coverage',value:28,cost:2}},
+const GATE_CYCLE: Array<{left: GateOption; right: GateOption; center?: GateOption}> = [
+    {left:{id:'recruit',label:'+4 cells',detail:'Arriving defenders join your squad.',kind:'recruit',value:4},right:{id:'reach',label:'+18 reach',detail:'Increase individual cells’ approach reach.',kind:'coverage',value:18},center:{id:'recruit',label:'+4 cells',detail:'Arriving defenders join your squad.',kind:'recruit',value:4}},
+    {left:{id:'reinforce',label:'+6 cells',detail:'Recruit six arriving defenders.',kind:'recruit',value:6},right:{id:'tempo',label:'Rapid response',detail:'Faster engulfment for 12 seconds.',kind:'tempo',value:12},center:{id:'reach',label:'+18 reach',detail:'Increase individual cells’ approach reach.',kind:'coverage',value:18}},
+    {left:{id:'risk',label:'−3 cells · +36 reach',detail:'Send three defenders to nearby tissue; extend coverage.',kind:'risk',value:36,cost:3},right:{id:'shield',label:'Rescue shield',detail:'Protect your squad from casualties for 8 seconds.',kind:'shield',value:8},center:{id:'recruit',label:'+4 cells',detail:'Arriving defenders join your squad.',kind:'recruit',value:4}},
+    {left:{id:'surge',label:'+8 cells',detail:'A surge of arriving defenders joins the patrol.',kind:'recruit',value:8},right:{id:'tradeoff',label:'−2 cells · +28 reach',detail:'Send two defenders to nearby tissue; extend coverage.',kind:'coverage',value:28,cost:2},center:{id:'tempo',label:'Rapid response',detail:'Faster engulfment for 12 seconds.',kind:'tempo',value:12}},
 ];
+export type GateLane = 'left' | 'center' | 'right';
 export interface Gate {
     id: number;
     y: number;
     used: boolean;
-    layout?: 'pair' | 'left' | 'right';
+    layout?: 'pair' | 'left' | 'right' | 'center' | 'triple' | 'staggered';
+    lane?: GateLane;
     passed?: boolean;
     left?: GateOption;
     right?: GateOption;
+    center?: GateOption;
+    stagger?: { left?: number; center?: number; right?: number };
+    hitReaction?: { lane: GateLane; time: number; kind: 'projectile' | 'defender' };
 }
+
 export interface PatrolEvent {
     type: 'peptide' | 'retire' | 'summon' | 'engulf' | 'loss' | 'gate' | 'medicine' | 'tag' | 'boss' | 'win' | 'hit' | 'death' | 'recruit' | 'complement' | 'contact';
     text: string;
@@ -181,15 +187,20 @@ export class Patrol {
         this.events.push({type:'loss',text:reason,x:this.x,y:this.y,squad:this.squad,amount:-1});
         if (this.squad === 0) this.phase = 'defeat';
     }
-    gateOptions(gate: Gate): {left: GateOption; right: GateOption} {
-        return {left:gate.left ?? GATE_CYCLE[0].left, right:gate.right ?? GATE_CYCLE[0].right};
+    gateOptions(gate: Gate): {left: GateOption; right: GateOption; center?: GateOption} {
+        const cycle = GATE_CYCLE[0];
+        const left = gate.left ?? cycle.left;
+        const right = gate.right ?? cycle.right;
+        const center = gate.center ?? cycle.center ?? {id:'recruit',label:'+4 cells',detail:'Arriving defenders join your squad.',kind:'recruit',value:4};
+        return {left, right, center};
     }
-    applyGate(gate: Gate, choice: 'left' | 'right' | 'recruit' | 'coverage') {
+    applyGate(gate: Gate, choice: 'left' | 'right' | 'center' | 'recruit' | 'coverage') {
         if (gate.used || gate.passed || this.phase !== 'playing') return false;
-        const side = choice === 'recruit' ? 'left' : choice === 'coverage' ? 'right' : choice;
-        if (gate.layout && gate.layout !== 'pair' && gate.layout !== side) return false;
+        const side: 'left' | 'right' | 'center' = choice === 'recruit' ? 'left' : choice === 'coverage' ? 'right' : choice;
+        if (gate.layout && gate.layout !== 'pair' && gate.layout !== 'staggered' && gate.layout !== 'triple' && gate.layout !== side) return false;
         const options = this.gateOptions(gate);
-        const option = choice === 'left' || choice === 'right' ? options[choice] : GATE_CYCLE[0][choice === 'recruit' ? 'left' : 'right'];
+        const option = (choice === 'left' || choice === 'right' || choice === 'center') ? options[choice] : GATE_CYCLE[0][choice === 'recruit' ? 'left' : 'right'];
+        if (!option) return false;
         gate.used = true;
         this.learning.gate = true;
         const before = this.squad;
@@ -397,9 +408,25 @@ export class Patrol {
         }
         if (this.time >= this.nextGate && this.nextGate < 70) {
             const index = this.gateIndex++;
-            const options = this.level===1?{left:GATE_CYCLE[0].left,right:GATE_CYCLE[0].left}:GATE_CYCLE[index % GATE_CYCLE.length];
-            const layout = this.level === 1 && index < 2 ? 'pair' : (['pair', 'left', 'right', 'pair'] as const)[index % 4];
-            this.gates.push({ id: ++this.id, y: this.level===1&&index===0?250:-40, used: false, layout, left:{...options.left}, right:{...options.right} });
+            const options = this.level===1?{left:GATE_CYCLE[0].left,right:GATE_CYCLE[0].left,center:GATE_CYCLE[0].center}:GATE_CYCLE[index % GATE_CYCLE.length];
+            const layout = this.level === 1 && index < 2
+                ? 'pair'
+                : (['pair', 'left', 'right', 'staggered'] as const)[index % 4];
+            const stagger = layout === 'staggered'
+                ? { left: 0, center: -30, right: -55 }
+                : layout === 'pair' && this.level > 1
+                    ? (index % 2 === 0 ? { left: 0, right: -25 } : { left: -25, right: 0 })
+                    : undefined;
+            this.gates.push({
+                id: ++this.id,
+                y: this.level===1&&index===0?250:-40,
+                used: false,
+                layout,
+                stagger,
+                left: { ...options.left },
+                right: { ...options.right },
+                center: options.center ? { ...options.center } : undefined
+            });
             this.nextGate = this.level===1 ? this.nextGate+10 : this.nextGate+17;
         }
         if (this.time >= 60 && !this.bossSpawned && this.enemies.length < BALANCE.maxEnemies) {
@@ -444,9 +471,58 @@ export class Patrol {
         this.enemies = this.enemies.filter(e => e.hp > 0);
         for (const g of this.gates) {
             g.y += dt * 78;
-            if (!g.used && !g.passed && g.y >= this.y - 25) {
-                const side = this.x < 210 ? 'left' : 'right';
-                if (!g.layout || g.layout === 'pair' || Math.abs(this.x - (g.layout === 'left' ? 122 : 298)) <= 78) this.applyGate(g, side);
+
+            // Projectile reach/contact reaction (Defensins and Antibodies)
+            if (!g.passed && g.y > 40 && g.y < 700) {
+                for (const d of this.defensins) {
+                    if (Math.abs(d.y - g.y) < 36 && d.x >= 70 && d.x <= 350) {
+                        const lane: GateLane = d.x < 162.5 ? 'left' : d.x > 257.5 ? 'right' : 'center';
+                        g.hitReaction = { lane, time: this.time, kind: 'projectile' };
+                    }
+                }
+                for (const a of this.antibodies) {
+                    if (a.phase === 'diffuse' && Math.abs(a.y - g.y) < 36 && a.x >= 70 && a.x <= 350) {
+                        const lane: GateLane = a.x < 162.5 ? 'left' : a.x > 257.5 ? 'right' : 'center';
+                        g.hitReaction = { lane, time: this.time, kind: 'projectile' };
+                    }
+                }
+            }
+
+            // Squad crossing and reach
+            if (!g.used && !g.passed) {
+                const isThreeLane = g.layout === 'triple' || (g.layout === 'staggered' && !!g.center);
+                const isCenterOnly = g.layout === 'center';
+                const squadLane: GateLane = isThreeLane || isCenterOnly
+                    ? (this.x < 162.5 ? 'left' : this.x > 257.5 ? 'right' : 'center')
+                    : (this.x < 210 ? 'left' : 'right');
+
+                const laneStagger = g.stagger?.[squadLane] ?? 0;
+                const effectiveY = g.y + laneStagger;
+
+                // Defender reach proximity
+                if (Math.abs(effectiveY - (this.y - 25)) < 38) {
+                    g.hitReaction = { lane: squadLane, time: this.time, kind: 'defender' };
+                }
+
+                // Check crossing
+                if (effectiveY >= this.y - 25) {
+                    let inBounds = false;
+                    if (!g.layout || g.layout === 'pair' || g.layout === 'triple' || g.layout === 'staggered') {
+                        inBounds = true;
+                    } else if (g.layout === 'left') {
+                        inBounds = Math.abs(this.x - 122) <= 78;
+                    } else if (g.layout === 'right') {
+                        inBounds = Math.abs(this.x - 298) <= 78;
+                    } else if (g.layout === 'center') {
+                        inBounds = Math.abs(this.x - 210) <= 65;
+                    }
+
+                    if (inBounds) {
+                        this.applyGate(g, squadLane);
+                    }
+                    g.passed = true;
+                }
+            } else if (!g.passed && g.y >= this.y + 40) {
                 g.passed = true;
             }
         }

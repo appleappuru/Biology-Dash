@@ -1,0 +1,43 @@
+{
+  "first": {
+    "key": "defenders-v2",
+    "frameTotal": 13,
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "blobSrc": "blob:http://127.0.0.1:4190/0545103f-d3d7-4c50-aad9-c915092d0197",
+    "width": 128.67843496708676
+  },
+  "sizes": [
+    {
+      "role": "neutrophil",
+      "size": 50,
+      "tint": 16777215
+    },
+    {
+      "role": "macrophage",
+      "size": 66,
+      "tint": 16777215
+    },
+    {
+      "role": "plasma",
+      "size": 52,
+      "tint": 16777215
+    },
+    {
+      "role": "neutrophil",
+      "size": 50,
+      "tint": 16777215
+    },
+    {
+      "role": "macrophage",
+      "size": 66,
+      "tint": 16777215
+    },
+    {
+      "role": "plasma",
+      "size": 52,
+      "tint": 16777215
+    }
+  ],
+  "errors": []
+}

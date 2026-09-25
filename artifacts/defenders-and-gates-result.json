@@ -1,0 +1,77 @@
+{
+  "defenderCheck": {
+    "frameWidth": 128,
+    "frameHeight": 128,
+    "frameTotal": 13,
+    "cellWidth": 130.1455754025067,
+    "cellTint": 16777215
+  },
+  "sizes": [
+    {
+      "role": "neutrophil",
+      "size": 50,
+      "tint": 16777215
+    },
+    {
+      "role": "macrophage",
+      "size": 66,
+      "tint": 16777215
+    },
+    {
+      "role": "plasma",
+      "size": 52,
+      "tint": 16777215
+    },
+    {
+      "role": "neutrophil",
+      "size": 50,
+      "tint": 16777215
+    },
+    {
+      "role": "macrophage",
+      "size": 66,
+      "tint": 16777215
+    },
+    {
+      "role": "plasma",
+      "size": 52,
+      "tint": 16777215
+    }
+  ],
+  "gateData": {
+    "panelCount": 3,
+    "panels": [
+      {
+        "visible": true,
+        "x": -95,
+        "y": 0,
+        "faceAlpha": 0.52,
+        "faceWidth": 98,
+        "faceHeight": 74,
+        "titleText": "+4 cells"
+      },
+      {
+        "visible": true,
+        "x": 95,
+        "y": -42.384022492307686,
+        "faceAlpha": 0.52,
+        "faceWidth": 98,
+        "faceHeight": 74,
+        "titleText": "Rescue shield"
+      },
+      {
+        "visible": true,
+        "x": 0,
+        "y": -23.11855772307692,
+        "faceAlpha": 0.52,
+        "faceWidth": 98,
+        "faceHeight": 74,
+        "titleText": "+18 reach"
+      }
+    ],
+    "containerAlpha": 1
+  },
+  "reactingAlpha": 0.82,
+  "coverageAfter": 70,
+  "errors": []
+}
