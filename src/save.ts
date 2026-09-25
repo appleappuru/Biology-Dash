@@ -14,13 +14,15 @@ export interface Save {
     reinforcement: number;
     muted: boolean;
     volume: number;
+    sfxVolume: number;
+    musicVolume: number;
     reducedMotion: boolean;
     showReach: boolean;
     tutorial: boolean;
     antibody: AntibodyProfile;
     checks: Partial<Learning>;
 }
-export const freshSave = (): Save => ({ version: RULES_VERSION, roster:defaultRoster(), customLoadout:false, economy:freshEconomy(), completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, reducedMotion: false, showReach: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
+export const freshSave = (): Save => ({ version: RULES_VERSION, roster:defaultRoster(), customLoadout:false, economy:freshEconomy(), completed: [], stars: {}, credits: 0, bestScores: {}, reinforcement: 0, muted: false, volume: .25, sfxVolume:1, musicVolume:.45, reducedMotion: false, showReach: false, tutorial: false, antibody: { epitope: 'A', affinity: .45, effector: 'opsonization' }, checks: {} });
 export function parseSave(raw: string | null): Save { try {
     const v = JSON.parse(raw ?? 'null');
     // Encounter revisions preserve the progression schema.
@@ -33,6 +35,7 @@ export function parseSave(raw: string | null): Save { try {
     d.reinforcement = Math.max(0, Math.min(6, Number(v.reinforcement) || 0));
     d.muted = v.muted === true;
     d.volume = Number.isFinite(v.volume) ? Math.max(0, Math.min(1, v.volume)) : .25;
+    for(const key of ['sfxVolume','musicVolume'] as const)if(Number.isFinite(v[key]))d[key]=Math.max(0,Math.min(1,v[key]));
     d.reducedMotion = v.reducedMotion === true;
     d.showReach = v.showReach === true;
     d.tutorial = v.tutorial === true;

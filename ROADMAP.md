@@ -1,6 +1,6 @@
 # Continuous product roadmap
 
-Next priority: original adaptive sound design per handoff/requirements/AUDIO_DIRECTION.md. Centralize existing audio, implement biological palettes, musical aggregation/combos, charge lifecycle and anti-fatigue mixing; playtest and refine before release.
+Original adaptive sound design is implemented and released in0.5.0: biological palettes, bounded musical aggregation, charge lifecycle, centralized preferences and conservative mixing. Browser/render/density iteration documented in AUDIO_DESIGN.md. Next: subjective phone/headphone listening and later-patrol combat pacing; preserve the full sonic brief in handoff/requirements/AUDIO_DIRECTION.md.
 
 Authority: handoff/requirements/CONTINUOUS_PRODUCT_GOAL.md preserves the full user objective. This backlog is sequencing, not a reduced definition of success.
 

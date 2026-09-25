@@ -1,3 +1,4 @@
+import {bioAudio} from './audio';
 import {rosterOption} from './roster';
 import * as Phaser from 'phaser';
 import { Patrol, BALANCE, type PatrolEvent } from './simulation';
@@ -48,8 +49,6 @@ export class PatrolScene extends Phaser.Scene {
     finished = false;
     lastTeamworkCue = -Infinity;
     teamworkAnnounced = false;
-    muted = false;
-    volume = .25;
     reducedMotion = false;
     views = new Map<number, EnemyView>();
     gateViews = new Map<number, GateView>();
@@ -62,7 +61,6 @@ export class PatrolScene extends Phaser.Scene {
     ground!: Phaser.GameObjects.Graphics;
     bg!: Phaser.GameObjects.Image;
     keys!: Record<string, Phaser.Input.Keyboard.Key>;
-    soundTimes = new Map<string, number>();
     lastSquad = 0;
     scroll = 0;
     constructor() { super('Patrol'); }
@@ -73,7 +71,6 @@ export class PatrolScene extends Phaser.Scene {
         this.load.image('enemies-v2', 'assets/enemies-v2.png');
         this.load.image('microbes-v3', 'assets/microbes-v3.png');
         this.load.image('tissue-v2', 'assets/tissue-perspective-v2.png');
-        for (const s of ['soft', 'recruit', 'finish']) this.load.audio(s, `assets/${s}.wav`);
     }
     create() {
         if(this.startupFailed)return;
@@ -122,25 +119,17 @@ export class PatrolScene extends Phaser.Scene {
         const cleanup = () => { this.game.canvas?.removeEventListener('pointercancel', this.cancelDrag); this.game.events.off(Phaser.Core.Events.BLUR, this.onBlur); };
         this.events.once('shutdown', cleanup); this.events.once('destroy', cleanup);
     }
-    cancelControls = () => {this.medicineKeyHeld=false;this.patrol?.cancelMedicineCharge();this.cancelDrag();};
+    cancelControls = () => {bioAudio.stop();this.medicineKeyHeld=false;this.patrol?.cancelMedicineCharge();this.cancelDrag();};
     onBlur = () => { this.cancelControls(); if (!this.paused) this.hooks?.pause(); };
     cancelDrag = () => { this.held = false; this.input.keyboard?.resetKeys(); };
     startPatrol(p: Patrol, hooks: GameHooks) {
-        this.patrol = p; this.hooks = hooks; this.finished = false; this.soundTimes.clear(); this.lastTeamworkCue=-Infinity;this.teamworkAnnounced=false; this.paused = false; this.cancelControls();
+        this.patrol = p; this.hooks = hooks; this.finished = false; bioAudio.stop();bioAudio.unlock(); this.lastTeamworkCue=-Infinity;this.teamworkAnnounced=false; this.paused = false; this.cancelControls();
         for (const v of this.views.values()) v.node.destroy();
         for (const v of this.gateViews.values()) v.node.destroy();
         this.views.clear(); this.gateViews.clear(); this.lastSquad = 0;
     }
-    soundCue(key: string, rate = 1) {
-        if (this.muted || this.volume <= 0) return;
-        const gap = key === 'soft' ? 300 : 150;
-        if (this.time.now - (this.soundTimes.get(key) ?? -Infinity) < gap) return;
-        this.soundTimes.set(key, this.time.now);
-        // Preserve reward cues even when a catch just played; avoid stacked combat noise.
-        if (key !== 'soft') this.sound.stopByKey('soft');
-        this.sound.play(key, { volume: this.volume * .5, rate });
-    }
     reaction(event: PatrolEvent) {
+        bioAudio.event(event,this.patrol.cells.find(c=>c.id===event.cellId)?.role==='macrophage');
         if (event.type === 'medicine') this.careBurst(event);
 
         if (event.type === 'hit' && event.enemyId !== undefined) {
@@ -148,8 +137,6 @@ export class PatrolScene extends Phaser.Scene {
             if (v) { v.hitUntil = this.time.now + 170; v.body.setTint(0xf5d6c5); }
         }
         if (event.type === 'engulf') {
-            const defender=this.patrol.cells.find(c=>c.id===event.cellId);
-            this.soundCue('soft',defender?.role==='macrophage'?.9:1.06);
             if(event.assistance)this.teamworkCue(event);
         }
         if (event.type === 'death' && event.enemyId !== undefined) {
@@ -164,7 +151,6 @@ export class PatrolScene extends Phaser.Scene {
             if (!this.reducedMotion) this.cameras.main.shake(90, .0018);
         }
         if (event.type === 'gate' || event.type === 'summon') {
-            this.soundCue('recruit');
             const p=this.patrol, q=project(p.x,p.y);
             const message=event.label ?? event.text;
             this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
@@ -215,7 +201,6 @@ export class PatrolScene extends Phaser.Scene {
         banner.add([ribbon,pod,title,label]);
         if(!reduced){banner.setScale(.82);this.tweens.add({targets:banner,scale:1,duration:260,ease:'Back.Out'});}
         this.tweens.add({targets:banner,alpha:0,delay:1400,duration:reduced?0:280,onComplete:()=>banner.destroy()});
-        this.soundCue(charge>.7?'recruit':'soft',med.effect==='inhibit'?1.1:.85);
         const wave=this.add.graphics().setPosition(210,390).setDepth(850).lineStyle(3+charge*3,med.color,.7).strokeEllipse(0,0,120+charge*180,80+charge*120);
         this.tweens.add({targets:wave,scaleX:reduced?1:1.6,scaleY:reduced?1:1.6,alpha:0,duration:reduced?350:650,onComplete:()=>wave.destroy()});
         for(const enemy of this.patrol.enemies){
@@ -270,6 +255,7 @@ export class PatrolScene extends Phaser.Scene {
             if (dx || dy) { const k = dx && dy ? Math.SQRT1_2 : 1; p.move(p.x + dx * dt * 255 * k, p.y + dy * dt * 210 * k); }
             p.step(dt);
             for (const event of p.drainEvents()) this.reaction(event);
+            bioAudio.update(p.chargingMedicine,p.medicineCharge);
             this.hooks.tick(p);
             if (p.phase !== 'playing') {
                 this.drawGround(); this.drawSquad(time); this.drawEnemies(time); this.drawGates(); this.drawBreachWarnings();
@@ -303,7 +289,7 @@ export class PatrolScene extends Phaser.Scene {
         if (this.finished) return;
         this.finished = true; this.cancelControls();
         const won = this.patrol.phase === 'victory';
-        if (won) this.soundCue('finish');
+        bioAudio.stop();bioAudio.cue(won?'victory':'heal');
         document.querySelector('.care-kit')?.classList.add('patrol-ended');
         document.querySelectorAll<HTMLButtonElement>('.care-kit button').forEach(b=>b.disabled=true);
         const shade=this.add.rectangle(210,390,420,780,0x052632,.55).setDepth(1900);
@@ -557,5 +543,5 @@ export class PatrolScene extends Phaser.Scene {
     }
 }
 export function createGame() {
-    return new Phaser.Game({ type: Phaser.AUTO, parent: 'game', backgroundColor: '#082d38', width: 420, height: 780, scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }, scene: [PatrolScene], audio: { disableWebAudio: false }, render: { antialias: true }, input: { activePointers: 2 } });
+    return new Phaser.Game({ type: Phaser.AUTO, parent: 'game', backgroundColor: '#082d38', width: 420, height: 780, scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH }, scene: [PatrolScene], audio: { disableWebAudio: false, context: bioAudio.unlock() }, render: { antialias: true }, input: { activePointers: 2 } });
 }

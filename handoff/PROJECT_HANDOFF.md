@@ -1,14 +1,17 @@
 # Project handoff — September23,2026
 
 ## Status and priority
-Latest user priority: implement the comprehensive original, adaptive, fatigue-resistant sound design in `handoff/requirements/AUDIO_DIRECTION.md` before other feature work. Initial inspection only; no audio implementation yet. Resume after capacity reset with verification/release reserve.
+Latest sound-design priority is implemented and released in0.5.0. Read AUDIO_DESIGN.md and handoff/requirements/AUDIO_DIRECTION.md. Browser/render/density checks pass; subjective listening and real-device long-session tuning remain outstanding. Continue the full product objective without claiming perceptual comfort from automated evidence.
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.4.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_67diqkY3rRvRUWoYtSFbgmfecQPr` (READY when verified).
-Immutable URL: https://biology-dash-public-demo-605uiodzc-applefound.vercel.app.
-Service worker cache: `biology-dfc4076347f1`.
-No pending application changes after0.4.0. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
+Current application/package version: **0.5.0**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_FgqYVhFFhNRuJhJBzgNQcWgzXzMt` (READY when verified).
+Immutable URL: https://biology-dash-public-demo-1o721u71w-applefound.vercel.app.
+Service worker cache: `biology-b36df3432e83`.
+No pending application changes after0.5.0. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
+
+## v0.5.0 sound system
+src/audio.ts owns original procedural synthesis, event mapping, short musical combinations, density/voice limits and sound preferences. It shares the context passed to Phaser; no runtime sound downloads. Historical WAV assets remain unused. Master/effects/musical-reward sliders live only in Settings. No looping music. Existing mute/master values migrate; new channels are additive without changing save schema4. See AUDIO_DESIGN.md for palette, limits and test artifacts.
 
 ## v0.4.0 current gameplay
 First Hug starts with one magnified cell and a short, sequential introduction. Base phagocytes retire after one completed digestion; Neutrophil upgrades allow two/three. This is an explicit arcade abstraction. Hold/release medicine applies3–6seconds of isolate-specific exposure to currently visible invaders; one main button, optional Kit thereafter. Tissue-origin Defensin particles begin in Patrol2. Granuloma/TB formations remain future work. Existing saves and optional configuration are retained.
@@ -34,7 +37,7 @@ v0.3.3: configuration is optional for all patrols. Play/Next/map level cards lau
 v0.3.4: charged medicine previews show compatible microbes, wall/growth distinctions and no-match feedback. Preview cleanup verified through release, switch, pause and victory; suggested-squad campaign simulation completes all ten levels without purchases or selection-room use.
 
 ## Validation at last release
-v0.4.0:120 unit tests, typecheck and clean production build pass. First Hug browser check covers natural32second victory, one-use cell retirement, touch charge, timed exposure, exactly-once reward and direct next patrol.320px reduced-motion mouse capture/touch cancellation/keyboard/pause/assistive activation and optional medicine Kit checks pass. Final public production completes the natural opening without instrumentation, confirms one settlement and direct Patrol2 launch. Public files/version/no-index/robots match; phone/desktop labels show0.4.0. Returning0.3.4 cache updates to biology-dfc4076347f1, preserving42Coins, roster/upgrades/loadout/transactions and offline reload. Older browser scripts assuming90second first patrol or immediate medicine damage are historical; use scripts/first-hug-test.mjs, simple-support-controls-test.mjs and first-hug-production-test.mjs for this design.
+v0.5.0:127 unit tests/typecheck/production build pass. Audio event palette, capped clustered rewards, voice priority, natural catch and charged release, pause/mute/cancellation, channel preferences and reload pass in Chrome. A simulated20minute dense-event director test and26second actual OfflineAudioContext render pass. Initial voice-replacement peak was corrected; final full-volume peak0.2322/RMS0.0190 with8active transient voices maximum and silence at the end. These are digital metrics, not subjective listening results. Public audio waveform/mute/settings/preview checks pass; natural32second opening still wins with one settlement and direct Patrol2. Public files/version/no-index/robots verified. Phone/desktop show0.5.0; returning0.4.0 cached player retains42Coins/roster/upgrades/transactions and offline reload. Current audio tests: scripts/adaptive-audio-test.mjs, audio-render-test.mjs, audio-production-test.mjs. Original WAV routing test now forwards to adaptive-audio-test. Current gameplay checks remain first-hug-test.mjs, simple-support-controls-test.mjs and first-hug-production-test.mjs.
 Not verified: real-device performance, subjective sound quality, human enjoyment/retention, educational efficacy, clinician review, native readiness. The broad improvement objective is not complete.
 
 ## Resume work after explicit permission

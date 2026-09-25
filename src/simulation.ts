@@ -59,6 +59,7 @@ export interface PatrolEvent {
     label?: string;
     enemyId?: number;
     cellId?: number;
+    boss?: boolean;
     assistance?: 'antibody' | 'complement' | 'both';
     cause?: 'phagocytosis' | 'defensin' | MedicineId;
     squad?: number;
@@ -429,7 +430,7 @@ export class Patrol {
             if (e.hp <= 0) {
                 this.kills++;
                 this.score += e.boss ? 250 : 25;
-                this.events.push({type:'death',text:'Cleared',x:e.x,y:e.y,enemyId:e.id,cellId:e.lastCellId,cause:e.lastCause});
+                this.events.push({type:'death',boss:e.boss,text:'Cleared',x:e.x,y:e.y,enemyId:e.id,cellId:e.lastCellId,cause:e.lastCause});
             } else if (e.y > BALANCE.breachY) {
                 this.lose('Breach rescue: one defender leaves to protect the tissue.');
                 if (e.boss) {

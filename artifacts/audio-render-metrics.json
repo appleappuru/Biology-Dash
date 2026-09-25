@@ -1,0 +1,12 @@
+{
+  "peak": 0.23216557502746582,
+  "rms": 0.018995588421979924,
+  "late": 0,
+  "stats": {
+    "played": 228,
+    "dropped": 6,
+    "peakVoices": 8,
+    "chargeStarts": 1,
+    "chargeStops": 1
+  }
+}

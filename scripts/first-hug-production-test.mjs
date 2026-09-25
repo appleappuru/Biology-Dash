@@ -1,5 +1,6 @@
 import {chromium,expect} from '@playwright/test';
-import {writeFile} from 'node:fs/promises';
+import {readFile,writeFile} from 'node:fs/promises';
+const version=JSON.parse(await readFile('package.json','utf8')).version;
 const browser=await chromium.launch({channel:'chrome',headless:true});
 const page=await browser.newPage({viewport:{width:390,height:844},hasTouch:true}),errors=[];
 page.on('pageerror',e=>errors.push(e.message));
@@ -29,6 +30,6 @@ try{
  await page.locator('#next').click();await expect(page.locator('.game-heading .eyebrow')).toHaveText('PATROL 02');
  await expect(page.locator('.modal-backdrop')).toHaveCount(0);
  expect(errors).toEqual([]);
- await writeFile('artifacts/first-hug-production.json',JSON.stringify({version:'0.4.0',completed:saved.completed,settled:saved.economy.settled.length,errors},null,2));
+ await writeFile('artifacts/first-hug-production.json',JSON.stringify({version,completed:saved.completed,settled:saved.economy.settled.length,errors},null,2));
  console.log('PASS production opening, one-use cell, charged timed medicine, natural 32-second victory, single settlement, direct next patrol');
 }finally{await browser.close();}

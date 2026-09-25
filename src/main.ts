@@ -1,3 +1,4 @@
+import {bioAudio} from './audio';
 import {bindChargeControl} from './charge-control';
 import {ROSTER,rosterOption,upgradePreview,deploymentFor,type RosterId} from './roster';
 import {buy,price,swapMember,settleRun,unlockRoster,applyFormation} from './economy';
@@ -10,6 +11,8 @@ import { LEVELS, DEFENDERS, FIELD_GUIDE, PATHOGENS, CLONES, MEDICINES, available
 import { loadSave, writeSave, isUnlocked, purchaseReinforcement } from './save';
 const root = document.querySelector<HTMLDivElement>('#app')!;
 let save = loadSave();
+bioAudio.configure(save);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)bioAudio.stop();});
 unlockRoster(save);
 let runId = '';
 let selectedSlot=0;
@@ -52,7 +55,7 @@ function render() {
         const nextId=purchased&&id.startsWith('recruit:')?id.replace('recruit:','upgrade:'):id;
         const target=Array.from(root.querySelectorAll<HTMLButtonElement>('[data-buy]')).find(button=>button.dataset.buy===nextId);
         if(target){const note=document.createElement('p');note.className='card-purchase-feedback'+(purchased?' purchase-pop':'');note.textContent=receipt;note.setAttribute('aria-hidden','true');target.before(note);target.scrollIntoView({block:'center',behavior:'instant'});if(!target.disabled)target.focus({preventScroll:true});else{const card=target.closest<HTMLElement>('article');card?.setAttribute('tabindex','-1');card?.focus({preventScroll:true});}}
-        if(purchased&&!save.muted){const chime=new Audio('assets/recruit.wav');chime.volume=save.volume*.4;void chime.play().catch(()=>{});}
+        if(purchased){bioAudio.configure(save);bioAudio.unlock();bioAudio.cue('reward');}
     });
     root.querySelector<HTMLButtonElement>('#affordable-choice')?.addEventListener('click',()=>{const id=root.querySelector<HTMLElement>('#affordable-choice')!.dataset.choice;const target=Array.from(root.querySelectorAll<HTMLButtonElement>('[data-buy]')).find(b=>b.dataset.buy===id);target?.scrollIntoView({block:'center',behavior:'instant'});target?.focus({preventScroll:true});});
     root.querySelector('#shop-patrol')?.addEventListener('click',()=>quickStart(selected));
@@ -71,8 +74,9 @@ function render() {
         render();
         notify('+1 starting defender unlocked.');
     } });
-    root.querySelector<HTMLButtonElement>('#mute')?.addEventListener('click', () => { save.muted = !save.muted; persist(); render(); });
-    root.querySelector<HTMLInputElement>('#volume')?.addEventListener('input', e => { save.volume = Number((e.target as HTMLInputElement).value); persist(); });
+    root.querySelector<HTMLButtonElement>('#mute')?.addEventListener('click', () => { save.muted = !save.muted; bioAudio.configure(save);persist(); render(); });
+    for(const key of ['volume','sfxVolume','musicVolume'] as const)root.querySelector<HTMLInputElement>('#'+key)?.addEventListener('input',e=>{save[key]=Number((e.target as HTMLInputElement).value);bioAudio.configure(save);persist();});
+    root.querySelector('#sound-preview')?.addEventListener('click',()=>{bioAudio.configure(save);bioAudio.unlock();bioAudio.cue('reward');});
     root.querySelector<HTMLButtonElement>('#motion')?.addEventListener('click', () => { save.reducedMotion = !save.reducedMotion; persist(); render(); });
     root.querySelector<HTMLButtonElement>('#reach-aid')?.addEventListener('click', () => { save.showReach = !save.showReach; persist(); render(); });
     root.querySelector<HTMLButtonElement>('#tutorial')?.addEventListener('click', () => { save.tutorial = false; persist(); quickStart(1); });
@@ -114,7 +118,7 @@ function refreshLoadout(){
  if(key&&value!==null)Array.from(document.querySelectorAll<HTMLButtonElement>(`.loadout [${key}]`)).find(button=>button.getAttribute(key)===value)?.focus({preventScroll:true});
 }
 function guideMarkup() { return `<article class="guide-card"><h3>Real cells, game specializations</h3><p>One completed engulfment uses one base phagocyte in this game, including a colony fragment. Neutrophil upgrades allow two or three engulfments. This is a limited-use squad rule: real phagocytes can ingest multiple microbes. Neutrophils can undergo apoptosis after phagocytosis, but neither this one-for-one limit nor its seconds-long timing is literal biology. Defensin particles represent soluble antimicrobial peptides acting on microbial membranes; their aimed travel, equal damage across these fictional isolates and timing are arcade abstractions.</p><p>Fast and long-reach neutrophils are fictional gameplay specializations, not established biological subtypes. Their speed/reach tradeoffs, upgrades, permanent roster and Coins are game abstractions. Neutrophils and macrophages engulf; plasma cells secrete matching antibodies that help phagocytes. Additional plasma cells share a capped secretion benefit and take slots away from catchers. Coins cannot be bought for real money.</p></article><h1 class="screen-title">The field guide</h1><p class="muted">A few small ideas behind a remarkable defense.</p><div class="guide-grid">${FIELD_GUIDE.map(g => `<article class="guide-card"><h3>${g.title}</h3><p>${g.text}</p></article>`).join('')}<article class="guide-card"><h3>Encounter evidence</h3><p>Meet the microbes: round staphylococcal clusters, paired pneumococci, flagellated rods and budding yeast. Colors are artistic; lab reports describe fictional tested isolates. Clover IgG and Crown IgG are fictional nicknames for two IgG-like antibody binding profiles. Their crests represent epitopes, not clinical antigen names or cross-protection between species.</p>${PATHOGENS.map(p => `<section class="microbe-entry">${microbeSprite(p)}<div><h3>${p.species}</h3><strong>${p.name}</strong><p>${p.morphology}. ${p.habitat}.</p><p>${p.defense}</p><small>${p.clue}</small></div></section>`).join('')}</article><article class="guide-card"><h3>Sources & review</h3><p>Mechanisms checked against DailyMed medicine labels, CDC antibiotic guidance and NCBI immunology references on September 13, 2026. Qualified medical review and human learning evaluation remain outstanding.</p><p><a href="https://www.cdc.gov/antibiotic-use/about/index.html" target="_blank" rel="noreferrer">CDC: antibiotics</a> · <a href="https://www.cdc.gov/candidiasis/treatment/index.html" target="_blank" rel="noreferrer">CDC: Candida</a> · <a href="https://www.cdc.gov/pseudomonas-aeruginosa/about/index.html" target="_blank" rel="noreferrer">CDC: Pseudomonas</a> · <a href="https://www.ncbi.nlm.nih.gov/books/NBK27142/" target="_blank" rel="noreferrer">NCBI: immune defense</a></p></article></div>`; }
-function settingsMarkup() { return `<h1 class="screen-title">Make yourself comfortable</h1><p class="muted">Quiet by nature. Adjust the little things.</p><div class="setting"><div><h3>Sound effects</h3><p>Soft, occasional cues. No music.</p></div><button id="mute" class="toggle" aria-pressed="${!save.muted}">${save.muted ? 'Off' : 'On'}</button></div><div class="setting"><div><h3>Volume</h3><p>Kept gentle, even at full volume.</p></div><input id="volume" aria-label="Volume" type="range" min="0" max="1" step="0.05" value="${save.volume}"></div><div class="setting"><div><h3>Reduce motion</h3><p>Pause floating details and camera effects.</p></div><button id="motion" class="toggle" aria-pressed="${save.reducedMotion}">${save.reducedMotion ? 'On' : 'Off'}</button></div><div class="setting"><div><h3>Approach guide</h3><p>Optional faint dots show nearby cells’ acquisition reach. Contact is still required.</p></div><button id="reach-aid" class="toggle" aria-pressed="${save.showReach}">${save.showReach ? 'On' : 'Off'}</button></div><div class="setting"><div><h3>A little refresher</h3><p>Replay the interactive steering tutorial.</p></div><button id="tutorial" class="secondary">Show me</button></div><article class="guide-card" style="margin-top:24px"><h3>Your progress stays here</h3><p class="release-version">Biology Dash · v${__APP_VERSION__}</p><p>Progress and preferences are saved on this device. No account, advertising, or game analytics. Clearing browser data removes your local save.</p></article>`; }
+function settingsMarkup() { return `<h1 class="screen-title">Make yourself comfortable</h1><p class="muted">Quiet by nature. Adjust the little things.</p><div class="setting"><div><h3>Sound</h3><p>Tactile effects with gentle musical rewards.</p></div><button id="mute" class="toggle" aria-pressed="${!save.muted}">${save.muted ? 'Off' : 'On'}</button></div><div class="setting"><div><h3>Master volume</h3><p>Kept gentle, even at full volume.</p></div><input id="volume" aria-label="Master volume" type="range" min="0" max="1" step="0.05" value="${save.volume}"></div><div class="setting"><div><h3>Effects</h3><p>Cells, medicines and little celebrations.</p></div><input id="sfxVolume" aria-label="Effects volume" type="range" min="0" max="1" step="0.05" value="${save.sfxVolume}"></div><div class="setting"><div><h3>Musical rewards</h3><p>Soft combo harmonies. No background loop.</p></div><input id="musicVolume" aria-label="Musical rewards volume" type="range" min="0" max="1" step="0.05" value="${save.musicVolume}"></div><button id="sound-preview" class="secondary">Hear a little reward</button><div class="setting"><div><h3>Reduce motion</h3><p>Pause floating details and camera effects.</p></div><button id="motion" class="toggle" aria-pressed="${save.reducedMotion}">${save.reducedMotion ? 'On' : 'Off'}</button></div><div class="setting"><div><h3>Approach guide</h3><p>Optional faint dots show nearby cells’ acquisition reach. Contact is still required.</p></div><button id="reach-aid" class="toggle" aria-pressed="${save.showReach}">${save.showReach ? 'On' : 'Off'}</button></div><div class="setting"><div><h3>A little refresher</h3><p>Replay the interactive steering tutorial.</p></div><button id="tutorial" class="secondary">Show me</button></div><article class="guide-card" style="margin-top:24px"><h3>Your progress stays here</h3><p class="release-version">Biology Dash · v${__APP_VERSION__}</p><p>Progress and preferences are saved on this device. No account, advertising, or game analytics. Clearing browser data removes your local save.</p></article>`; }
 function navigate(to: string) { if (page === 'game') {
     pause();
     return;
@@ -177,6 +181,7 @@ function careOptions(){
 
 function gameMarkup() { return `<section class="game-shell"><header class="game-heading"><div><span class="eyebrow">PATROL ${String(selected).padStart(2, '0')}</span><h1>${LEVELS[selected - 1].name}</h1></div><button id="pause" class="icon-button" aria-label="Pause patrol">Ⅱ</button></header><div class="stage"><div id="game" aria-label="Immune patrol play area. Drag in any direction or use arrows or WASD." role="application"></div><div class="hud"><div class="hud-item"><small id="squad-kind">DEFENDERS</small><strong id="squad-count">12</strong></div><div class="hud-item hud-time"><div class="patrol-progress-title"><small id="patrol-stage">PROTECT THE HOST</small><span id="clock">${LEVELS[selected-1].duration}s</span></div><div class="timebar" role="progressbar" aria-label="Patrol progress" aria-valuemin="0" aria-valuemax="${LEVELS[selected-1].duration}" aria-valuenow="0"><div id="time-fill" style="width:0%"></div><span class="finish-crest" aria-hidden="true">✦</span></div><span id="stretch-label">Keep your team together</span></div><div class="hud-item"><small>CLEARED</small><strong id="cleared">0</strong></div></div><div id="colony-status" class="colony-status" hidden><div><b id="colony-name"></b><span id="colony-state"></span></div><div id="colony-health" role="progressbar" aria-label="Colony health" aria-valuemin="0" aria-valuemax="100"><i></i></div><small id="colony-tip"></small></div><div id="ability-status" class="ability-status"></div>${selected===1?'<div id="field-coach" class="field-coach" aria-label="First patrol goals"><span data-goal="move">Drag to move</span><span data-goal="catch">Catch the microbes</span><span data-goal="gate">Cross +4 to grow</span></div>':''}<div class="combat-feedback" id="feedback" role="status">${selected === 1 ? 'Steer close · watch cells wrap and engulf microbes' : LEVELS[selected - 1].subtitle}</div>${careKit()}</div></section>`; }
 function start(id: number) {
+    bioAudio.configure(save);bioAudio.unlock();
     previousBest=save.bestScores[id]??0;
     runId=crypto.randomUUID();
     save.economy.pending=null;persist();
@@ -197,8 +202,8 @@ function start(id: number) {
     if(fire)bindChargeControl(fire,{
         begin:()=>{if(!patrol || !scene || scene.paused)return false;scene.hooks.gesture();return patrol.beginMedicineCharge();},
         release:()=>{if(scene?.paused)patrol?.cancelMedicineCharge();else patrol?.releaseMedicineCharge();},
-        cancel:()=>patrol?.cancelMedicineCharge(),
-        tap:()=>{if(scene && !scene.paused)patrol?.useSupport();}
+        cancel:()=>{patrol?.cancelMedicineCharge();bioAudio.stopCharge();},
+        tap:()=>{if(scene && !scene.paused){bioAudio.unlock();patrol?.useSupport();}}
     });
     root.querySelectorAll<HTMLButtonElement>('[data-medicine]').forEach(b => b.onclick = () => { if (!patrol || scene?.paused) return; patrol.cancelMedicineCharge(); patrol.medicine = b.dataset.medicine as MedicineId; medicine = patrol.medicine; feedback(medicineStyle(medicine).action + ' · ' + medicineName(medicine)); tick(patrol,true); });
     root.querySelector('#antibody')?.addEventListener('click', antibodyPanel);
@@ -219,9 +224,7 @@ function start(id: number) {
         return; scene = game!.scene.getScene('Patrol') as PatrolScene; if(scene?.startupFailed || performance.now()-bootStarted>20000){failBoot();return;} if (!scene || !scene.sys.isActive()) {
         setTimeout(boot, 30);
         return;
-    } patrol = new Patrol(id, id * 8917, save.reinforcement); patrol.medicine = medicine; patrol.defender = defender; patrol.antibody = { ...save.antibody }; patrol.loadout=deploymentFor(save.roster,id,!save.customLoadout).members;patrol.upgrades={...save.roster.upgrades};patrol.syncCells(); patrol.learning.affinity = save.checks.affinity === true; scene.showReach = save.showReach; scene.muted = save.muted; scene.volume = save.volume; scene.reducedMotion = save.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches; scene.startPatrol(patrol, { tick, event: feedback, finish, pause, gesture: () => { const audio = scene?.sound as unknown as {
-            unlock?: () => void;
-        }; audio?.unlock?.(); } }); loading.remove();root.querySelector('#game')?.setAttribute('aria-busy','false');bootControls.forEach(({button,disabled})=>button.disabled=disabled);tick(patrol,true); if (id === 1 && !save.tutorial) feedback('Meet Neutrophil'); };
+    } patrol = new Patrol(id, id * 8917, save.reinforcement); patrol.medicine = medicine; patrol.defender = defender; patrol.antibody = { ...save.antibody }; patrol.loadout=deploymentFor(save.roster,id,!save.customLoadout).members;patrol.upgrades={...save.roster.upgrades};patrol.syncCells(); patrol.learning.affinity = save.checks.affinity === true; scene.showReach = save.showReach; scene.reducedMotion = save.reducedMotion || matchMedia('(prefers-reduced-motion: reduce)').matches; scene.startPatrol(patrol, { tick, event: feedback, finish, pause, gesture: () => { bioAudio.unlock(); } }); loading.remove();root.querySelector('#game')?.setAttribute('aria-busy','false');bootControls.forEach(({button,disabled})=>button.disabled=disabled);tick(patrol,true); if (id === 1 && !save.tutorial) feedback('Meet Neutrophil'); };
     boot();
 }
 function feedback(text: string) { const el = document.getElementById('feedback'); if (el)
@@ -325,8 +328,8 @@ function equipAntibody(epitope:'A'|'B') {
     feedback(`${antibodyName(epitope)} selected for new tags. Match the crest!`);tick(patrol,true);
 }
 function pause() { if (!scene || !patrol || patrol.phase !== 'playing' || document.querySelector('.modal-backdrop'))
-    return; scene.paused = true; scene.cancelControls(); modal(`<span class="eyebrow">TAKE A BREATHER</span><h2>Patrol paused</h2><p>Your team will wait here. Come back when you’re ready.</p><div class="pause-snapshot" aria-label="Patrol status"><span><strong>${Math.max(0, Math.ceil(patrol.duration-patrol.time))}s</strong> left to defend</span><span><strong>${patrol.squad}</strong> defenders together</span></div><button id="resume" class="primary">Resume patrol</button><button id="pause-sound" class="secondary" aria-pressed="${!save.muted}">Sound: ${save.muted?'Off':'On'}</button><button id="restart" class="secondary">Restart level</button><button id="leave" class="secondary">Return to map</button>`, { 'pause-sound': () => { save.muted=!save.muted;scene!.muted=save.muted;if(save.muted)scene!.sound.stopAll();persist();const button=document.querySelector<HTMLButtonElement>('#pause-sound')!;button.textContent=save.muted?'Sound: Off':'Sound: On';button.setAttribute('aria-pressed',String(!save.muted)); }, resume: () => { closeModal(); scene!.paused = false; }, restart: () => { stopGame(); start(selected); }, leave: () => { stopGame(); page = 'patrol'; render(); } }); }
-function stopGame() { closeModal(); scene?.sound.stopAll(); game?.destroy(true); game = null; scene = null; patrol = null; }
+    return; scene.paused = true; scene.cancelControls(); modal(`<span class="eyebrow">TAKE A BREATHER</span><h2>Patrol paused</h2><p>Your team will wait here. Come back when you’re ready.</p><div class="pause-snapshot" aria-label="Patrol status"><span><strong>${Math.max(0, Math.ceil(patrol.duration-patrol.time))}s</strong> left to defend</span><span><strong>${patrol.squad}</strong> defenders together</span></div><button id="resume" class="primary">Resume patrol</button><button id="pause-sound" class="secondary" aria-pressed="${!save.muted}">Sound: ${save.muted?'Off':'On'}</button><button id="restart" class="secondary">Restart level</button><button id="leave" class="secondary">Return to map</button>`, { 'pause-sound': () => { save.muted=!save.muted;bioAudio.configure(save);persist();const button=document.querySelector<HTMLButtonElement>('#pause-sound')!;button.textContent=save.muted?'Sound: Off':'Sound: On';button.setAttribute('aria-pressed',String(!save.muted)); }, resume: () => { closeModal(); scene!.paused = false; }, restart: () => { stopGame(); start(selected); }, leave: () => { stopGame(); page = 'patrol'; render(); } }); }
+function stopGame() { bioAudio.stop(); closeModal(); game?.destroy(true); game = null; scene = null; patrol = null; }
 function finish(p: Patrol) { settleRun(save,p,runId);persist(); const reward=save.economy.pending; const won = p.phase === 'victory'; const newBest = won && p.score > previousBest; if (won) {
     settleRun(save,p,runId);
     persist();
@@ -336,7 +339,7 @@ function finish(p: Patrol) { settleRun(save,p,runId);persist(); const reward=sav
     else
         start(id); }, 'result-map': () => { stopGame(); selected = LEVELS.find(l => !save.completed.includes(l.id))?.id ?? 10; page = 'patrol'; render(); } }); }
 document.addEventListener('visibilitychange', () => { if (document.hidden) {
-    scene?.sound.stopAll();
+    bioAudio.stop();
     pause();
 } });
 window.addEventListener('pagehide', persist);
@@ -361,7 +364,7 @@ if (Capacitor.isNativePlatform()) {
     } });
 }
 if (import.meta.env.DEV || import.meta.env.MODE === 'test') {
-    Object.assign(window, { __BIOLOGY__: { get state() { return patrol; }, get save() { return save; }, get scene() { return scene; }, start: (id: number) => { stopGame(); save.completed = Array.from({ length: id - 1 }, (_, i) => i + 1); save.tutorial = true; start(id); }, advance: (seconds: number, autopilot = false) => { if (!patrol)
+    Object.assign(window, { __BIOLOGY__: { audio:bioAudio, get state() { return patrol; }, get save() { return save; }, get scene() { return scene; }, start: (id: number) => { stopGame(); save.completed = Array.from({ length: id - 1 }, (_, i) => i + 1); save.tutorial = true; start(id); }, advance: (seconds: number, autopilot = false) => { if (!patrol)
                 return; for (let i = 0; i < seconds * 20; i++) {
                 if (autopilot) {
                     const target = patrol.enemies.filter(e => e.y > 400).sort((a, b) => b.y - a.y)[0];

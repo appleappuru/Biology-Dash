@@ -1,0 +1,40 @@
+{
+  "natural": {
+    "played": 2,
+    "dropped": 0,
+    "peakVoices": 1,
+    "chargeStarts": 0,
+    "chargeStops": 0,
+    "combo": 1
+  },
+  "release": {
+    "played": 9,
+    "dropped": 0,
+    "peakVoices": 3,
+    "chargeStarts": 1,
+    "chargeStops": 1,
+    "active": 5.98334
+  },
+  "burst": {
+    "played": 5,
+    "active": 5,
+    "combo": 30
+  },
+  "hierarchy": {
+    "played": 5,
+    "active": 8,
+    "peak": 8,
+    "dropped": 4
+  },
+  "cancellation": {
+    "charging": false,
+    "voices": 0,
+    "pending": 0
+  },
+  "saved": {
+    "volume": 0.4,
+    "sfxVolume": 0.6,
+    "musicVolume": 0.2
+  },
+  "errors": []
+}
