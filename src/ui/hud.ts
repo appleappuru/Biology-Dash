@@ -4,6 +4,13 @@
  */
 
 import { SimulationState, MedicineType } from '../core/types';
+import {
+  iconHeart3D,
+  iconKit3D,
+  iconPause3D,
+  iconSurge3D,
+  iconCapsule3D,
+} from './icons';
 
 export interface HudCallbacks {
   onStartCharge: () => void;
@@ -20,6 +27,7 @@ export class CandyHUD {
   private surgeFill!: HTMLElement;
   private medChargeBtn!: HTMLElement;
   private medLabel!: HTMLElement;
+  private medSymbolEl!: HTMLElement;
   private progressFill!: HTMLElement;
   private lastSquadCount: number = 0;
   private callbacks: HudCallbacks;
@@ -37,7 +45,7 @@ export class CandyHUD {
       <div class="hud-top">
         <div class="hud-left">
           <div class="squad-badge" id="squad-badge">
-            <span class="badge-icon">🤍</span>
+            <span class="badge-icon">${iconHeart3D(20)}</span>
             <span class="badge-count" id="squad-count">6</span>
           </div>
         </div>
@@ -47,8 +55,8 @@ export class CandyHUD {
           </div>
         </div>
         <div class="hud-right">
-          <button class="hud-circle-btn" id="care-kit-btn" title="Open Care Kit">💊</button>
-          <button class="hud-circle-btn" id="pause-btn" title="Pause Game">⏸</button>
+          <button class="hud-circle-btn" id="care-kit-btn" title="Open Care Kit">${iconKit3D(20)}</button>
+          <button class="hud-circle-btn" id="pause-btn" title="Pause Game">${iconPause3D(18)}</button>
         </div>
       </div>
 
@@ -56,14 +64,14 @@ export class CandyHUD {
         <div class="hud-controls-row">
           <button class="surge-circle-btn" id="surge-btn" disabled title="Cytokine Surge">
             <div class="surge-ring-fill" id="surge-fill"></div>
-            <span class="surge-icon">⚡</span>
+            <span class="surge-icon">${iconSurge3D(24)}</span>
             <span class="surge-label">SURGE</span>
           </button>
 
           <button class="med-charge-bar-btn" id="med-charge-btn">
             <div class="charge-indicator-glow"></div>
             <div class="med-btn-content">
-              <span class="med-symbol">🧪</span>
+              <span class="med-symbol" id="med-symbol">${iconCapsule3D('#55efc4', '#ffffff', 26)}</span>
               <div class="med-text-group">
                 <span class="med-action">HOLD TO CHARGE</span>
                 <span class="med-name" id="med-name">AMOXICILLIN</span>
@@ -79,6 +87,7 @@ export class CandyHUD {
     this.surgeFill = this.container.querySelector('#surge-fill')!;
     this.medChargeBtn = this.container.querySelector('#med-charge-btn')!;
     this.medLabel = this.container.querySelector('#med-name')!;
+    this.medSymbolEl = this.container.querySelector('#med-symbol')!;
     this.progressFill = this.container.querySelector('#patrol-progress')!;
 
     // Event listeners
@@ -149,8 +158,13 @@ export class CandyHUD {
       this.surgeBtn.classList.remove('surge-ready');
     }
 
-    // Medicine Label
+    // Medicine Label and 3D Symbol
     this.medLabel.textContent = equippedMed.toUpperCase();
+    if (this.medSymbolEl) {
+      const topColor = equippedMed === 'doxycycline' ? '#81ecec' : equippedMed === 'cefepime' ? '#a29bfe' : equippedMed === 'micafungin' ? '#ff7675' : '#55efc4';
+      const botColor = equippedMed === 'doxycycline' ? '#ffd43b' : '#ffffff';
+      this.medSymbolEl.innerHTML = iconCapsule3D(topColor, botColor, 26);
+    }
   }
 
   public setVisible(visible: boolean): void {

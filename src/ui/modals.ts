@@ -5,6 +5,17 @@
 
 import confetti from 'canvas-confetti';
 import { PatrolConfig, SimulationState } from '../core/types';
+import {
+  iconStar3D,
+  iconParty3D,
+  iconCoin3D,
+  iconPlay3D,
+  iconSleep3D,
+  iconLightbulb3D,
+  iconRetry3D,
+  iconRocket3D,
+  iconMap3D,
+} from './icons';
 
 export function showVictoryModal(
   parent: HTMLElement,
@@ -27,11 +38,11 @@ export function showVictoryModal(
   modal.className = 'modal-backdrop victory-modal';
 
   const stars = state.score >= 1500 ? 3 : state.score >= 800 ? 2 : 1;
-  const starsHtml = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+  const starsHtml = [1, 2, 3].map((s) => iconStar3D(s <= stars, 28)).join('');
 
   modal.innerHTML = `
     <div class="candy-modal-card victory-card">
-      <div class="pinata-burst-badge">🎉 COLONY DESTROYED!</div>
+      <div class="pinata-burst-badge"><span class="badge-icon">${iconParty3D(18)}</span> COLONY DESTROYED!</div>
       <h1 class="victory-title">PATROL CLEARED!</h1>
       <div class="victory-stars">${starsHtml}</div>
 
@@ -46,7 +57,7 @@ export function showVictoryModal(
         </div>
         <div class="stat-line">
           <span class="stat-name">Coins Earned:</span>
-          <span class="stat-val highlight">+${state.coinsEarned} 🪙</span>
+          <span class="stat-val highlight">+${state.coinsEarned} <span class="coin-icon-inline">${iconCoin3D(16)}</span></span>
         </div>
         <div class="stat-line">
           <span class="stat-name">Final Score:</span>
@@ -56,7 +67,7 @@ export function showVictoryModal(
 
       <div class="modal-buttons-row">
         <button class="candy-btn secondary" id="victory-menu-btn">Campaign</button>
-        <button class="candy-btn primary" id="victory-next-btn">Next Patrol ▶</button>
+        <button class="candy-btn primary" id="victory-next-btn">Next Patrol <span class="btn-icon-inline">${iconPlay3D(14)}</span></button>
       </div>
     </div>
   `;
@@ -84,18 +95,18 @@ export function showDefeatModal(
 
   modal.innerHTML = `
     <div class="candy-modal-card defeat-card">
-      <div class="nap-badge">😴 REST UP, TINY HEROES</div>
+      <div class="nap-badge"><span class="badge-icon">${iconSleep3D(18)}</span> REST UP, TINY HEROES</div>
       <h1 class="defeat-title">Tissue Breach!</h1>
       <p class="defeat-desc">The pathogen swarm breached the tissue threshold. Your defenders are resting in the lymph nodes.</p>
 
       <div class="clinical-tip-box">
-        <span class="tip-header">💡 Clinical Tip:</span>
+        <span class="tip-header"><span class="tip-icon">${iconLightbulb3D(16)}</span> Clinical Tip:</span>
         <p class="tip-body">${config.briefing.tip}</p>
       </div>
 
       <div class="modal-buttons-row">
         <button class="candy-btn secondary" id="defeat-menu-btn">Campaign</button>
-        <button class="candy-btn primary" id="defeat-retry-btn">Try Again 🔄</button>
+        <button class="candy-btn primary" id="defeat-retry-btn">Try Again <span class="btn-icon-inline">${iconRetry3D(14)}</span></button>
       </div>
     </div>
   `;
@@ -144,7 +155,7 @@ export function showBriefingModal(
         </div>
       </div>
 
-      <button class="candy-btn primary full-width" id="briefing-start-btn">DEPLOY PATROL 🚀</button>
+      <button class="candy-btn primary full-width" id="briefing-start-btn">DEPLOY PATROL <span class="btn-icon-inline">${iconRocket3D(18)}</span></button>
     </div>
   `;
 
@@ -169,9 +180,9 @@ export function showPauseModal(
     <div class="candy-modal-card pause-card">
       <h2 class="pause-title">Patrol Paused</h2>
       <div class="modal-buttons-col">
-        <button class="candy-btn primary" id="pause-resume-btn">Resume Patrol ▶</button>
-        <button class="candy-btn secondary" id="pause-restart-btn">Restart 🔄</button>
-        <button class="candy-btn secondary" id="pause-menu-btn">Exit to Campaign 🗺️</button>
+        <button class="candy-btn primary" id="pause-resume-btn">Resume Patrol <span class="btn-icon-inline">${iconPlay3D(14)}</span></button>
+        <button class="candy-btn secondary" id="pause-restart-btn">Restart <span class="btn-icon-inline">${iconRetry3D(14)}</span></button>
+        <button class="candy-btn secondary" id="pause-menu-btn">Exit to Campaign <span class="btn-icon-inline">${iconMap3D(16)}</span></button>
       </div>
     </div>
   `;

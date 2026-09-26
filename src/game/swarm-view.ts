@@ -1,6 +1,8 @@
 /**
  * Biology Dash: Immune Patrol
- * Swarm Visualizer, Object-Pooled Chibi Cell Rendering & Animations
+ * 3/4 Isometric Perspective Swarm Visualizer
+ * Renders 3D volumetric cells with directional drop shadows, dynamic banking,
+ * and 3/4 perspective squash/stretch.
  */
 
 import Phaser from 'phaser';
@@ -20,7 +22,7 @@ export class SwarmView {
     this.container.setDepth(15);
 
     this.shadowGraphics = scene.add.graphics();
-    this.shadowGraphics.setDepth(12);
+    this.shadowGraphics.setDepth(11);
   }
 
   public render(cells: CellUnit[], champions: ChampionUnit[]): void {
@@ -32,18 +34,22 @@ export class SwarmView {
       activeIds.add(cell.id);
       const proj = projectCorridorToScreen(cell.x, cell.y);
 
-      // Draw soft ground shadow
-      const shadowW = (cell.type === 'macrophage' ? 28 : 20) * proj.scale;
-      const shadowH = shadowW * 0.45;
-      this.shadowGraphics.fillStyle(0x04131d, 0.42);
-      this.shadowGraphics.fillEllipse(proj.x, proj.y + 16 * proj.scale, shadowW, shadowH);
+      // 3/4 Directional ground contact shadow (flattened ellipse along Y)
+      const shadowW = (cell.type === 'macrophage' ? 32 : 22) * proj.scale;
+      const shadowH = shadowW * 0.38; // 3/4 isometric foreshortening
+      const shadowY = proj.y + (cell.type === 'macrophage' ? 18 : 14) * proj.scale;
+
+      this.shadowGraphics.fillStyle(0x020a10, 0.52);
+      this.shadowGraphics.fillEllipse(proj.x, shadowY, shadowW, shadowH);
+
+      // Inner darker core shadow
+      this.shadowGraphics.fillStyle(0x010508, 0.4);
+      this.shadowGraphics.fillEllipse(proj.x, shadowY, shadowW * 0.6, shadowH * 0.55);
 
       // Get or create sprite
       let sprite = this.cellSprites.get(cell.id);
       if (!sprite) {
-        // Frame calculation based on type
-        // Row 0: neutrophil, Row 1: macrophage, Row 2: plasma
-        sprite = this.scene.add.image(proj.x, proj.y, 'defenders', 0);
+        sprite = this.scene.add.image(proj.x, proj.y, 'defenders_3d', 0);
         this.container.add(sprite);
         this.cellSprites.set(cell.id, sprite);
       }
@@ -52,11 +58,11 @@ export class SwarmView {
       const rowOffset = cell.type === 'macrophage' ? 4 : cell.type === 'plasma' ? 8 : 0;
       let col = 0;
       if (cell.state === 'engulfing' || cell.state === 'digesting') {
-        col = 3; // Cozy hug / digestion pose
+        col = 3; // 3/4 Engulf / hug pose
       } else if (cell.banking < -0.15) {
-        col = 1; // Bank left
+        col = 1; // 3/4 Bank left
       } else if (cell.banking > 0.15) {
-        col = 2; // Bank right
+        col = 2; // 3/4 Bank right
       }
 
       const frameIdx = rowOffset + col;
@@ -65,10 +71,10 @@ export class SwarmView {
       }
 
       sprite.setPosition(proj.x, proj.y);
-      const finalScaleX = proj.scale * cell.scale * cell.squashX * 0.38;
-      const finalScaleY = proj.scale * cell.scale * cell.squashY * 0.38;
+      const finalScaleX = proj.scale * cell.scale * cell.squashX * 0.36;
+      const finalScaleY = proj.scale * cell.scale * cell.squashY * 0.36;
       sprite.setScale(finalScaleX, finalScaleY);
-      sprite.setRotation(cell.banking * 0.3);
+      sprite.setRotation(cell.banking * 0.25);
     }
 
     // Clean up pooled sprites of removed cells
@@ -93,12 +99,14 @@ export class SwarmView {
       }
 
       champObj.setPosition(proj.x, proj.y);
-      const champScale = (champ.type === 'titan' ? 1.1 : 0.8) * proj.scale;
+      const champScale = (champ.type === 'titan' ? 1.05 : 0.8) * proj.scale;
       champObj.setScale(champScale);
 
-      // Ground shadow for champion
-      this.shadowGraphics.fillStyle(0x04131d, 0.6);
-      this.shadowGraphics.fillEllipse(proj.x, proj.y + 40 * proj.scale, 70 * proj.scale, 28 * proj.scale);
+      // Heavy 3/4 perspective ground shadow for champion
+      const cShadowW = 84 * proj.scale;
+      const cShadowH = cShadowW * 0.36;
+      this.shadowGraphics.fillStyle(0x020a10, 0.65);
+      this.shadowGraphics.fillEllipse(proj.x, proj.y + 44 * proj.scale, cShadowW, cShadowH);
     }
 
     for (const [id, cObj] of this.champSprites.entries()) {
@@ -111,16 +119,17 @@ export class SwarmView {
 
   private createChampionContainer(champ: ChampionUnit): Phaser.GameObjects.Container {
     const cont = this.scene.add.container(champ.x, champ.y);
-    const sprite = this.scene.add.image(0, 0, 'defenders', champ.type === 'titan' ? 7 : 11);
+    const sprite = this.scene.add.image(0, 0, 'defenders_3d', champ.type === 'titan' ? 7 : 11);
     sprite.setScale(champ.type === 'titan' ? 1.0 : 0.7);
 
-    // Crown or aura badge
-    const badge = this.scene.add.text(0, -55, champ.type === 'titan' ? 'GIGA HUGGER' : 'PLASMA QUEEN', {
+    // 3D Beveled Title Badge
+    const badge = this.scene.add.text(0, -60, champ.type === 'titan' ? 'GIGA HUGGER' : 'PLASMA QUEEN', {
       fontSize: '11px',
-      color: '#ffeaa7',
-      fontStyle: 'bold',
-      stroke: '#05151f',
-      strokeThickness: 3,
+      color: '#ffd700',
+      fontStyle: '900',
+      fontFamily: 'Fredoka, sans-serif',
+      backgroundColor: 'rgba(7, 24, 36, 0.85)',
+      padding: { x: 8, y: 3 },
     }).setOrigin(0.5);
 
     cont.add([sprite, badge]);

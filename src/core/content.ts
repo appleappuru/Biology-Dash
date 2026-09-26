@@ -211,7 +211,7 @@ export const AUTHORED_PATROLS: PatrolConfig[] = [
     bossSpecies: 'antigen_b_sa',
     briefing: {
       title: 'Epitope Escape Mechanism',
-      clinicalContext: 'Microbes mutate surface proteins into Epitope B (♛ crown). Phagocytes adapt through affinity selection.',
+      clinicalContext: 'Microbes mutate surface proteins into Epitope B (crown epitope). Phagocytes adapt through affinity selection.',
       targetOrganism: 'Antigen-B S. aureus',
       recommendedDrug: 'doxycycline',
       tip: 'Antibodies must match epitope shapes to effectively opsonize targets.',

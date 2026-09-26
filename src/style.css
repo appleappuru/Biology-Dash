@@ -322,6 +322,9 @@ html, body {
 }
 
 .coin-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: rgba(255, 234, 167, 0.15);
   border: 2px solid var(--accent-gold);
   border-radius: 18px;
@@ -329,6 +332,21 @@ html, body {
   font-size: 15px;
   font-weight: 700;
   color: var(--accent-gold);
+}
+
+.coin-icon-wrapper, .coin-icon-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+
+.btn-icon-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-left: 4px;
 }
 
 .nav-tabs-row {
@@ -424,11 +442,16 @@ html, body {
 }
 
 .card-stars {
-  font-size: 13px;
-  margin-top: 2px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 3px;
 }
 
 .deploy-mini-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   background: linear-gradient(180deg, #55efc4, #00b894);
   border: none;
   border-radius: 12px;
@@ -452,7 +475,12 @@ html, body {
 }
 
 .barracks-card-icon {
-  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
 }
 
 .barracks-card-info {
@@ -474,6 +502,10 @@ html, body {
 }
 
 .upgrade-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 8px 14px;
   border-radius: 12px;
   border: none;
@@ -663,10 +695,15 @@ html, body {
 }
 
 .med-icon {
-  font-size: 20px;
-  padding: 4px;
-  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 3px;
+  border-radius: 10px;
   border: 1px solid;
+  flex-shrink: 0;
 }
 
 .bento-title-group {
@@ -679,3 +716,41 @@ html, body {
 .med-card-class { font-size: 10px; color: #81ecec; }
 .bento-mech { font-size: 11px; color: #cbd5e1; margin-top: 4px; }
 .bento-target-row { font-size: 10px; color: #ffeaa7; margin-top: 2px; }
+
+/* 3D Tactile Icons and Modal Polish */
+.icon-3d {
+  display: inline-block;
+  vertical-align: middle;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  transition: transform 0.12s ease;
+}
+
+.icon-3d:hover {
+  transform: scale(1.08);
+}
+
+.pinata-burst-badge, .nap-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tip-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tip-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.victory-stars {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0;
+}
+

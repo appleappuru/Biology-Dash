@@ -7,6 +7,14 @@ import { AUTHORED_PATROLS } from '../core/content';
 import { MEDICAL_EVIDENCE_RECORDS, MEDICAL_DISCLAIMER } from '../core/evidence';
 import { GameSaveSchema } from '../core/types';
 import { purchaseUpgrade } from '../storage/save';
+import {
+  iconCoin3D,
+  iconStar3D,
+  iconLock3D,
+  iconPlay3D,
+  iconUpgradeCategory3D,
+  iconInfo3D,
+} from './icons';
 
 export class ScreenManager {
   private container: HTMLElement;
@@ -32,7 +40,7 @@ export class ScreenManager {
         <div class="campaign-header">
           <div class="title-with-coins">
             <h1 class="logo-title">BIOLOGY DASH</h1>
-            <div class="coin-counter">🪙 ${this.save.coins}</div>
+            <div class="coin-counter"><span class="coin-icon-wrapper">${iconCoin3D(18)}</span> <span class="coin-val">${this.save.coins}</span></div>
           </div>
           <div class="nav-tabs-row">
             <button class="nav-tab active" id="tab-campaign">Campaign</button>
@@ -46,7 +54,7 @@ export class ScreenManager {
             ${AUTHORED_PATROLS.map((p) => {
               const isUnlocked = this.save.patrolsCompleted.includes(p.id);
               const stars = this.save.patrolStars[p.id] || 0;
-              const starsHtml = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+              const starsHtml = [1, 2, 3].map((s) => iconStar3D(s <= stars, 16)).join('');
 
               return `
                 <div class="patrol-card ${isUnlocked ? 'unlocked' : 'locked'}" data-id="${p.id}">
@@ -61,8 +69,8 @@ export class ScreenManager {
                   <div class="patrol-card-right">
                     ${
                       isUnlocked
-                        ? `<button class="deploy-mini-btn">PLAY ▶</button>`
-                        : `<span class="lock-icon">🔒</span>`
+                        ? `<button class="deploy-mini-btn">PLAY ${iconPlay3D(12)}</button>`
+                        : `<span class="lock-icon">${iconLock3D(16)}</span>`
                     }
                   </div>
                 </div>
@@ -87,11 +95,11 @@ export class ScreenManager {
   }
 
   public showBarracks(): void {
-    const upgradeCategories: { key: keyof GameSaveSchema['upgrades']; title: string; desc: string; icon: string }[] = [
-      { key: 'speed', title: 'Extravasation Speed', desc: 'Accelerates squad maneuverability and frontline response', icon: '⚡' },
-      { key: 'reach', title: 'Pseudopod Reach', desc: 'Increases phagocytic engulfment radius for neutrophils & macrophages', icon: '🤲' },
-      { key: 'initialSquad', title: 'Starting Squad Size', desc: 'Deploys extra recruit cells at the start of each patrol', icon: '🤍' },
-      { key: 'cytokineRate', title: 'Cytokine Synthesis', desc: 'Charges Titan Macrophage Cytokine Surge meter faster', icon: '🧪' },
+    const upgradeCategories: { key: keyof GameSaveSchema['upgrades']; title: string; desc: string }[] = [
+      { key: 'speed', title: 'Extravasation Speed', desc: 'Accelerates squad maneuverability and frontline response' },
+      { key: 'reach', title: 'Pseudopod Reach', desc: 'Increases phagocytic engulfment radius for neutrophils & macrophages' },
+      { key: 'initialSquad', title: 'Starting Squad Size', desc: 'Deploys extra recruit cells at the start of each patrol' },
+      { key: 'cytokineRate', title: 'Cytokine Synthesis', desc: 'Charges Titan Macrophage Cytokine Surge meter faster' },
     ];
 
     const upgradeCards = upgradeCategories.map((u) => {
@@ -101,13 +109,13 @@ export class ScreenManager {
 
       return `
         <div class="barracks-card">
-          <div class="barracks-card-icon">${u.icon}</div>
+          <div class="barracks-card-icon">${iconUpgradeCategory3D(u.key, 34)}</div>
           <div class="barracks-card-info">
             <span class="barracks-card-title">${u.title} (Lvl ${lvl}/10)</span>
             <span class="barracks-card-desc">${u.desc}</span>
           </div>
           <button class="upgrade-btn ${canAfford ? 'affordable' : 'disabled'}" data-key="${u.key}">
-            ${lvl >= 10 ? 'MAX' : `${cost} 🪙`}
+            ${lvl >= 10 ? 'MAX' : `${cost} ${iconCoin3D(14)}`}
           </button>
         </div>
       `;
@@ -118,7 +126,7 @@ export class ScreenManager {
         <div class="campaign-header">
           <div class="title-with-coins">
             <h1 class="logo-title">SQUAD BARRACKS</h1>
-            <div class="coin-counter">🪙 ${this.save.coins}</div>
+            <div class="coin-counter"><span class="coin-icon-wrapper">${iconCoin3D(18)}</span> <span class="coin-val">${this.save.coins}</span></div>
           </div>
           <div class="nav-tabs-row">
             <button class="nav-tab" id="tab-campaign">Campaign</button>
@@ -166,7 +174,7 @@ export class ScreenManager {
         <div class="campaign-header">
           <div class="title-with-coins">
             <h1 class="logo-title">FIELD GUIDE</h1>
-            <div class="coin-counter">🪙 ${this.save.coins}</div>
+            <div class="coin-counter"><span class="coin-icon-wrapper">${iconCoin3D(18)}</span> <span class="coin-val">${this.save.coins}</span></div>
           </div>
           <div class="nav-tabs-row">
             <button class="nav-tab" id="tab-campaign">Campaign</button>
@@ -178,7 +186,7 @@ export class ScreenManager {
         <div class="campaign-scroll-area">
           <div class="guide-list">
             <div class="guide-disclaimer-box">
-              <span class="disc-icon">ℹ️</span>
+              <span class="disc-icon">${iconInfo3D(18)}</span>
               <p>${MEDICAL_DISCLAIMER}</p>
             </div>
             ${records}

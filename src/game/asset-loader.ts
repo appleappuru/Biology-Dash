@@ -186,7 +186,7 @@ export function generate3DClayMicrobeAtlas(scene: Phaser.Scene): void {
   ctx.strokeRect(32, 134, 32, 12);
   drawKawaiiFace(48, 144, 30, 'happy');
 
-  // 5. Antigen-B (Mint with Queen crown ♛)
+  // 5. Antigen-B (Mint with Queen crown)
   drawClaySphere(144, 144, 30, '#10b981', '#047857', '#d1fae5');
   // Gold crown
   ctx.fillStyle = '#eab308';

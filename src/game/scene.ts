@@ -65,7 +65,11 @@ export class PatrolScene extends Phaser.Scene {
 
   public preload(): void {
     this.load.image('corridor_bg', '/assets/tissue-perspective-v2.png');
-    this.load.spritesheet('defenders', '/assets/defenders-simple-v1.svg', {
+    this.load.spritesheet('defenders_3d', '/assets/defenders-simple-v1.png', {
+      frameWidth: 128,
+      frameHeight: 128,
+    });
+    this.load.spritesheet('defenders', '/assets/defenders-simple-v1.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
