@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="n-grad" cx="35%" cy="35%" r="65%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="70%" stop-color="#e0f7fa"/>
+      <stop offset="100%" stop-color="#b2ebf2"/>
+    </radialGradient>
+  </defs>
+  <circle cx="32" cy="32" r="28" fill="url(#n-grad)" stroke="#00acc1" stroke-width="2.5"/>
+  <!-- Eyes -->
+  <circle cx="23" cy="28" r="3.5" fill="#1e293b"/>
+  <circle cx="22" cy="27" r="1.2" fill="#ffffff"/>
+  <circle cx="41" cy="28" r="3.5" fill="#1e293b"/>
+  <circle cx="40" cy="27" r="1.2" fill="#ffffff"/>
+  <!-- Blush -->
+  <ellipse cx="18" cy="34" rx="3.5" ry="2" fill="#ffab91" opacity="0.8"/>
+  <ellipse cx="46" cy="34" rx="3.5" ry="2" fill="#ffab91" opacity="0.8"/>
+  <!-- Smile -->
+  <path d="M 27 34 Q 32 38 37 34" stroke="#1e293b" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

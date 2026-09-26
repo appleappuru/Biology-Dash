@@ -1,0 +1,65 @@
+:root {
+  --bg-deep: #05151f;
+  --bg-ocean: #0a2e3d;
+  --bg-mauve: #1b1633;
+  --accent-gold: #ffeaa7;
+  --accent-pink: #ff7675;
+  --accent-mint: #55efc4;
+  --accent-periwinkle: #a29bfe;
+  --text-main: #f8fafc;
+  --font-display: 'Fredoka', cursive, sans-serif;
+  --font-body: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  font-family: var(--font-body);
+}
+
+#app-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 480px;
+  max-height: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: radial-gradient(circle at 50% 20%, #0a2e3d 0%, #05151f 100%);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+#game-canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+#ui-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+}
