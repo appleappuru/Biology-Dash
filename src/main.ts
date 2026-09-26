@@ -101,7 +101,7 @@ export class GameApp {
 
     // Phaser Config
     const phaserConfig: Phaser.Types.Core.GameConfig = {
-      type: Phaser.AUTO,
+      type: Phaser.CANVAS,
       parent: canvasContainer,
       width: VIRTUAL_WIDTH,
       height: VIRTUAL_HEIGHT,
@@ -110,23 +110,24 @@ export class GameApp {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
       },
-      scene: [PatrolScene],
+      audio: {
+        noAudio: true, // We use our own pure Web Audio synthesizer
+      },
     };
 
     this.game = new Phaser.Game(phaserConfig);
-
-    // Start scene with patrol data
-    this.game.events.once('ready', () => {
-      this.currentScene = this.game!.scene.getScene('PatrolScene') as PatrolScene;
-      this.currentScene.setEquippedMedicine(this.save.equippedMedicine);
-
-      this.game!.scene.start('PatrolScene', {
-        config,
-        onStateChange: (state: SimulationState) => {
-          this.handleStateUpdate(state);
-        },
-      });
+    this.game.scene.add('PatrolScene', PatrolScene, true, {
+      config,
+      onStateChange: (state: SimulationState) => {
+        this.handleStateUpdate(state);
+      },
     });
+
+    // Cache scene reference once started
+    setTimeout(() => {
+      this.currentScene = this.game?.scene.getScene('PatrolScene') as PatrolScene;
+      this.currentScene?.setEquippedMedicine(this.save.equippedMedicine);
+    }, 50);
   }
 
   private handleStateUpdate(state: SimulationState): void {

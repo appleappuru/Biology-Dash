@@ -26,6 +26,7 @@ export class ScreenManager {
   }
 
   public showCampaign(): void {
+    this.container.style.display = 'block';
     this.container.innerHTML = `
       <div class="screen-view campaign-screen">
         <div class="campaign-header">
@@ -196,6 +197,7 @@ export class ScreenManager {
   }
 
   public hide(): void {
+    this.container.style.display = 'none';
     this.container.innerHTML = '';
   }
 }
