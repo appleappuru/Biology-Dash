@@ -63,20 +63,20 @@ export class PatrolScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    this.load.image('corridor_bg', '/assets/corridor-bioluminescent.jpg');
-    this.load.spritesheet('defenders_3d', '/assets/defenders-v2-transparent.png', {
+    this.load.image('corridor_bg', '/assets/corridor-subtle-vascular.jpg');
+    this.load.spritesheet('defenders_3d', '/assets/defenders-biological-3d.png', {
       frameWidth: 256,
       frameHeight: 256,
     });
-    this.load.spritesheet('defenders', '/assets/defenders-v2-transparent.png', {
+    this.load.spritesheet('defenders', '/assets/defenders-biological-3d.png', {
       frameWidth: 256,
       frameHeight: 256,
     });
-    this.load.spritesheet('microbes_3d', '/assets/microbes-v4-volumetric.png', {
+    this.load.spritesheet('microbes_3d', '/assets/microbes-biological-3d.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet('microbes', '/assets/microbes-v4-volumetric.png', {
+    this.load.spritesheet('microbes', '/assets/microbes-biological-3d.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
@@ -210,7 +210,10 @@ export class PatrolScene extends Phaser.Scene {
       // Fire tactical wave!
       const result = fireMedicineWave(this.simState, this.equippedMedicine);
       this.combatOverlay.triggerPulse(0x55efc4, this.simState.squadCenter.y);
-      globalJuice.triggerScreenShake(8, 0.3);
+      // Gentle rumble only for late-level heavy antibiotics (e.g. Vancomycin in Level 5+)
+      if (this.patrolConfig.id >= 5 && this.equippedMedicine?.id === 'vancomycin') {
+        globalJuice.triggerScreenShake(2.0, 0.2);
+      }
 
       if (result.affectedCount > 0) {
         globalJuice.spawnCallout(`SHATTERED ${result.affectedCount}!`, 210, 320, '#55efc4');
@@ -253,21 +256,20 @@ export class PatrolScene extends Phaser.Scene {
             this.simState.squadCenter.y - 30,
             '#55efc4'
           );
-          globalJuice.triggerScreenShake(3, 0.2);
           break;
         case 'biofilm_burst':
           playBiofilmCrack();
-          globalJuice.triggerScreenShake(8, 0.35);
           globalJuice.spawnCallout('+20 COINS!', evt.data?.x || 210, evt.data?.y || 400, '#ffeaa7');
           break;
         case 'champion_spawned':
           playCytokineRoar();
-          globalJuice.triggerScreenShake(10, 0.4);
           globalJuice.spawnCallout('GIGA HUGGER!', 210, 500, '#ffeaa7');
           break;
         case 'colony_burst':
           playPinataFanfare();
-          globalJuice.triggerScreenShake(14, 0.6);
+          if (this.patrolConfig.id >= 5) {
+            globalJuice.triggerScreenShake(2.5, 0.25);
+          }
           globalJuice.spawnStarBurst(210, 200, 36);
           break;
         case 'cell_lost':

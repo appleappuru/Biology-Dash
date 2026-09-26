@@ -47,9 +47,11 @@ export class JuiceEngine {
   public particles: StarParticle[] = [];
   public dashTrails: DashTrailPoint[] = [];
 
-  public triggerScreenShake(intensity: number = 6, duration: number = 0.25): void {
-    this.shakeIntensity = Math.max(this.shakeIntensity, intensity);
-    this.shakeDuration = Math.max(this.shakeDuration, duration);
+  public triggerScreenShake(intensity: number = 2.0, duration: number = 0.2): void {
+    // Strictly clamped to a subtle, gentle rumble (max 2.5px) to eliminate disorienting shakes
+    const clampedIntensity = Math.min(2.5, intensity);
+    this.shakeIntensity = Math.max(this.shakeIntensity, clampedIntensity);
+    this.shakeDuration = Math.max(this.shakeDuration, Math.min(0.25, duration));
   }
 
   public spawnCallout(text: string, x: number, y: number, color: string = '#ffeaa7'): void {

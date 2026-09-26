@@ -74,5 +74,13 @@ test.describe('Biology Dash: Immune Patrol Browser Checks', () => {
     // Close Care Kit
     await page.click('#care-kit-close');
     await expect(careKit).not.toBeVisible();
+
+    // Advance 3 seconds into patrol to see cells and microbes in action
+    await page.waitForTimeout(3000);
+    await page.screenshot({ path: 'public/assets/gameplay-preview-biological.png' });
+
+    // Advance to 6.5 seconds when swarm has multiplied and engages S. aureus horde
+    await page.waitForTimeout(3500);
+    await page.screenshot({ path: 'public/assets/gameplay-combat-biological.png' });
   });
 });
