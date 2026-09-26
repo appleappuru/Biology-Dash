@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1536" width="1024" height="1536">
+  <defs>
+    <!-- Background Deep Tissue Gradients -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#04121c"/>
+      <stop offset="35%" stop-color="#072230"/>
+      <stop offset="70%" stop-color="#0a2e3d"/>
+      <stop offset="100%" stop-color="#05151f"/>
+    </linearGradient>
+
+    <!-- Horizon Warm Glow -->
+    <radialGradient id="horizonGlow" cx="50%" cy="12%" r="45%">
+      <stop offset="0%" stop-color="#64ffda" stop-opacity="0.35"/>
+      <stop offset="50%" stop-color="#38ef7d" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#04121c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Corridor Playable Floor Perspective -->
+    <linearGradient id="corridorFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#072230" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#0c3b4e" stop-opacity="0.95"/>
+    </linearGradient>
+
+    <!-- Organic Border Glowing Gradients -->
+    <radialGradient id="lilacCell" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#e4d2fc"/>
+      <stop offset="60%" stop-color="#a29bfe"/>
+      <stop offset="100%" stop-color="#6c5ce7" stop-opacity="0.8"/>
+    </radialGradient>
+
+    <radialGradient id="mintCell" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#d4f5fc"/>
+      <stop offset="60%" stop-color="#55efc4"/>
+      <stop offset="100%" stop-color="#00b894" stop-opacity="0.8"/>
+    </radialGradient>
+
+    <radialGradient id="coralCell" cx="30%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#ffeaa7"/>
+      <stop offset="60%" stop-color="#ff7675"/>
+      <stop offset="100%" stop-color="#d63031" stop-opacity="0.75"/>
+    </radialGradient>
+
+    <!-- Filter for soft bioluminescent glow -->
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Base Dark Canvas -->
+  <rect width="1024" height="1536" fill="url(#bgGrad)"/>
+
+  <!-- Perspective Playable Corridor Path (Trapezoid receding to horizon) -->
+  <polygon points="340,160 684,160 920,1536 104,1536" fill="url(#corridorFloor)"/>
+
+  <!-- Central Flow Stream Perspective Guidelines -->
+  <line x1="512" y1="160" x2="512" y2="1536" stroke="#55efc4" stroke-width="2" stroke-opacity="0.18" stroke-dasharray="12,16"/>
+  <line x1="426" y1="160" x2="310" y2="1536" stroke="#64ffda" stroke-width="1.5" stroke-opacity="0.1" stroke-dasharray="8,12"/>
+  <line x1="598" y1="160" x2="714" y2="1536" stroke="#64ffda" stroke-width="1.5" stroke-opacity="0.1" stroke-dasharray="8,12"/>
+
+  <!-- Corridor Border Guide Ribbons -->
+  <line x1="340" y1="160" x2="104" y2="1536" stroke="#55efc4" stroke-width="4" stroke-opacity="0.4" filter="url(#softGlow)"/>
+  <line x1="684" y1="160" x2="920" y2="1536" stroke="#55efc4" stroke-width="4" stroke-opacity="0.4" filter="url(#softGlow)"/>
+
+  <!-- Left Cellular Bank (Pillowy organic lobes) -->
+  <g opacity="0.88">
+    <ellipse cx="60" cy="220" rx="140" ry="110" fill="url(#lilacCell)"/>
+    <ellipse cx="40" cy="420" rx="160" ry="130" fill="url(#mintCell)"/>
+    <ellipse cx="30" cy="660" rx="180" ry="140" fill="url(#coralCell)"/>
+    <ellipse cx="20" cy="920" rx="190" ry="150" fill="url(#lilacCell)"/>
+    <ellipse cx="10" cy="1180" rx="210" ry="160" fill="url(#mintCell)"/>
+    <ellipse cx="0" cy="1440" rx="220" ry="170" fill="url(#coralCell)"/>
+  </g>
+
+  <!-- Right Cellular Bank (Pillowy organic lobes) -->
+  <g opacity="0.88">
+    <ellipse cx="964" cy="220" rx="140" ry="110" fill="url(#coralCell)"/>
+    <ellipse cx="984" cy="420" rx="160" ry="130" fill="url(#mintCell)"/>
+    <ellipse cx="994" cy="660" rx="180" ry="140" fill="url(#lilacCell)"/>
+    <ellipse cx="1004" cy="920" rx="190" ry="150" fill="url(#coralCell)"/>
+    <ellipse cx="1014" cy="1180" rx="210" ry="160" fill="url(#mintCell)"/>
+    <ellipse cx="1024" cy="1440" rx="220" ry="170" fill="url(#lilacCell)"/>
+  </g>
+
+  <!-- Horizon Glow Light -->
+  <ellipse cx="512" cy="160" rx="420" ry="180" fill="url(#horizonGlow)"/>
+
+  <!-- Floating Bioluminescent Spores & Stardust Bubbles -->
+  <g opacity="0.65">
+    <circle cx="480" cy="380" r="5" fill="#ffeaa7" filter="url(#softGlow)"/>
+    <circle cx="560" cy="520" r="6" fill="#55efc4" filter="url(#softGlow)"/>
+    <circle cx="390" cy="740" r="4.5" fill="#a29bfe" filter="url(#softGlow)"/>
+    <circle cx="620" cy="900" r="7" fill="#ffeaa7" filter="url(#softGlow)"/>
+    <circle cx="440" cy="1120" r="5.5" fill="#55efc4" filter="url(#softGlow)"/>
+    <circle cx="580" cy="1300" r="6" fill="#ff7675" filter="url(#softGlow)"/>
+    <circle cx="320" cy="1420" r="4" fill="#64ffda" filter="url(#softGlow)"/>
+    <circle cx="700" cy="1460" r="5" fill="#ffeaa7" filter="url(#softGlow)"/>
+  </g>
+</svg>
