@@ -244,6 +244,10 @@ function resolveCombatClash(state: SimulationState, _dt: number): void {
     if (cell.state === 'digesting') continue;
 
     const reach = cell.type === 'macrophage' ? 45 : 30;
+    const hugRange = reach * 2.2; // Proximity triggers the outstretched hugging pose
+
+    let nearestDistSq = Infinity;
+    let hitMicrobe = false;
 
     for (let mIdx = state.microbes.length - 1; mIdx >= 0; mIdx--) {
       const m = state.microbes[mIdx];
@@ -251,13 +255,18 @@ function resolveCombatClash(state: SimulationState, _dt: number): void {
       const dy = cell.y - m.y;
       const distSq = dx * dx + dy * dy;
 
+      if (distSq < nearestDistSq) {
+        nearestDistSq = distSq;
+      }
+
       if (distSq < reach * reach) {
-        // Phagocytosis hit
+        // Phagocytosis / Hugging clash hit!
         m.hp--;
+        hitMicrobe = true;
         if (m.hp <= 0) {
           state.microbes.splice(mIdx, 1);
           cell.state = 'digesting';
-          cell.digestionTimer = cell.type === 'macrophage' ? 0.4 : 0.6;
+          cell.digestionTimer = cell.type === 'macrophage' ? 0.45 : 0.35;
 
           state.score += 100;
           state.comboCount++;
@@ -271,6 +280,16 @@ function resolveCombatClash(state: SimulationState, _dt: number): void {
           });
         }
         break;
+      }
+    }
+
+    // Dynamic animation pose switching:
+    // If not actively digesting, switch to 'engulfing' (hugging pose) when close to invaders
+    if (cell.state !== 'digesting') {
+      if (nearestDistSq < hugRange * hugRange || hitMicrobe) {
+        cell.state = 'engulfing'; // Triggers hugging animation pose!
+      } else {
+        cell.state = 'marching';
       }
     }
   }
