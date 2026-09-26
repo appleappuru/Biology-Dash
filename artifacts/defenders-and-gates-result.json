@@ -3,38 +3,38 @@
     "frameWidth": 128,
     "frameHeight": 128,
     "frameTotal": 13,
-    "cellWidth": 129.9940763742128,
+    "cellWidth": 131.57789849369186,
     "cellTint": 16777215
   },
   "sizes": [
     {
       "role": "neutrophil",
-      "size": 45.67844940995599,
+      "size": 45.68861176936183,
       "tint": 16777215
     },
     {
       "role": "macrophage",
-      "size": 81.37124748883504,
+      "size": 81.39319464109535,
       "tint": 16777215
     },
     {
       "role": "plasma",
-      "size": 48.779621737387764,
+      "size": 48.782777226173536,
       "tint": 16777215
     },
     {
       "role": "neutrophil",
-      "size": 44.201698714905206,
+      "size": 44.192735137098694,
       "tint": 16777215
     },
     {
       "role": "macrophage",
-      "size": 82.50990291228759,
+      "size": 82.48705544556485,
       "tint": 16777215
     },
     {
       "role": "plasma",
-      "size": 51.16999062721109,
+      "size": 51.16491051513261,
       "tint": 16777215
     }
   ],
@@ -53,7 +53,7 @@
       {
         "visible": true,
         "x": 95,
-        "y": -42.424129958974355,
+        "y": -42.38381275897435,
         "faceAlpha": 0.52,
         "faceWidth": 102,
         "faceHeight": 80,
@@ -62,7 +62,7 @@
       {
         "visible": true,
         "x": 0,
-        "y": -23.14043452307692,
+        "y": -23.11844332307692,
         "faceAlpha": 0.52,
         "faceWidth": 102,
         "faceHeight": 80,

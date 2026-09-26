@@ -126,3 +126,21 @@ Professional 3D kawaii graphics overhaul with child-drawable simplicity:
 - Child-drawable simplicity: underlying character primitives remain circles, ovals, dot eyes, smile, rosy cheeks, and hugging arms, effortlessly doodleable by children.
 
 137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.6.2` verified against live production: public bytes, version.json (`0.6.2`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-57257d259d22 with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Visual evidence: `artifacts/simple-white-defenders.png`, `artifacts/simple-defender-squad.png`, `artifacts/welcome-320.png`, `artifacts/translucent-three-lane-gates.png`.
+
+## v0.6.3 — deployed September25,2026
+
+Deployment CZUCwtmptmLDgmswi8PZqGsQ46Tw READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-176cnuhve-applefound.vercel.app. Cache biology-d28a64f8ec6f.
+
+Visual decluttering, juicy arcade polish, and joyful kawaii micro-copy overhaul:
+- Floating frosted glassmorphic HUD: replaced heavy, opaque blocky rectangular boxes with luminous frosted glass capsules (`rgba(7, 24, 36, 0.82)`, backdrop-filter blur 14px, glowing neon teal border `rgba(60, 220, 180, 0.28)`, rounded 16px pill corners).
+- Modernized typography: rounded font stack (`Nunito`, `SF Pro Rounded`, `ui-rounded`) for friendly, approachable arcade readability.
+- Bioluminescent midnight ocean palette: replaced muddy dark flat colors with deep bioluminescent navy/teal gradients (`#061724` to `#0d2e42`).
+- 3D tactile arcade buttons: bouncy juicy button physics on `.primary` and `.secondary` with rich gradients, layered drop shadows, glossy highlights, and physical press translation (`translateY(3px)`).
+- Arcade boss health bar: transformed `#colony-status` into a thrilling arcade boss meter with glowing coral/magenta gradient bar, percentage display, and clean organism title.
+- Floating speech bubble coach: converted `#field-coach` into an adorable speech bubble with gentle floating animation (`coach-bob`).
+- Eliminated competing UI clutter: hide `.combat-feedback` when `#field-coach` is active, removing double-stacked banner clutter over the gameplay canvas.
+- Punchy HUD micro-copy: tightened HUD stretch status to punchy, motivational shouts ('Defended!', 'Clear colony!', 'Almost home!', 'Final stretch!', 'Stay together!') preventing ellipsis truncation on 320px viewports.
+- Touch target accessibility: Apple 44px touch targets on result buttons (`min-height: 44px;`) with `@media(max-height: 650px)` responsive scaling ensuring all result modal content stays strictly within 568px screen height on small phone viewports.
+
+137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.6.3` verified against live production: public bytes, version.json (`0.6.3`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-d28a64f8ec6f with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Visual evidence: `artifacts/welcome-320.png`, `artifacts/welcome-first-recruit.png`, `artifacts/simple-care-320.png`, `artifacts/colony-health-v10.png`, `artifacts/optional-setup-result-320.png`.
+

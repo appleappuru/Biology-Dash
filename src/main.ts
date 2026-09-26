@@ -263,7 +263,7 @@ function tick(p: Patrol,force=false) {
         document.querySelector('.timebar')?.setAttribute('aria-valuenow',String(Math.min(p.duration,Math.floor(p.time))));
         document.querySelector('.timebar')?.setAttribute('aria-valuetext',`${sec} seconds remaining`);
         document.querySelector('#patrol-stage')!.textContent = sec === 0 ? 'PATROL COMPLETE' : sec <= 15 ? 'FINAL STRETCH' : 'PROTECT THE HOST';
-        document.querySelector('#stretch-label')!.textContent = sec === 0 ? 'Time defended!' : sec <= 15 ? (p.enemies.some(e=>e.boss) ? 'Clear the colony to finish!' : 'Hold on — almost home!') : sec <= 30 ? 'Bring it home, tiny heroes' : 'Keep your team together';
+        document.querySelector('#stretch-label')!.textContent = sec === 0 ? 'Defended!' : sec <= 15 ? (p.enemies.some(e=>e.boss) ? 'Clear colony!' : 'Almost home!') : sec <= 30 ? 'Final stretch!' : 'Stay together!';
     }
     document.querySelector('#squad-count')!.textContent = String(p.squad);
     document.querySelector('#cleared')!.textContent = String(p.kills);
