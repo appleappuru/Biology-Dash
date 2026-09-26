@@ -291,6 +291,7 @@ function tick(p: Patrol,force=false) {
         a.textContent = ANTIBODY_NAMES[p.antibody.epitope].glyph + ' ' + ANTIBODY_NAMES[p.antibody.epitope].short;
     const coach=document.getElementById('field-coach');
     if(coach){
+        coach.hidden = p.learning.gate;
         coach.innerHTML=`<span>${p.spentCells===0?'Drag close. Watch the hug!':!p.learning.medicine?'Hold Amoxicillin. Release to clear!':!p.learning.gate?'Cross +4 for fresh cells':'Catch. Charge. Keep going!'}</span>`;
         if(p.learning.medicine&&p.learning.gate&&!save.tutorial){save.tutorial=true;persist();}
     }

@@ -283,3 +283,22 @@ Follow-up polish directly fulfilling user design priorities:
 
 All 137 unit tests pass across 11 test suites. TypeScript 0 errors. Phone Settings, desktop sidebar, and `version.json` agree on v0.6.1. Clean compiled distribution in `/tmp/biology-dash-0.6.1` verified against live production: public bytes, version.json (`0.6.1`), no-index headers, robots.txt. Production deployment `dpl_77R4J3JT8qTfNo5uxB6WcVBeG1Rp` verified on https://biology-dash-public-demo.vercel.app/ (immutable https://biology-dash-public-demo-dneu4jlpk-applefound.vercel.app) with offline cache `biology-f63786102e07`. Returning player verified to update with 42 Coins, roster loadout, upgrades, and offline reload preserved.
 
+## v0.6.2 — Professional 3D kawaii graphics overhaul
+
+Complete fulfillment of user request for graphics that are professional, inviting, kawaii, child-drawable, and 3D-styled in game:
+1. **Spherical 3D Volumetric Lighting & Materials**:
+   - Radial gradients model smooth 3D spherical volume on white bodies with gentle ambient porcelain/clay occlusion shadows.
+   - Curved specular forehead gloss highlights and anime/kawaii double catchlight sparkles give life, moisture, and polished figurine finish.
+   - Airbrushed radial blush creates soft, glowing rosy cheeks.
+   - 3D tubular hug arms with layered underside shadow, 3D gradient stroke, and top rim lighting.
+2. **In-Game 3D Spatial Presence & Animation**:
+   - Dynamic perspective ground contact shadows scale and breathe with cell rank, size, elevation, and movement.
+   - 3D lateral banking and differentiated squishy breathing spring physics (nimble flutter for Neutrophils, heavy doughy lumber for Macrophages).
+   - Gate archway depth with 3D bottom base runner, specular shimmer line, and luminous reaction bloom.
+3. **Web Menu & UI Integration**:
+   - `.sprite` in `src/style.css` now renders the 3D SVG atlas, updating welcome screen, hero banner, roster cards, and result modals.
+   - Child-drawable simplicity: pure circles, ovals, dot eyes, smile, rosy cheeks, and hug arms remain effortless for kids to draw.
+
+All 137 unit tests pass across 11 test suites. TypeScript 0 errors. Phone Settings, desktop sidebar, and `version.json` agree on v0.6.2. Clean compiled distribution in `/tmp/biology-dash-0.6.2` verified against live production: public bytes, version.json (`0.6.2`), no-index headers, robots.txt. Production deployment `dpl_4AR8P4o9uHakVwLK4DKtpwkMuUEG` verified on https://biology-dash-public-demo.vercel.app/ (immutable https://biology-dash-public-demo-qevwjw1bi-applefound.vercel.app) with offline cache `biology-57257d259d22`. Returning player verified to update with 42 Coins, roster loadout, upgrades, and offline reload preserved.
+
+

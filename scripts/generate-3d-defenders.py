@@ -1,4 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="384" viewBox="0 0 512 384">
+#!/usr/bin/env python3
+"""
+Generate professional, kawaii, 3D-styled, child-drawable defender SVG atlas for Biology Dash.
+Preserves:
+- 512x384 viewBox across 4 columns (Forward, Left, Right, Reaction) and 3 rows (Neutrophil, Macrophage, Plasma).
+- 128x128 frame dimensions.
+- Child-drawable simplicity: round circle bodies, hugging arms, cute dot eyes, smile, rosy cheeks.
+- 3D-style rendered appearance: spherical radial lighting, glossy specular highlights, bead eyes with catchlights, airbrushed radial blush, tubular 3D limbs.
+"""
+
+import xml.etree.ElementTree as ET
+
+svg_content = r"""<svg xmlns="http://www.w3.org/2000/svg" width="512" height="384" viewBox="0 0 512 384">
   <defs>
     <!-- NEUTROPHIL 3D LIGHTING: Crisp white sphere with subtle cool porcelain ambient shadow -->
     <radialGradient id="neutro-body-3d" cx="36%" cy="28%" r="66%" fx="28%" fy="20%">
@@ -447,3 +459,10 @@
     <path d="M 61 79 Q 64 83 67 79" fill="#ffa1b3"/>
   </g>
 </svg>
+"""
+
+# Verify XML
+ET.fromstring(svg_content)
+with open("public/assets/defenders-simple-v1.svg", "w", encoding="utf-8") as f:
+    f.write(svg_content.strip() + "\n")
+print("SUCCESS: public/assets/defenders-simple-v1.svg generated and verified as valid XML.")

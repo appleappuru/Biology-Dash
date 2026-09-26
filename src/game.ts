@@ -365,11 +365,18 @@ export class PatrolScene extends Phaser.Scene {
             cell.body.setFrame(rank*4+heading);
             const size=(rank===1?76:rank===2?50:actor.variant==='zip'?42:actor.variant==='scout'?48:45)*(p.level===1?2.68:1);
             const wrap=actor.phase==='wrap', active=actor.phase==='approach'||wrap;
-            const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.13:active?Math.sin(p.time*13+i)*.045:0;
+            const flutterRate = rank === 1 ? 8 : rank === 2 ? 11 : 14;
+            const deform=this.reducedMotion?0:wrap?Math.sin(actor.progress*Math.PI)*.14:active?Math.sin(p.time*flutterRate+i)*.045:Math.sin(p.time*4+i)*.025;
             const chubbyX = rank === 1 ? 1.08 : 1.0;
             cell.body.setDisplaySize(size*(1+deform)*chubbyX,size*(1-deform*.55));
-            cell.body.setAngle(this.reducedMotion?0:active?Math.max(-12,Math.min(12,(target?.x??actor.x)-actor.x))*.5:0);
-            cell.body.y=-4+(this.reducedMotion||this.paused?0:Math.sin(p.time*(active?12:3)+i*1.8)*(active?1.3:.4));
+            const bank = !target && Math.abs(dx) > 0.2 ? Math.max(-7, Math.min(7, dx * 1.2)) : 0;
+            cell.body.setAngle(this.reducedMotion?0:active?Math.max(-12,Math.min(12,(target?.x??actor.x)-actor.x))*.5:bank);
+            const bob = (this.reducedMotion||this.paused?0:Math.sin(p.time*(active?12:3)+i*1.8)*(active?1.3:.4));
+            cell.body.y=-4+bob;
+            const shadowScale = Math.max(0.6, 1 - bob * 0.08);
+            cell.shadow.setDisplaySize(size * chubbyX * 0.72 * shadowScale, size * 0.26 * shadowScale);
+            cell.shadow.setAlpha(0.24 + (active ? 0.08 : 0));
+            cell.shadow.y = size * 0.35;
             // Scene uses the same actor positions that decide contact; never a separate visual chase.
             const arrival=this.lastSquad>0?Math.max(0,1-(time-cell.birth)/430):0;
             cell.node.setPosition(q.x,q.y).setScale(q.scale).setDepth(q.y+8).setAlpha(1);
@@ -560,7 +567,8 @@ export class PatrolScene extends Phaser.Scene {
                         strokeThickness: 2
                     }).setOrigin(.5);
                     const shimmer = this.add.rectangle(0, -panelHeight * 0.22, panelWidth - 8, 1.5, 0xffffff, 0.25);
-                    panels.push(this.add.container(item.xOffset, 0, [shadow, face, top, title, sub, shimmer]));
+                    const base = this.add.rectangle(0, panelHeight / 2, panelWidth, 3, edge, .65);
+                    panels.push(this.add.container(item.xOffset, 0, [shadow, face, top, title, sub, shimmer, base]));
                 }
                 v = { node: this.add.container(210, q.y, panels), panels };
                 this.gateViews.set(gate.id, v);

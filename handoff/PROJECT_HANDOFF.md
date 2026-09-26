@@ -4,11 +4,11 @@
 Latest user priority: simpler larger mostly-white kawaii defenders and translucent staggered three-lane gates (handoff/requirements/DEFENDERS_AND_GATES.md) are completed and verified in v0.6.0 alongside the prior verified medicine-audio refinement (commit a431bbe). All 137 unit tests and browser fixtures (defenders-and-gates-test.mjs, simple-defenders-test.mjs, first-hug-test.mjs, medicine-audio-match-test.mjs) pass with zero errors. Visual evidence saved in artifacts/.
 User explicitly resumed development on September23,2026 after opening this local project. Development and verified deployments are authorized within AGENTS.md scope and usage cutoffs. The ACTIVE heartbeat `resume-biology-dash-after-usage-reset` is explicitly authorized to resume development, commit/push verified milestones and deploy verified releases to the existing Vercel demo. The earlier checks-only restriction is superseded. No chat/account database manipulation is needed.
 
-Current application/package version: **0.6.1**. Last verified production: https://biology-dash-public-demo.vercel.app/.
-Deployment: `dpl_77R4J3JT8qTfNo5uxB6WcVBeG1Rp` (READY).
-Immutable URL: https://biology-dash-public-demo-dneu4jlpk-applefound.vercel.app.
-Service worker cache: `biology-f63786102e07`.
-v0.6.1 integrates simplified kawaii white SVG defenders (with chubbier Macrophage, faster Neutrophil, directional hugs), enlarged translucent staggered three-lane interactive gates with frosted glass shimmer and contact reactions, and ineffective-medicine no-match audio feedback. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
+Current application/package version: **0.6.2**. Last verified production: https://biology-dash-public-demo.vercel.app/.
+Deployment: `dpl_4AR8P4o9uHakVwLK4DKtpwkMuUEG` (READY).
+Immutable URL: https://biology-dash-public-demo-qevwjw1bi-applefound.vercel.app.
+Service worker cache: `biology-57257d259d22`.
+v0.6.2 delivers a professional 3D kawaii graphics overhaul: spherical 3D volumetric lighting on white bodies, glossy specular highlights and eye catchlights, airbrushed radial blush, 3D tubular hug arms, child-drawable circle/oval shapes, dynamic perspective ground shadows, 3D banking, and web menu 3D sprite integration. Primary launch paths bypass configuration; optional Patrol setup remains on map/results. Suggested squads adapt to unlocks; manual lineups are persisted.
 
 ## v0.5.0 sound system
 src/audio.ts owns original procedural synthesis, event mapping, short musical combinations, density/voice limits and sound preferences. It shares the context passed to Phaser; no runtime sound downloads. Historical WAV assets remain unused. Master/effects/musical-reward sliders live only in Settings. No looping music. Existing mute/master values migrate; new channels are additive without changing save schema4. See AUDIO_DESIGN.md for palette, limits and test artifacts.

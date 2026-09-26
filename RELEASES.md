@@ -110,3 +110,19 @@ Polished kawaii defender sizes, role differentiation speeds, and enlarged transl
 - Enlarged translucent gates & frosted glass shimmer: gate panels enlarged to 102px width (3-lane) / 166px (pair) and 80px height. Added frosted specular shimmer highlight line and expanded luminous contact reaction pulse (fill alpha 0.84-0.92, scale 1.03-1.06 over 0.38s). Vertical dilemma staggers and onboarding Patrol 1 gate at y=250 preserved.
 
 137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.6.1` verified against live production: public bytes, version.json (`0.6.1`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-f63786102e07 with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Evidence: `artifacts/simple-white-defenders.png`, `artifacts/translucent-three-lane-gates.png`, `artifacts/staggered-gates-reaction.png`, `artifacts/defenders-and-gates-result.json`, `artifacts/first-hug-production.json`, `artifacts/live-cache-upgrade-v14.json`. Real-device tactile feel, subjective listening comfort, and broader continuous roadmap remain ongoing.
+
+## v0.6.2 — deployed September25,2026
+
+Deployment dpl_4AR8P4o9uHakVwLK4DKtpwkMuUEG READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-qevwjw1bi-applefound.vercel.app. Cache biology-57257d259d22.
+
+Professional 3D kawaii graphics overhaul with child-drawable simplicity:
+- Spherical 3D volumetric lighting on white bodies: radial lighting curves provide tangible depth, warmth, and porcelain/clay tactile quality across all defenders while preserving mostly-white bodies (`#ffffff` highlights fading to soft ambient shadows).
+- Glossy specular highlights & eye catchlights: curved oval forehead glints and double catchlight sparkles in the dark bead eyes give life, soul, and glossy figurine finish.
+- Airbrushed radial blush: soft glowing rosy cheeks fade naturally into the body surface.
+- 3D tubular hug arms: layered underside shadow, 3D gradient stroke, and top rim lighting turn simple hug strokes into soft 3D marshmallow arms.
+- Dynamic ground contact shadows in perspective: in-game cell ground shadows scale and soften dynamically with 3D elevation, rank, and movement (Macrophage casts expansive deep ground shadow, magnified first-hug Neutrophil scales shadow proportionally).
+- 3D banking & squishy spring physics: subtle banking tilt on lateral steering and differentiated squishy breathing deformations (nimble flutter for Neutrophils, heavy doughy lumber for Macrophages).
+- Web menu 3D sprite integration: `.sprite` in `src/style.css` now renders the 3D SVG atlas, bringing the new graphics to the welcome screen, hero banner, roster cards, and result modals.
+- Child-drawable simplicity: underlying character primitives remain circles, ovals, dot eyes, smile, rosy cheeks, and hugging arms, effortlessly doodleable by children.
+
+137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.6.2` verified against live production: public bytes, version.json (`0.6.2`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-57257d259d22 with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Visual evidence: `artifacts/simple-white-defenders.png`, `artifacts/simple-defender-squad.png`, `artifacts/welcome-320.png`, `artifacts/translucent-three-lane-gates.png`.
