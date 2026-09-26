@@ -126,7 +126,7 @@ export class EnemyView {
       // Colony Boss 3D Sprite
       const texKey = this.scene.textures.exists('microbes_3d') ? 'microbes_3d' : 'microbes';
       const sprite = this.scene.add.image(0, 0, texKey, 0);
-      sprite.setScale(1.75);
+      sprite.setScale(1.25);
       sprite.setName('boss_sprite');
 
       // 3D Volumetric Health Bar Chassis

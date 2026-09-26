@@ -35,15 +35,15 @@ export class SwarmView {
       const proj = projectCorridorToScreen(cell.x, cell.y);
 
       // 3/4 Directional ground contact shadow (flattened ellipse along Y)
-      const shadowW = (cell.type === 'macrophage' ? 32 : 22) * proj.scale;
+      const shadowW = (cell.type === 'macrophage' ? 44 : 30) * proj.scale;
       const shadowH = shadowW * 0.38; // 3/4 isometric foreshortening
-      const shadowY = proj.y + (cell.type === 'macrophage' ? 18 : 14) * proj.scale;
+      const shadowY = proj.y + (cell.type === 'macrophage' ? 20 : 15) * proj.scale;
 
-      this.shadowGraphics.fillStyle(0x020a10, 0.52);
+      this.shadowGraphics.fillStyle(0x020a10, 0.45);
       this.shadowGraphics.fillEllipse(proj.x, shadowY, shadowW, shadowH);
 
       // Inner darker core shadow
-      this.shadowGraphics.fillStyle(0x010508, 0.4);
+      this.shadowGraphics.fillStyle(0x010508, 0.35);
       this.shadowGraphics.fillEllipse(proj.x, shadowY, shadowW * 0.6, shadowH * 0.55);
 
       // Get or create sprite
@@ -58,11 +58,9 @@ export class SwarmView {
       const rowOffset = cell.type === 'macrophage' ? 4 : cell.type === 'plasma' ? 8 : 0;
       let col = 0;
       if (cell.state === 'engulfing' || cell.state === 'digesting') {
-        col = 3; // 3/4 Engulf / hug pose
-      } else if (cell.banking < -0.15) {
-        col = 1; // 3/4 Bank left
-      } else if (cell.banking > 0.15) {
-        col = 2; // 3/4 Bank right
+        col = 2; // 3/4 Engulf / hug pose
+      } else if (Math.abs(cell.banking) > 0.15) {
+        col = 1; // 3/4 Walking pose
       }
 
       const frameIdx = rowOffset + col;
@@ -71,10 +69,11 @@ export class SwarmView {
       }
 
       sprite.setPosition(proj.x, proj.y);
-      const finalScaleX = proj.scale * cell.scale * cell.squashX * 0.36;
-      const finalScaleY = proj.scale * cell.scale * cell.squashY * 0.36;
+      const baseScale = cell.type === 'macrophage' ? 0.24 : cell.type === 'plasma' ? 0.21 : 0.19;
+      const finalScaleX = proj.scale * cell.scale * cell.squashX * baseScale;
+      const finalScaleY = proj.scale * cell.scale * cell.squashY * baseScale;
       sprite.setScale(finalScaleX, finalScaleY);
-      sprite.setRotation(cell.banking * 0.25);
+      sprite.setRotation(cell.banking * 0.2);
     }
 
     // Clean up pooled sprites of removed cells

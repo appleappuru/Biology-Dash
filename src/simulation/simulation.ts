@@ -199,16 +199,33 @@ export function tickSimulation(
 
 function spawnWaveMicrobes(state: SimulationState, wave: any): void {
   const count = wave.count;
-  const spacing = wave.spreadX / Math.max(1, count - 1);
   const startX = CORRIDOR_CENTER_X - wave.spreadX / 2;
+  const baseY = wave.baseY || -40;
+
+  // Stagger microbes into organic rows and natural casual runner clusters
+  const cols = Math.min(5, Math.ceil(Math.sqrt(count * 1.6)));
+  const colSpacing = wave.spreadX / Math.max(1, cols - 1);
+  const rowSpacing = 34;
 
   for (let i = 0; i < count; i++) {
-    const x = count === 1 ? CORRIDOR_CENTER_X : startX + i * spacing;
+    const row = Math.floor(i / cols);
+    const col = i % cols;
+    const staggerOffset = (row % 2 === 1) ? colSpacing * 0.5 : 0;
+    const x = count === 1 ? CORRIDOR_CENTER_X : Math.max(
+      CORRIDOR_CENTER_X - wave.spreadX / 2,
+      Math.min(
+        CORRIDOR_CENTER_X + wave.spreadX / 2,
+        startX + col * colSpacing + staggerOffset - (row % 2 === 1 ? colSpacing * 0.25 : 0)
+      )
+    );
+    // Stagger Y so enemies appear in organic casual-runner depth rows
+    const y = baseY - row * rowSpacing - (Math.abs(col - cols / 2) * 8);
+
     state.microbes.push({
       id: nextMicrobeId++,
       species: wave.species,
       x,
-      y: wave.baseY || -30,
+      y,
       hp: wave.species === 'mrsa' ? 3 : 1,
       maxHp: wave.species === 'mrsa' ? 3 : 1,
       speed: wave.species === 'pseudomonas' ? 140 : 100,

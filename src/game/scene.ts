@@ -11,7 +11,6 @@ import { EnemyView } from './enemy-view';
 import { GateView } from './gate-view';
 import { CombatOverlay } from './combat-overlay';
 import { globalJuice } from './juice';
-import { generate3DClayMicrobeAtlas } from './asset-loader';
 import {
   playSwarmPop,
   playComboChime,
@@ -64,21 +63,27 @@ export class PatrolScene extends Phaser.Scene {
   }
 
   public preload(): void {
-    this.load.image('corridor_bg', '/assets/tissue-perspective-v2.png');
-    this.load.spritesheet('defenders_3d', '/assets/defenders-simple-v1.png', {
+    this.load.image('corridor_bg', '/assets/corridor-bioluminescent.jpg');
+    this.load.spritesheet('defenders_3d', '/assets/defenders-v2-transparent.png', {
+      frameWidth: 256,
+      frameHeight: 256,
+    });
+    this.load.spritesheet('defenders', '/assets/defenders-v2-transparent.png', {
+      frameWidth: 256,
+      frameHeight: 256,
+    });
+    this.load.spritesheet('microbes_3d', '/assets/microbes-v4-volumetric.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
-    this.load.spritesheet('defenders', '/assets/defenders-simple-v1.png', {
+    this.load.spritesheet('microbes', '/assets/microbes-v4-volumetric.png', {
       frameWidth: 128,
       frameHeight: 128,
     });
   }
 
   public create(): void {
-    // Generate 3D clay shaded textures
-    generate3DClayMicrobeAtlas(this);
-    // 1. Background corridor
+    // 1. Bioluminescent background corridor
     this.bgImage = this.add.image(VIRTUAL_WIDTH / 2, VIRTUAL_HEIGHT / 2, 'corridor_bg');
     this.bgImage.setDisplaySize(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
     this.bgImage.setDepth(0);
