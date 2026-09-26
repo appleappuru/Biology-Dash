@@ -9,6 +9,7 @@ import { createSimulation, tickSimulation } from '../simulation/simulation';
 import { SwarmView } from './swarm-view';
 import { EnemyView } from './enemy-view';
 import { GateView } from './gate-view';
+import { CombatOverlay } from './combat-overlay';
 import { globalJuice } from './juice';
 import { generate3DClayMicrobeAtlas } from './asset-loader';
 import {
@@ -19,8 +20,10 @@ import {
   playCytokineRoar,
   playPinataFanfare,
   playDefeatLullaby,
+  playChargeReady,
 } from '../audio/sound-palette';
 import { VIRTUAL_WIDTH, VIRTUAL_HEIGHT } from './projection';
+import { fireMedicineWave, triggerCytokineSurge } from '../simulation/simulation';
 
 export class PatrolScene extends Phaser.Scene {
   private simState!: SimulationState;
@@ -29,9 +32,16 @@ export class PatrolScene extends Phaser.Scene {
   private swarmView!: SwarmView;
   private enemyView!: EnemyView;
   private gateView!: GateView;
+  private combatOverlay!: CombatOverlay;
 
   private bgImage!: Phaser.GameObjects.Image;
   private juiceGraphics!: Phaser.GameObjects.Graphics;
+
+  // Medicine hold-to-charge state
+  private isChargingMedicine: boolean = false;
+  private chargeProgress: number = 0;
+  private chargeReadyPlayed: boolean = false;
+  private equippedMedicine: any = 'amoxicillin';
 
   // Input tracking
   private isPointerDown: boolean = false;
@@ -73,6 +83,7 @@ export class PatrolScene extends Phaser.Scene {
     this.gateView = new GateView(this);
     this.enemyView = new EnemyView(this);
     this.swarmView = new SwarmView(this);
+    this.combatOverlay = new CombatOverlay(this);
 
     // 3. Juice renderers
     this.juiceGraphics = this.add.graphics();
@@ -103,11 +114,33 @@ export class PatrolScene extends Phaser.Scene {
         left: Phaser.Input.Keyboard.KeyCodes.A,
         right: Phaser.Input.Keyboard.KeyCodes.D,
       }) as any;
+
+      // Spacebar for hold-to-charge medicine
+      this.input.keyboard.on('keydown-SPACE', () => {
+        this.startMedicineCharge();
+      });
+      this.input.keyboard.on('keyup-SPACE', () => {
+        this.releaseMedicineCharge();
+      });
+      // 'E' or 'C' for Cytokine Surge
+      this.input.keyboard.on('keydown-E', () => {
+        this.activateCytokineSurge();
+      });
     }
   }
 
   public update(_time: number, delta: number): void {
     const dt = Math.min(0.05, delta / 1000);
+
+    // Handle medicine charging bullet-time
+    if (this.isChargingMedicine) {
+      this.chargeProgress += dt / 1.2; // 1.2s to full charge
+      if (this.chargeProgress >= 1.0 && !this.chargeReadyPlayed) {
+        this.chargeReadyPlayed = true;
+        playChargeReady();
+        globalJuice.spawnCallout('READY!', 210, 360, '#55efc4');
+      }
+    }
 
     // Handle Keyboard input
     if (this.cursors || this.wasdKeys) {
@@ -137,12 +170,58 @@ export class PatrolScene extends Phaser.Scene {
     this.gateView.render(this.simState.gates, this.simState.biofilms);
     this.enemyView.render(this.simState.microbes, this.simState.colonyBoss);
     this.swarmView.render(this.simState.cells, this.simState.champions);
+    this.combatOverlay.render(
+      this.simState,
+      this.isChargingMedicine,
+      this.chargeProgress,
+      this.equippedMedicine,
+      dt
+    );
     this.renderJuice();
 
     // 6. Notify UI
     if (this.onStateChange) {
       this.onStateChange(this.simState);
     }
+  }
+
+  public startMedicineCharge(): void {
+    this.isChargingMedicine = true;
+    this.chargeProgress = 0;
+    this.chargeReadyPlayed = false;
+    this.simState.bulletTimeActive = true;
+  }
+
+  public releaseMedicineCharge(): void {
+    if (!this.isChargingMedicine) return;
+    this.isChargingMedicine = false;
+    this.simState.bulletTimeActive = false;
+
+    if (this.chargeProgress >= 0.4) {
+      // Fire tactical wave!
+      const result = fireMedicineWave(this.simState, this.equippedMedicine);
+      this.combatOverlay.triggerPulse(0x55efc4, this.simState.squadCenter.y);
+      globalJuice.triggerScreenShake(8, 0.3);
+
+      if (result.affectedCount > 0) {
+        globalJuice.spawnCallout(`SHATTERED ${result.affectedCount}!`, 210, 320, '#55efc4');
+      } else if (result.resistantCount > 0) {
+        globalJuice.spawnCallout('RESISTED ⊘', 210, 320, '#ff7675');
+      }
+    }
+    this.chargeProgress = 0;
+  }
+
+  public activateCytokineSurge(): boolean {
+    const success = triggerCytokineSurge(this.simState);
+    if (success) {
+      this.handleSimulationEvents();
+    }
+    return success;
+  }
+
+  public setEquippedMedicine(med: any): void {
+    this.equippedMedicine = med;
   }
 
   private handleSimulationEvents(): void {
