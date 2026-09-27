@@ -2,7 +2,7 @@
  * Director owns musical/density policy; renderer owns Web Audio voices and lifecycle.
  */
 import type {PatrolEvent} from './simulation';
-export type Cue = 'hug'|'clear'|'bind'|'complement'|'wall'|'growth'|'fungal'|'peptide'|'threat'|'heal'|'reward'|'victory'|'ready'|'cytotoxic'|'noMatch';
+export type Cue = 'hug'|'clear'|'bind'|'complement'|'wall'|'growth'|'fungal'|'peptide'|'threat'|'heal'|'reward'|'victory'|'ready'|'cytotoxic'|'noMatch'|'yeet';
 export type Bus = 'sfx'|'music'|'focus';
 export interface Note {cue:Cue; frequency:number; end?:number; duration:number; gain:number; delay?:number; priority:number; bus:Bus; variant:number;}
 export interface AudioOptions {muted:boolean;volume:number;sfxVolume:number;musicVolume:number;}
@@ -37,6 +37,7 @@ export class AudioDirector {
             case 'reward':[0,7,12].forEach((n,i)=>this.note(cue,hz(n),.32,.10,3,'focus',i*.08));break;
             case 'victory':[0,4,7,9,12].forEach((n,i)=>this.note(cue,hz(n),.5,.13,4,'focus',i*.13));break;
             case 'cytotoxic':this.note(cue,520,.12,.1,2,'sfx',0,220);break;
+            case 'yeet':this.note(cue,280,.16,.14,2,'sfx',0,640);break;
         }
         if((cue==='wall'||cue==='growth'||cue==='fungal')&&strength>=.95)this.note('ready',784,.22,.055,3,'focus',.12);
     }
@@ -62,7 +63,8 @@ export class AudioDirector {
         if(event.type==='complement')this.cue('complement',now);
         if(event.type==='medicine')this.cue(event.affected===0?'noMatch':event.cause==='doxycycline'?'growth':event.cause==='micafungin'?'fungal':'wall',now,false,event.charge);
         if(event.type==='hit'&&event.cause==='defensin')this.cue('peptide',now);
-        if(event.type==='gate'||event.type==='summon')this.cue('heal',now);
+        if(event.type==='summon'&&event.label==='YEET!')this.cue('yeet',now);
+        else if(event.type==='gate'||event.type==='summon')this.cue('heal',now);
         if(event.type==='loss'||event.type==='boss')this.cue('threat',now);
     }
 }

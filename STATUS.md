@@ -1,3 +1,15 @@
+## v0.7.0 — deployed September25,2026
+
+Deployment 7rivWQ36zNxSdgCG4By42zG5XH8g READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-oojhvqqk1-applefound.vercel.app. Cache biology-584de0c73c19.
+
+Evocative Mob Control / Last War 3/4 perspective visuals, 3D kawaii species-faithful microbes, defender yeet hugs, and super-weapon medicine actions:
+- 3/4 perspective glowing runway rails and speed tracks with a 3D Capillary Marrow Emitter Pod.
+- 3D species-faithful kawaii microbes with volumetric specular lighting, blushing cheeks, and accurate biological forms (S. aureus golden mochi clusters, encapsulated paired pneumococci, flagellated E. coli rods, polar-flagellated Pseudomonas, budding Candida yeast).
+- Volumetric squeeze hugs with marshmallow arms, mitten hands, and heart particles.
+- Defender yeet / hurled hug tackle with parabolic flight, whoosh audio, and impact hug damage. Tap-to-hurl enabled.
+- Medicine super-weapon FX: falling 3D capsules / cryo-stasis crystals / micellar droplets, bactericidal wall shatter with flying debris fragments and screen-shake, and bacteriostatic cryo-stasis frost cages with pause symbols.
+- 137 unit tests, TypeScript 0 errors, clean compiled distribution, live byte equality, noindex headers, robots.txt, returning player cache update, and live production First Hug victory verified.
+
 ## Latest request — September24 sound design
 User authorized a comprehensive original adaptive sonic identity. Full actionable requirements saved in handoff/requirements/AUDIO_DIRECTION.md; this takes priority over other feature work. Existing system has three reused Phaser WAV cues and a separate purchase Audio path. Implementation pending, not complete. Capacity check at2026-09-25 00:16UTC:6% five-hour,23% weekly; reserve remaining budget to respect5% floor. Existing ACTIVE heartbeat wakes23:01America/New_York after actual five-hour reset1790305191; require fresh capacity above5% in both windows. Live game remains verified0.4.0.
 

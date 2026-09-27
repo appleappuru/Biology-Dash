@@ -15,6 +15,10 @@ export interface AntibodyParticle {
     id: number; sourceId: number; targetId: number; x: number; y: number; startX: number; startY: number;
     age: number; duration: number; profile: AntibodyProfile; phase: 'diffuse' | 'bound' | 'miss';
 }
+export interface HurledDefender {
+    id: number; targetId: number; startX: number; startY: number; targetX: number; targetY: number;
+    progress: number; duration: number; role: DefenderId;
+}
 export interface Enemy {
     id: number;
     kind: PathogenId;
@@ -122,6 +126,9 @@ export class Patrol {
     nextCellId = 0;
     nextDefensin = 6;
     defensins: {id:number; targetId:number; x:number; y:number; age:number}[] = [];
+    hurled: HurledDefender[] = [];
+    nextHurl = 4;
+    emitterCooldown = 0;
     get duration(){return LEVELS[this.level-1].duration;}
     get visibleTargets(){return this.enemies.filter(e=>e.hp>0&&e.y>100&&e.y<680);}
     activeMedicine:MedicineId='amoxicillin';
@@ -385,6 +392,56 @@ export class Patrol {
         }
         this.defensins=this.defensins.filter(s=>s.age<2);
     }
+    stepHurled(dt: number) {
+        if (this.phase !== 'playing') return;
+        if (this.squad >= 6 && this.time >= this.nextHurl && this.nextSpawn < 900) {
+            const candidate = this.enemies.filter(e => e.hp > 0 && e.y > 140 && e.y < 520 && !this.hurled.some(h => h.targetId === e.id))
+                .sort((a, b) => b.y - a.y)[0];
+            if (candidate) {
+                this.hurlDefender(candidate.id);
+                this.nextHurl = this.time + 3.8 + (this.id % 3) * 0.5;
+            }
+        }
+        for (const h of this.hurled) {
+            h.progress = Math.min(1, h.progress + dt / h.duration);
+            const target = this.enemies.find(e => e.id === h.targetId && e.hp > 0);
+            if (target) {
+                h.targetX = target.x;
+                h.targetY = target.y;
+            }
+            if (h.progress >= 1) {
+                if (target) {
+                    this.damage(target, target.boss ? 26 : 18, 'phagocytosis');
+                    this.events.push({ type: 'contact', text: 'HUG TACKLE!', enemyId: target.id, x: target.x, y: target.y });
+                }
+            }
+        }
+        this.hurled = this.hurled.filter(h => h.progress < 1);
+    }
+    emitReinforcement() {
+        if (this.squad >= BALANCE.maxSquad || this.phase !== 'playing') return false;
+        this.squad++;
+        this.syncCells();
+        this.events.push({ type: 'recruit', text: 'Capillary reinforcement deployed!', label: '+1 defender', amount: 1 });
+        return true;
+    }
+    hurlDefender(targetId: number) {
+        const target = this.enemies.find(e => e.id === targetId && e.hp > 0);
+        if (!target || this.hurled.length >= 2) return false;
+        this.hurled.push({
+            id: ++this.id,
+            targetId,
+            startX: this.x + (this.id % 2 ? 18 : -18),
+            startY: this.y - 10,
+            targetX: target.x,
+            targetY: target.y,
+            progress: 0,
+            duration: 0.54,
+            role: this.defender
+        });
+        this.events.push({ type: 'summon', text: 'Yeet! Flying hugger incoming!', label: 'YEET!' });
+        return true;
+    }
     step(delta: number) {
         if (this.phase !== 'playing')
             return;
@@ -453,6 +510,12 @@ export class Patrol {
             if(exposure.remaining<=0){if(exposure.id==='doxycycline')e.inhibited=false;e.exposure=undefined;}
         }
         this.stepDefensins(dt);
+        this.stepHurled(dt);
+        this.emitterCooldown = Math.max(0, this.emitterCooldown - dt);
+        if (this.level > 1 && this.squad > 0 && this.squad < 5 && this.emitterCooldown <= 0 && this.phase === 'playing' && this.nextSpawn < 900 && this.nextGate < 900) {
+            this.emitReinforcement();
+            this.emitterCooldown = 4.2;
+        }
         this.stepCells(dt);
         for (const e of this.enemies) {
             if (e.hp <= 0) {

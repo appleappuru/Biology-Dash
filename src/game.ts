@@ -62,6 +62,7 @@ export class PatrolScene extends Phaser.Scene {
     keys!: Record<string, Phaser.Input.Keyboard.Key>;
     lastSquad = 0;
     scroll = 0;
+    emitterPulse = 0;
     constructor() { super('Patrol'); }
     startupFailed = false;
     preload() {
@@ -100,6 +101,20 @@ export class PatrolScene extends Phaser.Scene {
         }
         this.input.on('pointerdown', (p: Phaser.Input.Pointer) => {
             this.hooks?.gesture();
+            // Interactive Tap-to-Hurl: tap an enemy to fling a defender directly at them!
+            if (this.patrol && this.patrol.phase === 'playing' && this.patrol.squad > 1) {
+                for (const enemy of this.patrol.enemies) {
+                    const eq = project(enemy.x, enemy.y);
+                    const dist = Phaser.Math.Distance.Between(p.x, p.y, eq.x, eq.y);
+                    if (dist < 46 * eq.scale) {
+                        if (this.patrol.hurlDefender(enemy.id)) {
+                            const sq = project(this.patrol.x, this.patrol.y);
+                            this.floatFeedback('HUG YEET! 🚀', sq.x, sq.y - 45, 0xff70a6);
+                            return;
+                        }
+                    }
+                }
+            }
             this.held = true; this.dragX = p.x; this.dragY = p.y;
             this.dragStart = this.patrol?.x ?? 210; this.dragStartY = this.patrol?.y ?? 640;
         });
@@ -151,9 +166,25 @@ export class PatrolScene extends Phaser.Scene {
         }
         if (event.type === 'gate' || event.type === 'summon') {
             const p=this.patrol, q=project(p.x,p.y);
-            const message=event.label ?? event.text;
-            this.floatFeedback(message,q.x,q.y-85,0xd8fff0);
-            if (!this.reducedMotion && event.type === 'gate') {
+            this.emitterPulse = 1.0;
+            const isGate = event.type === 'gate';
+            let message = event.label ?? event.text;
+            let color = 0xd8fff0;
+            if (event.amount && event.amount > 0) {
+                message = `+${event.amount} SQUAD! 🎉`;
+                color = 0x4ade80;
+            } else if (event.text?.includes('Tempo') || event.text?.includes('Rapid')) {
+                message = '⚡ SPEED BOOST!';
+                color = 0xfacc15;
+            } else if (event.text?.includes('Coverage') || event.text?.includes('reach')) {
+                message = '🎯 REACH EXPANDED!';
+                color = 0x38bdf8;
+            } else if (event.text?.includes('Shield')) {
+                message = '🛡️ LOSS SHIELD!';
+                color = 0xa855f7;
+            }
+            this.floatFeedback(message,q.x,q.y-85,color);
+            if (!this.reducedMotion && isGate) {
                 const wave = this.add.graphics().setDepth(q.y + 10);
                 wave.lineStyle(3, 0x8df8cf, .85).strokeEllipse(q.x, q.y, 85, 42);
                 this.tweens.add({ targets: wave, scaleX: 1.7, scaleY: 1.7, alpha: 0, duration: 420, onComplete: () => wave.destroy() });
@@ -207,32 +238,154 @@ export class PatrolScene extends Phaser.Scene {
         this.tweens.add({targets:banner,alpha:0,delay:1400,duration:reduced?0:280,onComplete:()=>banner.destroy()});
         const wave=this.add.graphics().setPosition(210,390).setDepth(850).lineStyle(3+charge*3,med.color,.7).strokeEllipse(0,0,120+charge*180,80+charge*120);
         this.tweens.add({targets:wave,scaleX:reduced?1:1.6,scaleY:reduced?1:1.6,alpha:0,duration:reduced?350:650,onComplete:()=>wave.destroy()});
+
+        // 3D Medicine Projectile Shower: Pills, crystals, or droplets showering down across the arena
+        if (!reduced) {
+            const projCount = Math.round(12 + charge * 8);
+            for (let i = 0; i < projCount; i++) {
+                const startX = 40 + Math.random() * 340;
+                const startY = -25 - Math.random() * 60;
+                const targetY = 220 + Math.random() * 380;
+                const proj = this.add.container(startX, startY).setDepth(1400);
+
+                if (med.id === 'amoxicillin' || med.id === 'cefepime') {
+                    // 3D Capsule Pill (Two-tone: white & cyan/coral with gloss shine)
+                    const pillColor = med.id === 'amoxicillin' ? 0x2dd4bf : 0xf43f5e;
+                    const cap = this.add.graphics();
+                    cap.fillStyle(0x001018, 0.35).fillEllipse(0, 14, 14, 5);
+                    cap.fillStyle(0xffffff, 0.95).fillRoundedRect(-14, -6, 14, 12, 5);
+                    cap.fillStyle(pillColor, 0.95).fillRoundedRect(0, -6, 14, 12, 5);
+                    cap.lineStyle(1.5, 0x0f2b38, 0.85).strokeRoundedRect(-14, -6, 28, 12, 5);
+                    cap.fillStyle(0xffffff, 0.7).fillRoundedRect(-12, -4, 24, 3, 1.5);
+                    proj.add(cap);
+                } else if (med.id === 'doxycycline') {
+                    // Glowing Hexagonal Cryo-Stasis Crystal
+                    const crystal = this.add.graphics();
+                    crystal.fillStyle(0x001018, 0.35).fillEllipse(0, 14, 14, 5);
+                    crystal.fillStyle(0xa855f7, 0.88).beginPath();
+                    for (let k = 0; k < 6; k++) {
+                        const ang = k * Math.PI / 3;
+                        const px = Math.cos(ang) * 9, py = Math.sin(ang) * 9;
+                        if (k === 0) crystal.moveTo(px, py); else crystal.lineTo(px, py);
+                    }
+                    crystal.closePath().fillPath();
+                    crystal.lineStyle(1.5, 0xe9d5ff, 0.95).strokePath();
+                    crystal.fillStyle(0xffffff, 0.85).fillCircle(-2, -2, 3);
+                    proj.add(crystal);
+                } else {
+                    // Micafungin: Glistening turquoise micellar droplet
+                    const drop = this.add.graphics();
+                    drop.fillStyle(0x001018, 0.35).fillEllipse(0, 14, 14, 5);
+                    drop.fillStyle(0x14b8a6, 0.92).fillCircle(0, 0, 8);
+                    drop.fillStyle(0x5eead4, 0.95).fillCircle(-2, -2, 4);
+                    drop.fillStyle(0xffffff, 0.9).fillCircle(-3, -3, 2);
+                    drop.lineStyle(1.5, 0xccfbf1, 0.9).strokeCircle(0, 0, 8);
+                    proj.add(drop);
+                }
+
+                proj.setRotation((Math.random() - 0.5) * 0.5);
+                const dur = 400 + Math.random() * 250;
+                this.tweens.add({
+                    targets: proj,
+                    x: startX + (Math.random() - 0.5) * 35,
+                    y: targetY,
+                    rotation: proj.rotation + (Math.random() - 0.5) * 1.2,
+                    duration: dur,
+                    ease: 'Cubic.In',
+                    onComplete: () => {
+                        const splash = this.add.graphics().setDepth(1401).setPosition(proj.x, proj.y);
+                        splash.lineStyle(2, med.color, 0.8).strokeEllipse(0, 0, 24, 10);
+                        this.tweens.add({ targets: splash, scaleX: 1.8, scaleY: 1.8, alpha: 0, duration: 240, onComplete: () => splash.destroy() });
+                        proj.destroy();
+                    }
+                });
+            }
+        }
+
+        // Super-Weapon Microbe Reactions
         for(const enemy of this.patrol.enemies){
             const reaction=enemy.medicineReaction;
             if(!reaction || reaction.id!==med.id)continue;
             const q=project(enemy.x,enemy.y);
-            const stamp=this.add.container(q.x,q.y).setDepth(q.y+40);
+            const stamp=this.add.container(q.x,q.y).setDepth(q.y+45);
             const ink=this.add.graphics();
             if(reaction.effective){
-                ink.lineStyle(3,med.color,.95);
                 if(med.effect==='inhibit'){
-                    ink.fillStyle(0x253a49,.92).fillRoundedRect(-13,-15,26,30,9);
-                    ink.lineBetween(-5,-7,-5,7).lineBetween(5,-7,5,7);
+                    // BACTERIOSTATIC CRYO-STASIS FX: Hex frost cage, bold pause bars, frost flakes
+                    const radius = 32 * q.scale;
+                    ink.fillStyle(0x7c3aed, 0.28).fillCircle(0, 0, radius);
+                    ink.lineStyle(2.5, 0xc084fc, 0.9);
+                    ink.beginPath();
+                    for (let k = 0; k < 6; k++) {
+                        const ang = k * Math.PI / 3;
+                        const px = Math.cos(ang) * radius, py = Math.sin(ang) * radius;
+                        if (k === 0) ink.moveTo(px, py); else ink.lineTo(px, py);
+                    }
+                    ink.closePath().strokePath();
+                    for (let k = 0; k < 6; k++) {
+                        const ang = k * Math.PI / 3;
+                        const px = Math.cos(ang) * radius, py = Math.sin(ang) * radius;
+                        ink.lineBetween(px, py, px * 1.3, py * 1.3);
+                    }
+                    // Bold pause symbol
+                    ink.fillStyle(0x1e1b4b, 0.92).fillRoundedRect(-14, -14, 28, 28, 6);
+                    ink.lineStyle(1.5, 0xe9d5ff, 0.95).strokeRoundedRect(-14, -14, 28, 28, 6);
+                    ink.fillStyle(0xffffff, 0.95).fillRect(-7, -8, 4, 16).fillRect(3, -8, 4, 16);
+                    this.floatFeedback('GROWTH FROZEN! ❚❚', q.x, q.y - 42 * q.scale, 0xc084fc);
+
+                    if (!reduced) {
+                        for (let i = 0; i < 5; i++) {
+                            const fang = i * (Math.PI * 2 / 5) + Math.random() * 0.4;
+                            const flake = this.add.text(q.x, q.y, '❄', { fontSize: '13px', color: '#e9d5ff' }).setOrigin(0.5).setDepth(q.y + 46);
+                            this.tweens.add({ targets: flake, x: q.x + Math.cos(fang) * (radius + 22), y: q.y + Math.sin(fang) * (radius + 18), alpha: 0, duration: 650 + i * 40, onComplete: () => flake.destroy() });
+                        }
+                    }
                 }else{
-                    // Broken contour represents cell-wall stress; no arbitrary blast damage.
-                    ink.beginPath().arc(0,0,27,.15,1.2).strokePath().beginPath().arc(0,0,27,1.8,3).strokePath().beginPath().arc(0,0,27,3.6,5.4).strokePath();
-                    ink.lineBetween(4,-29,-2,-18).lineBetween(-2,-18,5,-12);
-                }
-                if(!reduced)for(let i=0;i<4;i++){
-                    const angle=i*Math.PI/2+enemy.id;
-                    const spark=this.add.star(0,0,4,2,5,med.color).setDepth(q.y+41).setPosition(q.x,q.y);
-                    this.tweens.add({targets:spark,x:q.x+Math.cos(angle)*43,y:q.y+Math.sin(angle)*43,alpha:0,scale:.4,duration:600,onComplete:()=>spark.destroy()});
+                    // BACTERICIDAL WALL-BREAKING FX: Fractured fissures, broken wall arcs, flying wall debris
+                    const radius = 30 * q.scale;
+                    ink.lineStyle(3, 0xfacc15, 0.95);
+                    ink.beginPath();
+                    ink.moveTo(-radius * 0.8, -radius * 0.4); ink.lineTo(-radius * 0.2, -radius * 0.1);
+                    ink.lineTo(-radius * 0.4, radius * 0.3); ink.lineTo(0, radius * 0.1); ink.lineTo(radius * 0.5, radius * 0.6);
+                    ink.strokePath();
+
+                    ink.lineStyle(2.5, 0xf43f5e, 0.9);
+                    ink.beginPath();
+                    ink.moveTo(radius * 0.7, -radius * 0.6); ink.lineTo(radius * 0.2, -radius * 0.2);
+                    ink.lineTo(radius * 0.4, 0); ink.lineTo(radius * 0.1, radius * 0.5);
+                    ink.strokePath();
+
+                    ink.lineStyle(3, med.color, 0.95);
+                    ink.beginPath().arc(0, 0, radius, 0.2, 1.4).strokePath();
+                    ink.beginPath().arc(0, 0, radius, 2.0, 3.4).strokePath();
+                    ink.beginPath().arc(0, 0, radius, 3.8, 5.6).strokePath();
+
+                    const breakText = med.id === 'micafungin' ? 'FUNGAL WALL BREAK! 💥' : 'WALL SHATTER! 💥';
+                    this.floatFeedback(breakText, q.x, q.y - 42 * q.scale, 0xfacc15);
+
+                    if (!reduced) {
+                        for (let i = 0; i < 8; i++) {
+                            const debrisAngle = i * (Math.PI / 4) + (Math.random() - 0.5) * 0.4;
+                            const debrisDist = 32 + Math.random() * 28;
+                            const wallChunk = this.add.rectangle(q.x, q.y, 6 + Math.random() * 4, 4 + Math.random() * 3, i % 2 ? 0xfacc15 : med.color).setDepth(q.y + 46);
+                            this.tweens.add({ targets: wallChunk, x: q.x + Math.cos(debrisAngle) * debrisDist, y: q.y + Math.sin(debrisAngle) * debrisDist, rotation: Math.random() * 4, alpha: 0, duration: 520 + Math.random() * 180, onComplete: () => wallChunk.destroy() });
+                        }
+                        this.cameras.main.shake(100, 0.0025);
+                    }
                 }
             }else{
-                // Incompatible medication gets a quiet deflection mark, not an invincibility shield.
-                ink.lineStyle(2,0xb2bbc3,.9).lineBetween(-9,-9,9,9).lineBetween(9,-9,-9,9);
+                // Incompatible medication gets a deflection shield and float text
+                ink.fillStyle(0x334155, 0.85).fillCircle(0, 0, 22 * q.scale);
+                ink.lineStyle(2.5, 0x94a3b8, 0.95).strokeCircle(0, 0, 22 * q.scale);
+                ink.lineBetween(-9 * q.scale, -9 * q.scale, 9 * q.scale, 9 * q.scale);
+                ink.lineBetween(9 * q.scale, -9 * q.scale, -9 * q.scale, 9 * q.scale);
+                this.floatFeedback('DEFLECTED · RESISTANT ⊘', q.x, q.y - 35 * q.scale, 0x94a3b8);
             }
             stamp.add(ink);
+            if (!reduced) {
+                stamp.setScale(0.7);
+                this.tweens.add({ targets: stamp, scale: 1.15, duration: 180, ease: 'Back.Out' });
+            }
             this.tweens.add({targets:stamp,alpha:0,scale:reduced?1:1.25,delay:reduced?700:250,duration:reduced?0:600,onComplete:()=>stamp.destroy()});
         }
     }
@@ -311,11 +464,47 @@ export class PatrolScene extends Phaser.Scene {
         this.time.delayedCall(won?1900:1100,()=>{shade.destroy();title.destroy();subtitle.destroy();seal.destroy();this.hooks.finish(this.patrol);});
     }
     drawGround() {
-        this.ground.clear().lineStyle(1, 0x84c7c2, .12);
+        this.ground.clear();
+        // Mob Control / Last War 3/4 perspective runway rails
+        const lTop = project(24, 0), lBot = project(24, 780);
+        this.ground.lineStyle(3.5, 0x1dd3b0, 0.35).lineBetween(lTop.x, lTop.y, lBot.x, lBot.y);
+        this.ground.lineStyle(1.5, 0x99f6e4, 0.75).lineBetween(lTop.x, lTop.y, lBot.x, lBot.y);
+
+        const rTop = project(396, 0), rBot = project(396, 780);
+        this.ground.lineStyle(3.5, 0x1dd3b0, 0.35).lineBetween(rTop.x, rTop.y, rBot.x, rBot.y);
+        this.ground.lineStyle(1.5, 0x99f6e4, 0.75).lineBetween(rTop.x, rTop.y, rBot.x, rBot.y);
+
+        // Perspective sliding runway track lines
+        for (const trackX of [120, 210, 300]) {
+            for (let i = 0; i < 9; i++) {
+                const trackY = (i * 90 + this.scroll * 2) % 760;
+                const q = project(trackX, trackY);
+                this.ground.fillStyle(0x38bdf8, 0.18 * q.scale).fillRoundedRect(q.x - 3 * q.scale, q.y - 12 * q.scale, 6 * q.scale, 24 * q.scale, 3 * q.scale);
+            }
+        }
+
+        // Cellular floor matrix nodules
         for (let i = 0; i < 18; i++) {
             const q = project(38 + ((i * 137.5) % 345), (i * 83.7 + this.scroll) % 710);
-            this.ground.fillStyle(0x84c7c2, .12).fillEllipse(q.x, q.y, (3 + i % 4) * q.scale, 2 * q.scale);
+            this.ground.fillStyle(0x0e7490, 0.22).fillEllipse(q.x, q.y, (5 + i % 4) * q.scale, 3 * q.scale);
         }
+
+        // 3D Capillary Marrow Emitter Pod at base behind squad
+        if (this.patrol) {
+            const eq = project(this.patrol.x, 725);
+            const pulse = this.emitterPulse;
+            if (this.emitterPulse > 0) {
+                this.emitterPulse = Math.max(0, this.emitterPulse - 0.035);
+                this.ground.lineStyle((3 + pulse * 6) * eq.scale, 0x2dd4bf, 0.7 * pulse).strokeEllipse(eq.x, eq.y, (78 + pulse * 36) * eq.scale, (28 + pulse * 14) * eq.scale);
+            }
+            this.ground.fillStyle(0x001018, 0.5).fillEllipse(eq.x, eq.y + 12 * eq.scale, 72 * eq.scale, 22 * eq.scale);
+            this.ground.fillStyle(0x082535, 0.95).fillRoundedRect(eq.x - 32 * eq.scale, eq.y - 18 * eq.scale, 64 * eq.scale, 36 * eq.scale, 14 * eq.scale);
+            this.ground.lineStyle(2 * eq.scale, 0x2dd4bf, 0.85).strokeRoundedRect(eq.x - 32 * eq.scale, eq.y - 18 * eq.scale, 64 * eq.scale, 36 * eq.scale, 14 * eq.scale);
+            this.ground.fillStyle(0x0f766e, 0.9).fillCircle(eq.x, eq.y, (14 + pulse * 4) * eq.scale);
+            this.ground.fillStyle(0x5eead4, 0.95).fillCircle(eq.x, eq.y, (8 + pulse * 4) * eq.scale);
+            this.ground.fillStyle(0xffffff, 0.8).fillCircle(eq.x - 2 * eq.scale, eq.y - 2 * eq.scale, 3 * eq.scale);
+        }
+
         this.zone.clear();
         if (this.showReach) for (const c of this.patrol.cells.filter(c=>c.role!=='plasma' && c.phase==='idle').slice(0,3)) {
             const q=project(c.x,c.y),radius=this.patrol.reach*q.scale;
@@ -398,25 +587,35 @@ export class PatrolScene extends Phaser.Scene {
                 const t=project(target.x,target.y), vx=t.x-q.x,vy=t.y-q.y,d=Math.max(1,Math.hypot(vx,vy)),nx=-vy/d,ny=vx/d;
                 const progress=actor.progress, radius=(target.boss?24:16)*q.scale*(p.level===1?2.8:1);
                 const contactX=vx-vx/d*radius,contactY=vy-vy/d*radius;
-                const color=rank===1?0x65c4bd:0xbadfee;
                 cell.membrane.setDepth(Math.max(q.y,t.y)+7);
-                // Two connected membrane lobes extend from this cell and curl around this target.
+                const armColor=rank===1?0xfaf4e8:0xffffff;
+                const rimColor=rank===1?0x4db6ac:0x80deea;
                 for(const side of [-1,1]){
                     const points=[];
                     for(let j=0;j<=12;j++){
-                        const u=j/12, curl=Math.sin(u*Math.PI)*radius*(rank===1?1.2:1);
-                        const end=Math.min(1,progress*2.7);
+                        const u=j/12, curl=Math.sin(u*Math.PI)*radius*(rank===1?1.28:1.1);
+                        const end=Math.min(1,progress*2.8);
                         points.push(new Phaser.Math.Vector2(q.x+contactX*u*end+nx*side*curl*end,q.y-4*(1-u*end)+contactY*u*end+ny*side*curl*end));
                     }
-                    cell.membrane.lineStyle((rank===1?13:10)*q.scale,color,.92).strokePoints(points,false);
-                    cell.membrane.lineStyle(1.3*q.scale,0xf6fff9,.45).strokePoints(points,false);
-                }
-                if(progress>.3){
-                    const nearAngle=Math.atan2(vy,vx)+Math.PI;
-                    const closure=Math.min(1,(progress-.3)/.65)*Math.PI;
-                    for(const side of [-1,1]){
-                        cell.membrane.lineStyle((rank===1?6:4)*q.scale,color,.92).beginPath().arc(t.x,t.y,radius,nearAngle,nearAngle+side*closure,side<0).strokePath();
+                    cell.membrane.lineStyle((rank===1?20:14)*q.scale,0x001824,.25).strokePoints(points,false);
+                    cell.membrane.lineStyle((rank===1?17:12)*q.scale,armColor,.96).strokePoints(points,false);
+                    cell.membrane.lineStyle(2*q.scale,0xffffff,.8).strokePoints(points,false);
+                    const lastPt=points[points.length-1];
+                    if(lastPt&&progress>.15){
+                        cell.membrane.fillStyle(armColor,1).fillCircle(lastPt.x,lastPt.y,(rank===1?9:6.5)*q.scale);
+                        cell.membrane.lineStyle(1.2*q.scale,rimColor,.6).strokeCircle(lastPt.x,lastPt.y,(rank===1?9:6.5)*q.scale);
                     }
+                }
+                if(progress>.25){
+                    const nearAngle=Math.atan2(vy,vx)+Math.PI;
+                    const closure=Math.min(1,(progress-.25)/.7)*Math.PI;
+                    for(const side of [-1,1]){
+                        cell.membrane.lineStyle((rank===1?8:5)*q.scale,armColor,.95).beginPath().arc(t.x,t.y,radius,nearAngle,nearAngle+side*closure,side<0).strokePath();
+                    }
+                }
+                if(progress>.2 && !this.reducedMotion && (Math.floor(p.time*18+i)%4===0)){
+                    const hx=t.x+(Math.sin(p.time*15+i)*16)*q.scale, hy=t.y-16*q.scale-progress*12;
+                    this.molecules.fillStyle(0xff4081,.8).fillCircle(hx,hy,3*q.scale);
                 }
             }
         });
@@ -427,6 +626,25 @@ export class PatrolScene extends Phaser.Scene {
         for(const a of p.antibodies){
             const q=project(a.x,a.y), alpha=a.phase==='miss'?Math.max(0,1-a.age/.65):.8;
             this.drawAntibody(q.x,q.y,4.8*q.scale,this.reducedMotion?0:Math.sin(a.age*3+a.id)*.6,alpha,a.phase==='miss'?0xb5a7b8:ANTIBODY_NAMES[a.profile.epitope].color);
+        }
+        for(const h of p.hurled){
+            const curX=h.startX+(h.targetX-h.startX)*h.progress;
+            const curY=h.startY+(h.targetY-h.startY)*h.progress;
+            const q=project(curX,curY);
+            const height=Math.sin(h.progress*Math.PI)*85*q.scale;
+            this.molecules.fillStyle(0x00151b,.35*(1-h.progress*.3)).fillEllipse(q.x,q.y,28*q.scale,10*q.scale);
+            const cy=q.y-height;
+            this.molecules.fillStyle(0xffffff,1).fillCircle(q.x,cy,18*q.scale);
+            this.molecules.fillStyle(0xffffff,.75).fillEllipse(q.x-5*q.scale,cy-5*q.scale,6*q.scale,3.5*q.scale);
+            for(const s of [-1,1]){
+                const armX=q.x+s*16*q.scale, armY=cy-6*q.scale+Math.sin(h.progress*16)*4;
+                this.molecules.fillStyle(0xffffff,1).fillCircle(armX,armY,6.5*q.scale);
+            }
+            this.molecules.fillStyle(0xff4081,.6).fillCircle(q.x-8*q.scale,cy+3*q.scale,3.2*q.scale);
+            this.molecules.fillStyle(0xff4081,.6).fillCircle(q.x+8*q.scale,cy+3*q.scale,3.2*q.scale);
+            this.molecules.fillStyle(0x112233,1).fillCircle(q.x-5*q.scale,cy-1*q.scale,2.2*q.scale);
+            this.molecules.fillStyle(0x112233,1).fillCircle(q.x+5*q.scale,cy-1*q.scale,2.2*q.scale);
+            this.molecules.fillStyle(0xff6090,.75).fillCircle(q.x+(h.id%3-1)*12,cy+18*q.scale,2.5);
         }
         this.lastSquad=count;
     }

@@ -1,0 +1,311 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+
+      <filter id="m-shadow" x="-25%" y="-25%" width="150%" height="150%">
+        <feDropShadow dx="0" dy="7" stdDeviation="6" flood-color="#001824" flood-opacity="0.45"/>
+      </filter>
+
+      <!-- Pneumococcus Lavender 3D -->
+      <radialGradient id="grad-pneumo" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+        <stop offset="0%" stop-color="#ffffff"/>
+        <stop offset="35%" stop-color="#bfbaf5"/>
+        <stop offset="75%" stop-color="#8a80df"/>
+        <stop offset="100%" stop-color="#675cb8"/>
+      </radialGradient>
+      <!-- Translucent Capsule Halo -->
+      <radialGradient id="grad-capsule" cx="50%" cy="50%" r="50%">
+        <stop offset="65%" stop-color="#c4b5fd" stop-opacity="0.22"/>
+        <stop offset="90%" stop-color="#a78bfa" stop-opacity="0.48"/>
+        <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.75"/>
+      </radialGradient>
+
+      <!-- E. Coli Coral Rod 3D -->
+      <radialGradient id="grad-ecoli" cx="35%" cy="28%" r="65%" fx="28%" fy="20%">
+        <stop offset="0%" stop-color="#ffded9"/>
+        <stop offset="35%" stop-color="#f89f94"/>
+        <stop offset="78%" stop-color="#d95d50"/>
+        <stop offset="100%" stop-color="#a83529"/>
+      </radialGradient>
+
+      <!-- Pseudomonas Mint Aquatic Rod 3D -->
+      <radialGradient id="grad-pseudo" cx="35%" cy="28%" r="65%" fx="28%" fy="20%">
+        <stop offset="0%" stop-color="#d2faf4"/>
+        <stop offset="35%" stop-color="#5eead4"/>
+        <stop offset="78%" stop-color="#14b8a6"/>
+        <stop offset="100%" stop-color="#0f766e"/>
+      </radialGradient>
+
+      <!-- Candida Warm Pearlescent Yeast 3D -->
+      <radialGradient id="grad-candida" cx="34%" cy="28%" r="66%" fx="26%" fy="20%">
+        <stop offset="0%" stop-color="#fffbf0"/>
+        <stop offset="35%" stop-color="#fde68a"/>
+        <stop offset="78%" stop-color="#d97706"/>
+        <stop offset="100%" stop-color="#92400e"/>
+      </radialGradient>
+    
+</defs>
+<g id="pneumococcus-c0" filter="url(#m-shadow)">
+<ellipse cx="128.0" cy="128.0" rx="78" ry="58" fill="url(#grad-capsule)" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="10 4"/>
+<ellipse cx="102.0" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(-16 102.0 128.0)"/>
+<ellipse cx="95.0" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(-16 102.0 128.0)"/>
+<ellipse cx="91.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="113.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="96.0" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="95.0" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="108.0" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="107.0" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 98.0 136.0 Q 102.0 140.0 106.0 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+<ellipse cx="154.0" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(16 154.0 128.0)"/>
+<ellipse cx="147.0" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(16 154.0 128.0)"/>
+<ellipse cx="143.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="165.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="148.0" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="147.0" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="160.0" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="159.0" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 150.0 136.0 Q 154.0 140.0 158.0 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+</g>
+<g id="pneumococcus-c1" filter="url(#m-shadow)">
+<ellipse cx="384.0" cy="128.0" rx="78" ry="58" fill="url(#grad-capsule)" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="10 4"/>
+<ellipse cx="354.4" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(-16 354.4 128.0)"/>
+<ellipse cx="347.4" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(-16 354.4 128.0)"/>
+<ellipse cx="343.4" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="365.4" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="348.4" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="347.4" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="360.4" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="359.4" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 350.4 136.0 Q 354.4 140.0 358.4 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+<ellipse cx="406.4" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(16 406.4 128.0)"/>
+<ellipse cx="399.4" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(16 406.4 128.0)"/>
+<ellipse cx="395.4" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="417.4" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="400.4" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="399.4" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="412.4" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="411.4" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 402.4 136.0 Q 406.4 140.0 410.4 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+</g>
+<g id="pneumococcus-c2" filter="url(#m-shadow)">
+<ellipse cx="640.0" cy="128.0" rx="78" ry="58" fill="url(#grad-capsule)" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="10 4"/>
+<ellipse cx="617.6" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(-16 617.6 128.0)"/>
+<ellipse cx="610.6" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(-16 617.6 128.0)"/>
+<ellipse cx="606.6" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="628.6" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="611.6" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="610.6" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="623.6" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="622.6" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 613.6 136.0 Q 617.6 140.0 621.6 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+<ellipse cx="669.6" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(16 669.6 128.0)"/>
+<ellipse cx="662.6" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(16 669.6 128.0)"/>
+<ellipse cx="658.6" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="680.6" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<circle cx="663.6" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="662.6" cy="127.5" r="1.4" fill="#ffffff"/>
+<circle cx="675.6" cy="129.0" r="3.8" fill="#1e1b4b"/>
+<circle cx="674.6" cy="127.5" r="1.4" fill="#ffffff"/>
+<path d="M 665.6 136.0 Q 669.6 140.0 673.6 136.0" fill="none" stroke="#1e1b4b" stroke-width="2.2" stroke-linecap="round"/>
+</g>
+<g id="pneumococcus-c3" filter="url(#m-shadow)">
+<ellipse cx="896.0" cy="128.0" rx="70" ry="50" fill="url(#grad-capsule)" stroke="#a78bfa" stroke-width="2.5" stroke-dasharray="10 4"/>
+<ellipse cx="870.0" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(-16 870.0 128.0)"/>
+<ellipse cx="863.0" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(-16 870.0 128.0)"/>
+<ellipse cx="859.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="881.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<path d="M 862.0 128.0 L 867.0 132.0 L 862.0 136.0" fill="none" stroke="#2e1065" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M 878.0 128.0 L 873.0 132.0 L 878.0 136.0" fill="none" stroke="#2e1065" stroke-width="2.5" stroke-linecap="round"/>
+<ellipse cx="870.0" cy="140.0" rx="3" ry="4" fill="#2e1065"/>
+<ellipse cx="922.0" cy="128.0" rx="25" ry="34" fill="url(#grad-pneumo)" transform="rotate(16 922.0 128.0)"/>
+<ellipse cx="915.0" cy="116.0" rx="8" ry="5" fill="#ffffff" opacity="0.65" transform="rotate(16 922.0 128.0)"/>
+<ellipse cx="911.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<ellipse cx="933.0" cy="134.0" rx="5" ry="3.5" fill="#ff4081" opacity="0.5"/>
+<path d="M 914.0 128.0 L 919.0 132.0 L 914.0 136.0" fill="none" stroke="#2e1065" stroke-width="2.5" stroke-linecap="round"/>
+<path d="M 930.0 128.0 L 925.0 132.0 L 930.0 136.0" fill="none" stroke="#2e1065" stroke-width="2.5" stroke-linecap="round"/>
+<ellipse cx="922.0" cy="140.0" rx="3" ry="4" fill="#2e1065"/>
+</g>
+<g id="ecoli-c0" filter="url(#m-shadow)">
+<path d="M 81.0 362.0 C 56.0 350.0, 31.0 374.0, 9.0 356.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 81.0 376.0 C 56.0 388.0, 31.0 364.0, 9.0 382.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 81.0 392.0 C 56.0 380.0, 31.0 404.0, 9.0 386.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 81.0 406.0 C 56.0 418.0, 31.0 394.0, 9.0 412.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<rect x="73.0" y="353.0" width="110" height="62" rx="31.0" fill="url(#grad-ecoli)"/>
+<ellipse cx="120.0" cy="365.0" rx="41.8" ry="7" fill="#ffffff" opacity="0.6"/>
+<ellipse cx="104.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+<ellipse cx="152.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+
+                      <circle cx="113.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="111.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="143.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="141.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 121.0 398.0 Q 128.0 404.0 135.0 398.0" fill="none" stroke="#450a0a" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="ecoli-c1" filter="url(#m-shadow)">
+<path d="M 337.0 362.0 C 312.0 350.0, 287.0 374.0, 265.0 356.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 337.0 376.0 C 312.0 388.0, 287.0 364.0, 265.0 382.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 337.0 392.0 C 312.0 380.0, 287.0 404.0, 265.0 386.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 337.0 406.0 C 312.0 418.0, 287.0 394.0, 265.0 412.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<rect x="329.0" y="353.0" width="110" height="62" rx="31.0" fill="url(#grad-ecoli)"/>
+<ellipse cx="376.0" cy="365.0" rx="41.8" ry="7" fill="#ffffff" opacity="0.6"/>
+<ellipse cx="348.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+<ellipse cx="396.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+
+                      <circle cx="357.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="355.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="387.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="385.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 365.0 398.0 Q 372.0 404.0 379.0 398.0" fill="none" stroke="#450a0a" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="ecoli-c2" filter="url(#m-shadow)">
+<path d="M 593.0 362.0 C 568.0 350.0, 543.0 374.0, 521.0 356.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 593.0 376.0 C 568.0 388.0, 543.0 364.0, 521.0 382.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 593.0 392.0 C 568.0 380.0, 543.0 404.0, 521.0 386.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 593.0 406.0 C 568.0 418.0, 543.0 394.0, 521.0 412.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<rect x="585.0" y="353.0" width="110" height="62" rx="31.0" fill="url(#grad-ecoli)"/>
+<ellipse cx="632.0" cy="365.0" rx="41.8" ry="7" fill="#ffffff" opacity="0.6"/>
+<ellipse cx="628.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+<ellipse cx="676.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+
+                      <circle cx="637.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="635.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="667.0" cy="386.0" r="6" fill="#450a0a"/>
+                      <circle cx="665.0" cy="383.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 645.0 398.0 Q 652.0 404.0 659.0 398.0" fill="none" stroke="#450a0a" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="ecoli-c3" filter="url(#m-shadow)">
+<path d="M 856.5 362.0 C 831.5 350.0, 806.5 374.0, 784.5 356.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 856.5 376.0 C 831.5 388.0, 806.5 364.0, 784.5 382.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 856.5 392.0 C 831.5 380.0, 806.5 404.0, 784.5 386.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<path d="M 856.5 406.0 C 831.5 418.0, 806.5 394.0, 784.5 412.0" fill="none" stroke="#f87171" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+<rect x="848.5" y="358.0" width="95" height="52" rx="26.0" fill="url(#grad-ecoli)"/>
+<ellipse cx="888.0" cy="370.0" rx="36.1" ry="7" fill="#ffffff" opacity="0.6"/>
+<ellipse cx="872.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+<ellipse cx="920.0" cy="396.0" rx="8" ry="5" fill="#f43f5e" opacity="0.55"/>
+<path d="M 874.0 382.0 L 884.0 388.0 L 874.0 394.0" fill="none" stroke="#450a0a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 918.0 382.0 L 908.0 388.0 L 918.0 394.0" fill="none" stroke="#450a0a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 888.0 400.0 Q 896.0 396.0 904.0 400.0" fill="none" stroke="#450a0a" stroke-width="3" stroke-linecap="round"/>
+</g>
+<g id="pseudomonas-c0" filter="url(#m-shadow)">
+<path d="M 74.0 640.0 Q 52.0 616.0 30.0 640.0 T -14.0 640.0" fill="none" stroke="#2dd4bf" stroke-width="3.8" stroke-linecap="round" opacity="0.9"/>
+<rect x="68.0" y="613.0" width="120" height="54" rx="27.0" fill="url(#grad-pseudo)"/>
+<ellipse cx="123.0" cy="623.0" rx="48.0" ry="6" fill="#ffffff" opacity="0.65"/>
+<ellipse cx="104.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+<ellipse cx="152.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+
+                      <circle cx="113.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="111.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <circle cx="143.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="141.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <path d="M 121.0 653.0 Q 128.0 659.0 135.0 653.0" fill="none" stroke="#042f2e" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="pseudomonas-c1" filter="url(#m-shadow)">
+<path d="M 330.0 640.0 Q 308.0 616.0 286.0 640.0 T 242.0 640.0" fill="none" stroke="#2dd4bf" stroke-width="3.8" stroke-linecap="round" opacity="0.9"/>
+<rect x="324.0" y="613.0" width="120" height="54" rx="27.0" fill="url(#grad-pseudo)"/>
+<ellipse cx="379.0" cy="623.0" rx="48.0" ry="6" fill="#ffffff" opacity="0.65"/>
+<ellipse cx="348.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+<ellipse cx="396.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+
+                      <circle cx="357.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="355.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <circle cx="387.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="385.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <path d="M 365.0 653.0 Q 372.0 659.0 379.0 653.0" fill="none" stroke="#042f2e" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="pseudomonas-c2" filter="url(#m-shadow)">
+<path d="M 586.0 640.0 Q 564.0 616.0 542.0 640.0 T 498.0 640.0" fill="none" stroke="#2dd4bf" stroke-width="3.8" stroke-linecap="round" opacity="0.9"/>
+<rect x="580.0" y="613.0" width="120" height="54" rx="27.0" fill="url(#grad-pseudo)"/>
+<ellipse cx="635.0" cy="623.0" rx="48.0" ry="6" fill="#ffffff" opacity="0.65"/>
+<ellipse cx="628.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+<ellipse cx="676.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+
+                      <circle cx="637.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="635.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <circle cx="667.0" cy="641.0" r="6" fill="#042f2e"/>
+                      <circle cx="665.0" cy="639.0" r="2.2" fill="#ffffff"/>
+                      <path d="M 645.0 653.0 Q 652.0 659.0 659.0 653.0" fill="none" stroke="#042f2e" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="pseudomonas-c3" filter="url(#m-shadow)">
+<path d="M 849.5 640.0 Q 827.5 616.0 805.5 640.0 T 761.5 640.0" fill="none" stroke="#2dd4bf" stroke-width="3.8" stroke-linecap="round" opacity="0.9"/>
+<rect x="843.5" y="617.0" width="105" height="46" rx="23.0" fill="url(#grad-pseudo)"/>
+<ellipse cx="891.0" cy="627.0" rx="42.0" ry="6" fill="#ffffff" opacity="0.65"/>
+<ellipse cx="872.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+<ellipse cx="920.0" cy="650.0" rx="8" ry="5" fill="#047857" opacity="0.45"/>
+<path d="M 876.0 638.0 L 885.0 643.0 L 876.0 648.0" fill="none" stroke="#042f2e" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 916.0 638.0 L 907.0 643.0 L 916.0 648.0" fill="none" stroke="#042f2e" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<ellipse cx="896.0" cy="654.0" rx="5" ry="6" fill="#042f2e"/>
+</g>
+<g id="candida-c0" filter="url(#m-shadow)">
+<ellipse cx="118.0" cy="906.0" rx="46" ry="56" fill="url(#grad-candida)"/>
+<ellipse cx="104.0" cy="880.0" rx="18" ry="12" fill="#ffffff" opacity="0.65" transform="rotate(-30 104.0 880.0)"/>
+<ellipse cx="164.0" cy="868.0" rx="24" ry="28" fill="url(#grad-candida)" transform="rotate(25 164.0 868.0)"/>
+<ellipse cx="156.0" cy="856.0" rx="9" ry="6" fill="#ffffff" opacity="0.65" transform="rotate(25 156.0 856.0)"/>
+<circle cx="159.0" cy="868.0" r="3" fill="#451a03"/>
+<circle cx="169.0" cy="868.0" r="3" fill="#451a03"/>
+<path d="M 161.0 874.0 Q 164.0 877.0 167.0 874.0" fill="none" stroke="#451a03" stroke-width="1.8" stroke-linecap="round"/>
+<ellipse cx="98.0" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+<ellipse cx="138.0" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+
+                      <circle cx="108.0" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="106.0" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="129.0" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="127.0" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 114.0 920.0 Q 119.0 926.0 124.0 920.0" fill="none" stroke="#451a03" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="candida-c1" filter="url(#m-shadow)">
+<ellipse cx="374.0" cy="906.0" rx="46" ry="56" fill="url(#grad-candida)"/>
+<ellipse cx="360.0" cy="880.0" rx="18" ry="12" fill="#ffffff" opacity="0.65" transform="rotate(-30 360.0 880.0)"/>
+<ellipse cx="420.0" cy="868.0" rx="24" ry="28" fill="url(#grad-candida)" transform="rotate(25 420.0 868.0)"/>
+<ellipse cx="412.0" cy="856.0" rx="9" ry="6" fill="#ffffff" opacity="0.65" transform="rotate(25 412.0 856.0)"/>
+<circle cx="415.0" cy="868.0" r="3" fill="#451a03"/>
+<circle cx="425.0" cy="868.0" r="3" fill="#451a03"/>
+<path d="M 417.0 874.0 Q 420.0 877.0 423.0 874.0" fill="none" stroke="#451a03" stroke-width="1.8" stroke-linecap="round"/>
+<ellipse cx="344.4" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+<ellipse cx="384.4" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+
+                      <circle cx="354.4" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="352.4" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="375.4" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="373.4" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 360.4 920.0 Q 365.4 926.0 370.4 920.0" fill="none" stroke="#451a03" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="candida-c2" filter="url(#m-shadow)">
+<ellipse cx="630.0" cy="906.0" rx="46" ry="56" fill="url(#grad-candida)"/>
+<ellipse cx="616.0" cy="880.0" rx="18" ry="12" fill="#ffffff" opacity="0.65" transform="rotate(-30 616.0 880.0)"/>
+<ellipse cx="676.0" cy="868.0" rx="24" ry="28" fill="url(#grad-candida)" transform="rotate(25 676.0 868.0)"/>
+<ellipse cx="668.0" cy="856.0" rx="9" ry="6" fill="#ffffff" opacity="0.65" transform="rotate(25 668.0 856.0)"/>
+<circle cx="671.0" cy="868.0" r="3" fill="#451a03"/>
+<circle cx="681.0" cy="868.0" r="3" fill="#451a03"/>
+<path d="M 673.0 874.0 Q 676.0 877.0 679.0 874.0" fill="none" stroke="#451a03" stroke-width="1.8" stroke-linecap="round"/>
+<ellipse cx="619.6" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+<ellipse cx="659.6" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+
+                      <circle cx="629.6" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="627.6" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <circle cx="650.6" cy="906.0" r="6" fill="#451a03"/>
+                      <circle cx="648.6" cy="903.5" r="2.2" fill="#ffffff"/>
+                      <path d="M 635.6 920.0 Q 640.6 926.0 645.6 920.0" fill="none" stroke="#451a03" stroke-width="3.2" stroke-linecap="round"/>
+                    
+</g>
+<g id="candida-c3" filter="url(#m-shadow)">
+<ellipse cx="886.0" cy="906.0" rx="46" ry="56" fill="url(#grad-candida)"/>
+<ellipse cx="872.0" cy="880.0" rx="18" ry="12" fill="#ffffff" opacity="0.65" transform="rotate(-30 872.0 880.0)"/>
+<ellipse cx="932.0" cy="868.0" rx="24" ry="28" fill="url(#grad-candida)" transform="rotate(25 932.0 868.0)"/>
+<ellipse cx="924.0" cy="856.0" rx="9" ry="6" fill="#ffffff" opacity="0.65" transform="rotate(25 924.0 856.0)"/>
+<circle cx="927.0" cy="868.0" r="3" fill="#451a03"/>
+<circle cx="937.0" cy="868.0" r="3" fill="#451a03"/>
+<path d="M 929.0 874.0 Q 932.0 877.0 935.0 874.0" fill="none" stroke="#451a03" stroke-width="1.8" stroke-linecap="round"/>
+<ellipse cx="866.0" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+<ellipse cx="906.0" cy="916.0" rx="9" ry="5.5" fill="#f59e0b" opacity="0.5"/>
+<path d="M 870.0 902.0 L 879.0 907.0 L 870.0 912.0" fill="none" stroke="#451a03" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 900.0 902.0 L 909.0 907.0 L 900.0 912.0" fill="none" stroke="#451a03" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M 882.0 922.0 Q 890.0 918.0 898.0 922.0" fill="none" stroke="#451a03" stroke-width="3" stroke-linecap="round"/>
+</g>
+</svg>

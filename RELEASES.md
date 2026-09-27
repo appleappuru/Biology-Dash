@@ -144,3 +144,25 @@ Visual decluttering, juicy arcade polish, and joyful kawaii micro-copy overhaul:
 
 137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.6.3` verified against live production: public bytes, version.json (`0.6.3`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-d28a64f8ec6f with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Visual evidence: `artifacts/welcome-320.png`, `artifacts/welcome-first-recruit.png`, `artifacts/simple-care-320.png`, `artifacts/colony-health-v10.png`, `artifacts/optional-setup-result-320.png`.
 
+## v0.7.0 — deployed September25,2026
+
+Deployment 7rivWQ36zNxSdgCG4By42zG5XH8g READY; shared https://biology-dash-public-demo.vercel.app/; immutable https://biology-dash-public-demo-oojhvqqk1-applefound.vercel.app. Cache biology-584de0c73c19.
+
+Evocative Mob Control / Last War 3/4 perspective visuals, 3D kawaii species-faithful microbes, defender yeet hugs, and super-weapon medicine actions:
+- 3/4 Perspective Runway & Bioluminescent Rails: Glowing neon teal runway corridor rails with 3D perspective narrowing, sliding speed track lines, and cellular substrate nodules evocative of Mob Control and Last War runner games.
+- 3D Capillary Marrow Emitter Pod: Positioned behind the squad at the base of the corridor with an illuminated cyan/teal core, physical housing, and animated recoil/glow pulse on gate recruitments and squad summons.
+- 3D Species-Faithful Kawaii Microbes: High-resolution 3D volumetric spritesheets (`enemies-v2.png` and `microbes-v3.png`) with spherical specular catchlights, airbrushed blush, and species-faithful biological morphology:
+  - S. aureus (golden mochi coccal clusters), Beta-lactamase + (with enzyme crest), Doxycycline-resistant (pink mochi cluster), MRSA (purple cluster with protective band), Crown S. aureus (with golden crown).
+  - S. pneumoniae (paired encapsulated lancet cocci), E. coli (short coral rods with wavy flagellar tails), Pseudomonas (slender teal rod with corkscrew polar flagellum), Candida (mother yeast with budding daughter cell).
+- Defender Yeet / Hurled Hug Tackle: Defenders can hurl one of their own in a glorious 3D parabolic arc over the field (`yeet` audio whoosh, contact shadow, flailing arms) landing directly on invaders with high-impact phagocytosis hug damage. Supported via interactive tap-to-hurl (tapping near an enemy flings a defender).
+- 3D Squeeze Hugs: Thick volumetric marshmallow arms with layered underside shadows, glossy highlights, mitten hands, and popping love-heart particles when wrapping invaders to destroy them.
+- Medicine Super-Weapon FX & Projectile Showers:
+  - 3D projectile showers across the corridor: falling two-tone Amoxicillin / Cefepime capsules with glossy specular reflection, glowing hexagonal Doxycycline cryo-stasis crystals, and glistening turquoise Micafungin liquid droplets.
+  - Bactericidal wall-breaking FX: fractured zigzag glowing fissures across bacteria with popping wall debris fragments flying outward, camera screen-shake, and "WALL SHATTER! 💥" / "FUNGAL WALL BREAK! 💥" callouts.
+  - Bacteriostatic cryo-stasis FX: translucent faceted hexagonal ice-crystal stasis cages covering bacteria with sharp frost spikes, bold glowing lilac pause symbol `❚❚`, floating frost flakes, and "GROWTH FROZEN! ❚❚" status.
+  - Incompatible / resistant deflection: silver circular deflection shield with "DEFLECTED · RESISTANT ⊘" status.
+- Mob Control Gate Polish: Bubbly popup text on gate passage (`+4 SQUAD! 🎉`, `⚡ SPEED BOOST!`, `🎯 REACH EXPANDED!`, `🛡️ LOSS SHIELD!`) with scale pop and emitter pod recoil pulse.
+
+137 unit tests across 11 test suites pass; TypeScript 0 errors. Clean compiled distribution in `/tmp/biology-dash-0.7.0` verified against live production: public bytes, version.json (`0.7.0`), no-index headers, robots.txt, and phone Settings / desktop sidebar agreement. Returning player smoothly updates to cache revision biology-584de0c73c19 with 42 Coins, roster loadout, upgrades, transaction receipts, and offline reload verified. Natural 32-second opening victory, cell retirement, and exactly-once Coin rewards verified on production. Visual evidence: `artifacts/first-hug-production-closeup.png`, `artifacts/first-hug-production-medicine.png`, `artifacts/mob-control-hurl-hug.png`, `artifacts/mob-control-amox-superweapon.png`, `artifacts/mob-control-doxy-cryostasis.png`, `artifacts/mob-control-gate-popup.png`.
+
+

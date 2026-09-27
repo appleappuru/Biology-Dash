@@ -1,0 +1,666 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1280" viewBox="0 0 1024 1280">
+<defs>
+
+      <!-- Soft drop shadow for 3D depth -->
+      <filter id="microbe-shadow" x="-20%" y="-20%" width="140%" height="140%">
+        <feDropShadow dx="0" dy="8" stdDeviation="6" flood-color="#001824" flood-opacity="0.45"/>
+      </filter>
+      <!-- Glossy eye catchlight glow -->
+      <filter id="eye-glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="1.2" result="glow"/>
+        <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- Golden crown gradient -->
+      <linearGradient id="crown-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#fff4b8"/>
+        <stop offset="50%" stop-color="#ffd54f"/>
+        <stop offset="100%" stop-color="#ff9800"/>
+      </linearGradient>
+    
+
+          <radialGradient id="grad-susceptible" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+            <stop offset="0%" stop-color="#fff5c2"/>
+            <stop offset="40%" stop-color="#f6be44"/>
+            <stop offset="85%" stop-color="#b87c10"/>
+            <stop offset="100%" stop-color="#e8941a"/>
+          </radialGradient>
+        
+
+          <radialGradient id="grad-beta_lactamase" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+            <stop offset="0%" stop-color="#ffdeb0"/>
+            <stop offset="40%" stop-color="#e6923b"/>
+            <stop offset="85%" stop-color="#a3550e"/>
+            <stop offset="100%" stop-color="#d47413"/>
+          </radialGradient>
+        
+
+          <radialGradient id="grad-doxy_resistant" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+            <stop offset="0%" stop-color="#ffd1dc"/>
+            <stop offset="40%" stop-color="#e8708c"/>
+            <stop offset="85%" stop-color="#9c2f48"/>
+            <stop offset="100%" stop-color="#c84767"/>
+          </radialGradient>
+        
+
+          <radialGradient id="grad-dual_resistant" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+            <stop offset="0%" stop-color="#decfff"/>
+            <stop offset="40%" stop-color="#8c6ccf"/>
+            <stop offset="85%" stop-color="#50368c"/>
+            <stop offset="100%" stop-color="#6e4bb0"/>
+          </radialGradient>
+        
+
+          <radialGradient id="grad-antigen_b" cx="35%" cy="30%" r="65%" fx="28%" fy="22%">
+            <stop offset="0%" stop-color="#c4f8f8"/>
+            <stop offset="40%" stop-color="#38bcc0"/>
+            <stop offset="85%" stop-color="#177276"/>
+            <stop offset="100%" stop-color="#269599"/>
+          </radialGradient>
+        
+</defs>
+<g id="susceptible-c0" filter="url(#microbe-shadow)">
+<circle cx="94.0" cy="106.0" r="34" fill="url(#grad-susceptible)"/>
+<ellipse cx="82.1" cy="94.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 82.1 94.1)"/>
+<circle cx="160.0" cy="102.0" r="32" fill="url(#grad-susceptible)"/>
+<ellipse cx="148.8" cy="90.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 148.8 90.8)"/>
+<circle cx="92.0" cy="154.0" r="30" fill="url(#grad-susceptible)"/>
+<ellipse cx="81.5" cy="143.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 81.5 143.5)"/>
+<circle cx="162.0" cy="152.0" r="33" fill="url(#grad-susceptible)"/>
+<ellipse cx="150.45" cy="140.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 150.45 140.45)"/>
+<circle cx="128.0" cy="86.0" r="28" fill="url(#grad-susceptible)"/>
+<ellipse cx="118.2" cy="76.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 118.2 76.2)"/>
+<circle cx="128.0" cy="132.0" r="48" fill="url(#grad-susceptible)"/>
+<ellipse cx="111.2" cy="115.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 111.2 115.2)"/>
+<ellipse cx="104.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="152.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="112.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="110.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="114.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="144.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="142.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="146.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 121.0 146.0 Q 128.0 154.0 135.0 146.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="susceptible-c1" filter="url(#microbe-shadow)">
+<circle cx="346.4" cy="106.0" r="34" fill="url(#grad-susceptible)"/>
+<ellipse cx="334.5" cy="94.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 334.5 94.1)"/>
+<circle cx="412.4" cy="102.0" r="32" fill="url(#grad-susceptible)"/>
+<ellipse cx="401.2" cy="90.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 401.2 90.8)"/>
+<circle cx="344.4" cy="154.0" r="30" fill="url(#grad-susceptible)"/>
+<ellipse cx="333.9" cy="143.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 333.9 143.5)"/>
+<circle cx="414.4" cy="152.0" r="33" fill="url(#grad-susceptible)"/>
+<ellipse cx="402.84999999999997" cy="140.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 402.84999999999997 140.45)"/>
+<circle cx="380.4" cy="86.0" r="28" fill="url(#grad-susceptible)"/>
+<ellipse cx="370.59999999999997" cy="76.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 370.59999999999997 76.2)"/>
+<circle cx="380.4" cy="132.0" r="48" fill="url(#grad-susceptible)"/>
+<ellipse cx="363.59999999999997" cy="115.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 363.59999999999997 115.2)"/>
+<ellipse cx="348.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="396.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="356.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="354.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="358.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="388.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="386.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="390.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 365.0 146.0 Q 372.0 154.0 379.0 146.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="susceptible-c2" filter="url(#microbe-shadow)">
+<circle cx="609.6" cy="106.0" r="34" fill="url(#grad-susceptible)"/>
+<ellipse cx="597.7" cy="94.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.7 94.1)"/>
+<circle cx="675.6" cy="102.0" r="32" fill="url(#grad-susceptible)"/>
+<ellipse cx="664.4" cy="90.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 664.4 90.8)"/>
+<circle cx="607.6" cy="154.0" r="30" fill="url(#grad-susceptible)"/>
+<ellipse cx="597.1" cy="143.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.1 143.5)"/>
+<circle cx="677.6" cy="152.0" r="33" fill="url(#grad-susceptible)"/>
+<ellipse cx="666.0500000000001" cy="140.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 666.0500000000001 140.45)"/>
+<circle cx="643.6" cy="86.0" r="28" fill="url(#grad-susceptible)"/>
+<ellipse cx="633.8000000000001" cy="76.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 633.8000000000001 76.2)"/>
+<circle cx="643.6" cy="132.0" r="48" fill="url(#grad-susceptible)"/>
+<ellipse cx="626.8000000000001" cy="115.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 626.8000000000001 115.2)"/>
+<ellipse cx="628.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="676.0" cy="142.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="636.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="634.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="638.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="668.0" cy="134.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="666.0" cy="131.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="670.0" cy="136.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 645.0 146.0 Q 652.0 154.0 659.0 146.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="susceptible-c3" filter="url(#microbe-shadow)">
+<circle cx="872.0" cy="112.7" r="30" fill="url(#grad-susceptible)"/>
+<ellipse cx="861.5" cy="102.2" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 861.5 102.2)"/>
+<circle cx="918.0" cy="111.0" r="29" fill="url(#grad-susceptible)"/>
+<ellipse cx="907.85" cy="100.85" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 907.85 100.85)"/>
+<circle cx="870.0" cy="145.0" r="27" fill="url(#grad-susceptible)"/>
+<ellipse cx="860.55" cy="135.55" rx="7.5600000000000005" ry="4.859999999999999" fill="#ffffff" opacity="0.65" transform="rotate(-25 860.55 135.55)"/>
+<circle cx="920.0" cy="143.3" r="29" fill="url(#grad-susceptible)"/>
+<ellipse cx="909.85" cy="133.15" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 909.85 133.15)"/>
+<circle cx="896.0" cy="100.8" r="25" fill="url(#grad-susceptible)"/>
+<ellipse cx="887.25" cy="92.05" rx="7.000000000000001" ry="4.5" fill="#ffffff" opacity="0.65" transform="rotate(-25 887.25 92.05)"/>
+<circle cx="896.0" cy="129.7" r="42" fill="url(#grad-susceptible)"/>
+<ellipse cx="881.3" cy="114.99999999999999" rx="11.760000000000002" ry="7.56" fill="#ffffff" opacity="0.65" transform="rotate(-25 881.3 114.99999999999999)"/>
+<ellipse cx="872.0" cy="141.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="920.0" cy="141.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Squeezed eyes > < -->
+                  <path d="M 874.0 125.4 L 884.0 132.4 L 874.0 139.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 918.0 125.4 L 908.0 132.4 L 918.0 139.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Wavy squished mouth -->
+                  <path d="M 888.0 147.4 Q 892.0 143.4 896.0 147.4 Q 900.0 151.4 904.0 147.4" fill="none" stroke="#241405" stroke-width="3.5" stroke-linecap="round"/>
+                  <!-- Squeeze sweat drop -->
+                  <path d="M 928.0 107.4 Q 938.0 115.4 934.0 123.4 Q 926.0 119.4 928.0 107.4 Z" fill="#67e8f9" opacity="0.85"/>
+                
+</g>
+<g id="beta_lactamase-c0" filter="url(#microbe-shadow)">
+<circle cx="94.0" cy="362.0" r="34" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="82.1" cy="350.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 82.1 350.1)"/>
+<circle cx="160.0" cy="358.0" r="32" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="148.8" cy="346.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 148.8 346.8)"/>
+<circle cx="92.0" cy="410.0" r="30" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="81.5" cy="399.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 81.5 399.5)"/>
+<circle cx="162.0" cy="408.0" r="33" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="150.45" cy="396.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 150.45 396.45)"/>
+<circle cx="128.0" cy="342.0" r="28" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="118.2" cy="332.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 118.2 332.2)"/>
+<circle cx="128.0" cy="388.0" r="48" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="111.2" cy="371.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 111.2 371.2)"/>
+
+                  <path d="M 166.0 348.0 Q 182.0 348.0 182.0 362.0 Q 182.0 378.0 166.0 386.0 Q 150.0 378.0 150.0 362.0 Q 150.0 348.0 166.0 348.0 Z" fill="#ffd15c" stroke="#b45309" stroke-width="2"/>
+                  <text x="166.0" y="368.0" font-family="Arial" font-size="13" font-weight="900" fill="#78350f" text-anchor="middle">β</text>
+                
+<ellipse cx="104.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="152.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="112.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="110.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="114.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="144.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="142.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="146.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 121.0 402.0 Q 128.0 410.0 135.0 402.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="beta_lactamase-c1" filter="url(#microbe-shadow)">
+<circle cx="346.4" cy="362.0" r="34" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="334.5" cy="350.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 334.5 350.1)"/>
+<circle cx="412.4" cy="358.0" r="32" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="401.2" cy="346.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 401.2 346.8)"/>
+<circle cx="344.4" cy="410.0" r="30" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="333.9" cy="399.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 333.9 399.5)"/>
+<circle cx="414.4" cy="408.0" r="33" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="402.84999999999997" cy="396.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 402.84999999999997 396.45)"/>
+<circle cx="380.4" cy="342.0" r="28" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="370.59999999999997" cy="332.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 370.59999999999997 332.2)"/>
+<circle cx="380.4" cy="388.0" r="48" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="363.59999999999997" cy="371.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 363.59999999999997 371.2)"/>
+
+                  <path d="M 419.6 348.0 Q 435.6 348.0 435.6 362.0 Q 435.6 378.0 419.6 386.0 Q 403.6 378.0 403.6 362.0 Q 403.6 348.0 419.6 348.0 Z" fill="#ffd15c" stroke="#b45309" stroke-width="2"/>
+                  <text x="419.6" y="368.0" font-family="Arial" font-size="13" font-weight="900" fill="#78350f" text-anchor="middle">β</text>
+                
+<ellipse cx="348.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="396.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="356.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="354.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="358.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="388.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="386.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="390.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 365.0 402.0 Q 372.0 410.0 379.0 402.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="beta_lactamase-c2" filter="url(#microbe-shadow)">
+<circle cx="609.6" cy="362.0" r="34" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="597.7" cy="350.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.7 350.1)"/>
+<circle cx="675.6" cy="358.0" r="32" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="664.4" cy="346.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 664.4 346.8)"/>
+<circle cx="607.6" cy="410.0" r="30" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="597.1" cy="399.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.1 399.5)"/>
+<circle cx="677.6" cy="408.0" r="33" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="666.0500000000001" cy="396.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 666.0500000000001 396.45)"/>
+<circle cx="643.6" cy="342.0" r="28" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="633.8000000000001" cy="332.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 633.8000000000001 332.2)"/>
+<circle cx="643.6" cy="388.0" r="48" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="626.8000000000001" cy="371.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 626.8000000000001 371.2)"/>
+
+                  <path d="M 680.4 348.0 Q 696.4 348.0 696.4 362.0 Q 696.4 378.0 680.4 386.0 Q 664.4 378.0 664.4 362.0 Q 664.4 348.0 680.4 348.0 Z" fill="#ffd15c" stroke="#b45309" stroke-width="2"/>
+                  <text x="680.4" y="368.0" font-family="Arial" font-size="13" font-weight="900" fill="#78350f" text-anchor="middle">β</text>
+                
+<ellipse cx="628.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="676.0" cy="398.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="636.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="634.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="638.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="668.0" cy="390.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="666.0" cy="387.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="670.0" cy="392.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 645.0 402.0 Q 652.0 410.0 659.0 402.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="beta_lactamase-c3" filter="url(#microbe-shadow)">
+<circle cx="872.0" cy="368.7" r="30" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="861.5" cy="358.2" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 861.5 358.2)"/>
+<circle cx="918.0" cy="367.0" r="29" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="907.85" cy="356.85" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 907.85 356.85)"/>
+<circle cx="870.0" cy="401.0" r="27" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="860.55" cy="391.55" rx="7.5600000000000005" ry="4.859999999999999" fill="#ffffff" opacity="0.65" transform="rotate(-25 860.55 391.55)"/>
+<circle cx="920.0" cy="399.3" r="29" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="909.85" cy="389.15000000000003" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 909.85 389.15000000000003)"/>
+<circle cx="896.0" cy="356.8" r="25" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="887.25" cy="348.05" rx="7.000000000000001" ry="4.5" fill="#ffffff" opacity="0.65" transform="rotate(-25 887.25 348.05)"/>
+<circle cx="896.0" cy="385.7" r="42" fill="url(#grad-beta_lactamase)"/>
+<ellipse cx="881.3" cy="371.0" rx="11.760000000000002" ry="7.56" fill="#ffffff" opacity="0.65" transform="rotate(-25 881.3 371.0)"/>
+
+                  <path d="M 934.0 348.0 Q 950.0 348.0 950.0 362.0 Q 950.0 378.0 934.0 386.0 Q 918.0 378.0 918.0 362.0 Q 918.0 348.0 934.0 348.0 Z" fill="#ffd15c" stroke="#b45309" stroke-width="2"/>
+                  <text x="934.0" y="368.0" font-family="Arial" font-size="13" font-weight="900" fill="#78350f" text-anchor="middle">β</text>
+                
+<ellipse cx="872.0" cy="397.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="920.0" cy="397.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Squeezed eyes > < -->
+                  <path d="M 874.0 381.4 L 884.0 388.4 L 874.0 395.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 918.0 381.4 L 908.0 388.4 L 918.0 395.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Wavy squished mouth -->
+                  <path d="M 888.0 403.4 Q 892.0 399.4 896.0 403.4 Q 900.0 407.4 904.0 403.4" fill="none" stroke="#241405" stroke-width="3.5" stroke-linecap="round"/>
+                  <!-- Squeeze sweat drop -->
+                  <path d="M 928.0 363.4 Q 938.0 371.4 934.0 379.4 Q 926.0 375.4 928.0 363.4 Z" fill="#67e8f9" opacity="0.85"/>
+                
+</g>
+<g id="doxy_resistant-c0" filter="url(#microbe-shadow)">
+<circle cx="94.0" cy="618.0" r="34" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="82.1" cy="606.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 82.1 606.1)"/>
+<circle cx="160.0" cy="614.0" r="32" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="148.8" cy="602.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 148.8 602.8)"/>
+<circle cx="92.0" cy="666.0" r="30" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="81.5" cy="655.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 81.5 655.5)"/>
+<circle cx="162.0" cy="664.0" r="33" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="150.45" cy="652.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 150.45 652.45)"/>
+<circle cx="128.0" cy="598.0" r="28" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="118.2" cy="588.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 118.2 588.2)"/>
+<circle cx="128.0" cy="644.0" r="48" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="111.2" cy="627.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 111.2 627.2)"/>
+<ellipse cx="104.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="152.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="112.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="110.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="114.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="144.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="142.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="146.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 121.0 658.0 Q 128.0 666.0 135.0 658.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="doxy_resistant-c1" filter="url(#microbe-shadow)">
+<circle cx="346.4" cy="618.0" r="34" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="334.5" cy="606.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 334.5 606.1)"/>
+<circle cx="412.4" cy="614.0" r="32" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="401.2" cy="602.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 401.2 602.8)"/>
+<circle cx="344.4" cy="666.0" r="30" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="333.9" cy="655.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 333.9 655.5)"/>
+<circle cx="414.4" cy="664.0" r="33" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="402.84999999999997" cy="652.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 402.84999999999997 652.45)"/>
+<circle cx="380.4" cy="598.0" r="28" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="370.59999999999997" cy="588.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 370.59999999999997 588.2)"/>
+<circle cx="380.4" cy="644.0" r="48" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="363.59999999999997" cy="627.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 363.59999999999997 627.2)"/>
+<ellipse cx="348.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="396.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="356.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="354.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="358.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="388.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="386.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="390.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 365.0 658.0 Q 372.0 666.0 379.0 658.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="doxy_resistant-c2" filter="url(#microbe-shadow)">
+<circle cx="609.6" cy="618.0" r="34" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="597.7" cy="606.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.7 606.1)"/>
+<circle cx="675.6" cy="614.0" r="32" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="664.4" cy="602.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 664.4 602.8)"/>
+<circle cx="607.6" cy="666.0" r="30" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="597.1" cy="655.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.1 655.5)"/>
+<circle cx="677.6" cy="664.0" r="33" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="666.0500000000001" cy="652.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 666.0500000000001 652.45)"/>
+<circle cx="643.6" cy="598.0" r="28" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="633.8000000000001" cy="588.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 633.8000000000001 588.2)"/>
+<circle cx="643.6" cy="644.0" r="48" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="626.8000000000001" cy="627.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 626.8000000000001 627.2)"/>
+<ellipse cx="628.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="676.0" cy="654.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="636.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="634.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="638.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="668.0" cy="646.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="666.0" cy="643.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="670.0" cy="648.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 645.0 658.0 Q 652.0 666.0 659.0 658.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="doxy_resistant-c3" filter="url(#microbe-shadow)">
+<circle cx="872.0" cy="624.7" r="30" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="861.5" cy="614.2" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 861.5 614.2)"/>
+<circle cx="918.0" cy="623.0" r="29" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="907.85" cy="612.85" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 907.85 612.85)"/>
+<circle cx="870.0" cy="657.0" r="27" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="860.55" cy="647.55" rx="7.5600000000000005" ry="4.859999999999999" fill="#ffffff" opacity="0.65" transform="rotate(-25 860.55 647.55)"/>
+<circle cx="920.0" cy="655.3" r="29" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="909.85" cy="645.15" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 909.85 645.15)"/>
+<circle cx="896.0" cy="612.8" r="25" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="887.25" cy="604.05" rx="7.000000000000001" ry="4.5" fill="#ffffff" opacity="0.65" transform="rotate(-25 887.25 604.05)"/>
+<circle cx="896.0" cy="641.7" r="42" fill="url(#grad-doxy_resistant)"/>
+<ellipse cx="881.3" cy="627.0" rx="11.760000000000002" ry="7.56" fill="#ffffff" opacity="0.65" transform="rotate(-25 881.3 627.0)"/>
+<ellipse cx="872.0" cy="653.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="920.0" cy="653.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Squeezed eyes > < -->
+                  <path d="M 874.0 637.4 L 884.0 644.4 L 874.0 651.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 918.0 637.4 L 908.0 644.4 L 918.0 651.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Wavy squished mouth -->
+                  <path d="M 888.0 659.4 Q 892.0 655.4 896.0 659.4 Q 900.0 663.4 904.0 659.4" fill="none" stroke="#241405" stroke-width="3.5" stroke-linecap="round"/>
+                  <!-- Squeeze sweat drop -->
+                  <path d="M 928.0 619.4 Q 938.0 627.4 934.0 635.4 Q 926.0 631.4 928.0 619.4 Z" fill="#67e8f9" opacity="0.85"/>
+                
+</g>
+<g id="dual_resistant-c0" filter="url(#microbe-shadow)">
+<circle cx="94.0" cy="874.0" r="34" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="82.1" cy="862.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 82.1 862.1)"/>
+<circle cx="160.0" cy="870.0" r="32" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="148.8" cy="858.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 148.8 858.8)"/>
+<circle cx="92.0" cy="922.0" r="30" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="81.5" cy="911.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 81.5 911.5)"/>
+<circle cx="162.0" cy="920.0" r="33" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="150.45" cy="908.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 150.45 908.45)"/>
+<circle cx="128.0" cy="854.0" r="28" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="118.2" cy="844.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 118.2 844.2)"/>
+<circle cx="128.0" cy="900.0" r="48" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="111.2" cy="883.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 111.2 883.2)"/>
+
+                  <ellipse cx="128.0" cy="876.0" rx="46" ry="12" fill="none" stroke="#e0c3fc" stroke-width="5" opacity="0.85"/>
+                  <polygon points="104.0,864.0 110.0,848.0 116.0,864.0" fill="#ffd54f"/>
+                  <polygon points="140.0,864.0 146.0,848.0 152.0,864.0" fill="#ffd54f"/>
+                
+<ellipse cx="104.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="152.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="112.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="110.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="114.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="144.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="142.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="146.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 121.0 914.0 Q 128.0 922.0 135.0 914.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="dual_resistant-c1" filter="url(#microbe-shadow)">
+<circle cx="346.4" cy="874.0" r="34" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="334.5" cy="862.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 334.5 862.1)"/>
+<circle cx="412.4" cy="870.0" r="32" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="401.2" cy="858.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 401.2 858.8)"/>
+<circle cx="344.4" cy="922.0" r="30" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="333.9" cy="911.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 333.9 911.5)"/>
+<circle cx="414.4" cy="920.0" r="33" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="402.84999999999997" cy="908.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 402.84999999999997 908.45)"/>
+<circle cx="380.4" cy="854.0" r="28" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="370.59999999999997" cy="844.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 370.59999999999997 844.2)"/>
+<circle cx="380.4" cy="900.0" r="48" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="363.59999999999997" cy="883.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 363.59999999999997 883.2)"/>
+
+                  <ellipse cx="379.2" cy="876.0" rx="46" ry="12" fill="none" stroke="#e0c3fc" stroke-width="5" opacity="0.85"/>
+                  <polygon points="360.0,864.0 366.0,848.0 372.0,864.0" fill="#ffd54f"/>
+                  <polygon points="396.0,864.0 402.0,848.0 408.0,864.0" fill="#ffd54f"/>
+                
+<ellipse cx="348.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="396.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="356.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="354.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="358.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="388.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="386.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="390.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 365.0 914.0 Q 372.0 922.0 379.0 914.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="dual_resistant-c2" filter="url(#microbe-shadow)">
+<circle cx="609.6" cy="874.0" r="34" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="597.7" cy="862.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.7 862.1)"/>
+<circle cx="675.6" cy="870.0" r="32" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="664.4" cy="858.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 664.4 858.8)"/>
+<circle cx="607.6" cy="922.0" r="30" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="597.1" cy="911.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.1 911.5)"/>
+<circle cx="677.6" cy="920.0" r="33" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="666.0500000000001" cy="908.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 666.0500000000001 908.45)"/>
+<circle cx="643.6" cy="854.0" r="28" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="633.8000000000001" cy="844.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 633.8000000000001 844.2)"/>
+<circle cx="643.6" cy="900.0" r="48" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="626.8000000000001" cy="883.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 626.8000000000001 883.2)"/>
+
+                  <ellipse cx="644.8" cy="876.0" rx="46" ry="12" fill="none" stroke="#e0c3fc" stroke-width="5" opacity="0.85"/>
+                  <polygon points="616.0,864.0 622.0,848.0 628.0,864.0" fill="#ffd54f"/>
+                  <polygon points="652.0,864.0 658.0,848.0 664.0,864.0" fill="#ffd54f"/>
+                
+<ellipse cx="628.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="676.0" cy="910.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="636.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="634.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="638.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="668.0" cy="902.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="666.0" cy="899.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="670.0" cy="904.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 645.0 914.0 Q 652.0 922.0 659.0 914.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="dual_resistant-c3" filter="url(#microbe-shadow)">
+<circle cx="872.0" cy="880.7" r="30" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="861.5" cy="870.2" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 861.5 870.2)"/>
+<circle cx="918.0" cy="879.0" r="29" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="907.85" cy="868.85" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 907.85 868.85)"/>
+<circle cx="870.0" cy="913.0" r="27" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="860.55" cy="903.55" rx="7.5600000000000005" ry="4.859999999999999" fill="#ffffff" opacity="0.65" transform="rotate(-25 860.55 903.55)"/>
+<circle cx="920.0" cy="911.3" r="29" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="909.85" cy="901.15" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 909.85 901.15)"/>
+<circle cx="896.0" cy="868.8" r="25" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="887.25" cy="860.05" rx="7.000000000000001" ry="4.5" fill="#ffffff" opacity="0.65" transform="rotate(-25 887.25 860.05)"/>
+<circle cx="896.0" cy="897.7" r="42" fill="url(#grad-dual_resistant)"/>
+<ellipse cx="881.3" cy="883.0" rx="11.760000000000002" ry="7.56" fill="#ffffff" opacity="0.65" transform="rotate(-25 881.3 883.0)"/>
+
+                  <ellipse cx="896.0" cy="879.0" rx="46" ry="12" fill="none" stroke="#e0c3fc" stroke-width="5" opacity="0.85"/>
+                  <polygon points="872.0,867.0 878.0,851.0 884.0,867.0" fill="#ffd54f"/>
+                  <polygon points="908.0,867.0 914.0,851.0 920.0,867.0" fill="#ffd54f"/>
+                
+<ellipse cx="872.0" cy="909.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="920.0" cy="909.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Squeezed eyes > < -->
+                  <path d="M 874.0 893.4 L 884.0 900.4 L 874.0 907.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 918.0 893.4 L 908.0 900.4 L 918.0 907.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Wavy squished mouth -->
+                  <path d="M 888.0 915.4 Q 892.0 911.4 896.0 915.4 Q 900.0 919.4 904.0 915.4" fill="none" stroke="#241405" stroke-width="3.5" stroke-linecap="round"/>
+                  <!-- Squeeze sweat drop -->
+                  <path d="M 928.0 875.4 Q 938.0 883.4 934.0 891.4 Q 926.0 887.4 928.0 875.4 Z" fill="#67e8f9" opacity="0.85"/>
+                
+</g>
+<g id="antigen_b-c0" filter="url(#microbe-shadow)">
+<circle cx="94.0" cy="1130.0" r="34" fill="url(#grad-antigen_b)"/>
+<ellipse cx="82.1" cy="1118.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 82.1 1118.1)"/>
+<circle cx="160.0" cy="1126.0" r="32" fill="url(#grad-antigen_b)"/>
+<ellipse cx="148.8" cy="1114.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 148.8 1114.8)"/>
+<circle cx="92.0" cy="1178.0" r="30" fill="url(#grad-antigen_b)"/>
+<ellipse cx="81.5" cy="1167.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 81.5 1167.5)"/>
+<circle cx="162.0" cy="1176.0" r="33" fill="url(#grad-antigen_b)"/>
+<ellipse cx="150.45" cy="1164.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 150.45 1164.45)"/>
+<circle cx="128.0" cy="1110.0" r="28" fill="url(#grad-antigen_b)"/>
+<ellipse cx="118.2" cy="1100.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 118.2 1100.2)"/>
+<circle cx="128.0" cy="1156.0" r="48" fill="url(#grad-antigen_b)"/>
+<ellipse cx="111.2" cy="1139.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 111.2 1139.2)"/>
+
+                  <polygon points="104.0,1088.0 110.0,1062.0 122.0,1076.0 128.0,1058.0 134.0,1076.0 146.0,1062.0 152.0,1088.0" fill="url(#crown-gold)" stroke="#d97706" stroke-width="2"/>
+                  <circle cx="128.0" cy="1058.0" r="3" fill="#ff1744"/>
+                  <circle cx="110.0" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                  <circle cx="146.0" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                
+<ellipse cx="104.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="152.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="112.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="110.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="114.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="144.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="142.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="146.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 121.0 1170.0 Q 128.0 1178.0 135.0 1170.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="antigen_b-c1" filter="url(#microbe-shadow)">
+<circle cx="346.4" cy="1130.0" r="34" fill="url(#grad-antigen_b)"/>
+<ellipse cx="334.5" cy="1118.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 334.5 1118.1)"/>
+<circle cx="412.4" cy="1126.0" r="32" fill="url(#grad-antigen_b)"/>
+<ellipse cx="401.2" cy="1114.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 401.2 1114.8)"/>
+<circle cx="344.4" cy="1178.0" r="30" fill="url(#grad-antigen_b)"/>
+<ellipse cx="333.9" cy="1167.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 333.9 1167.5)"/>
+<circle cx="414.4" cy="1176.0" r="33" fill="url(#grad-antigen_b)"/>
+<ellipse cx="402.84999999999997" cy="1164.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 402.84999999999997 1164.45)"/>
+<circle cx="380.4" cy="1110.0" r="28" fill="url(#grad-antigen_b)"/>
+<ellipse cx="370.59999999999997" cy="1100.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 370.59999999999997 1100.2)"/>
+<circle cx="380.4" cy="1156.0" r="48" fill="url(#grad-antigen_b)"/>
+<ellipse cx="363.59999999999997" cy="1139.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 363.59999999999997 1139.2)"/>
+
+                  <polygon points="355.2,1088.0 361.2,1062.0 373.2,1076.0 379.2,1058.0 385.2,1076.0 397.2,1062.0 403.2,1088.0" fill="url(#crown-gold)" stroke="#d97706" stroke-width="2"/>
+                  <circle cx="379.2" cy="1058.0" r="3" fill="#ff1744"/>
+                  <circle cx="361.2" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                  <circle cx="397.2" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                
+<ellipse cx="348.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="396.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="356.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="354.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="358.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="388.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="386.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="390.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 365.0 1170.0 Q 372.0 1178.0 379.0 1170.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="antigen_b-c2" filter="url(#microbe-shadow)">
+<circle cx="609.6" cy="1130.0" r="34" fill="url(#grad-antigen_b)"/>
+<ellipse cx="597.7" cy="1118.1" rx="9.520000000000001" ry="6.12" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.7 1118.1)"/>
+<circle cx="675.6" cy="1126.0" r="32" fill="url(#grad-antigen_b)"/>
+<ellipse cx="664.4" cy="1114.8" rx="8.96" ry="5.76" fill="#ffffff" opacity="0.65" transform="rotate(-25 664.4 1114.8)"/>
+<circle cx="607.6" cy="1178.0" r="30" fill="url(#grad-antigen_b)"/>
+<ellipse cx="597.1" cy="1167.5" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 597.1 1167.5)"/>
+<circle cx="677.6" cy="1176.0" r="33" fill="url(#grad-antigen_b)"/>
+<ellipse cx="666.0500000000001" cy="1164.45" rx="9.24" ry="5.9399999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 666.0500000000001 1164.45)"/>
+<circle cx="643.6" cy="1110.0" r="28" fill="url(#grad-antigen_b)"/>
+<ellipse cx="633.8000000000001" cy="1100.2" rx="7.840000000000001" ry="5.04" fill="#ffffff" opacity="0.65" transform="rotate(-25 633.8000000000001 1100.2)"/>
+<circle cx="643.6" cy="1156.0" r="48" fill="url(#grad-antigen_b)"/>
+<ellipse cx="626.8000000000001" cy="1139.2" rx="13.440000000000001" ry="8.64" fill="#ffffff" opacity="0.65" transform="rotate(-25 626.8000000000001 1139.2)"/>
+
+                  <polygon points="620.8,1088.0 626.8,1062.0 638.8,1076.0 644.8,1058.0 650.8,1076.0 662.8,1062.0 668.8,1088.0" fill="url(#crown-gold)" stroke="#d97706" stroke-width="2"/>
+                  <circle cx="644.8" cy="1058.0" r="3" fill="#ff1744"/>
+                  <circle cx="626.8" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                  <circle cx="662.8" cy="1062.0" r="2.5" fill="#00e5ff"/>
+                
+<ellipse cx="628.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="676.0" cy="1166.0" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Left bead eye -->
+                  <circle cx="636.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="634.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="638.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Right bead eye -->
+                  <circle cx="668.0" cy="1158.0" r="6.5" fill="#1e1808"/>
+                  <circle cx="666.0" cy="1155.5" r="2.4" fill="#ffffff"/>
+                  <circle cx="670.0" cy="1160.0" r="1.2" fill="#ffffff"/>
+                  <!-- Cute smile -->
+                  <path d="M 645.0 1170.0 Q 652.0 1178.0 659.0 1170.0" fill="none" stroke="#1e1808" stroke-width="3.5" stroke-linecap="round"/>
+                
+</g>
+<g id="antigen_b-c3" filter="url(#microbe-shadow)">
+<circle cx="872.0" cy="1136.7" r="30" fill="url(#grad-antigen_b)"/>
+<ellipse cx="861.5" cy="1126.2" rx="8.4" ry="5.3999999999999995" fill="#ffffff" opacity="0.65" transform="rotate(-25 861.5 1126.2)"/>
+<circle cx="918.0" cy="1135.0" r="29" fill="url(#grad-antigen_b)"/>
+<ellipse cx="907.85" cy="1124.85" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 907.85 1124.85)"/>
+<circle cx="870.0" cy="1169.0" r="27" fill="url(#grad-antigen_b)"/>
+<ellipse cx="860.55" cy="1159.55" rx="7.5600000000000005" ry="4.859999999999999" fill="#ffffff" opacity="0.65" transform="rotate(-25 860.55 1159.55)"/>
+<circle cx="920.0" cy="1167.3" r="29" fill="url(#grad-antigen_b)"/>
+<ellipse cx="909.85" cy="1157.1499999999999" rx="8.120000000000001" ry="5.22" fill="#ffffff" opacity="0.65" transform="rotate(-25 909.85 1157.1499999999999)"/>
+<circle cx="896.0" cy="1124.8" r="25" fill="url(#grad-antigen_b)"/>
+<ellipse cx="887.25" cy="1116.05" rx="7.000000000000001" ry="4.5" fill="#ffffff" opacity="0.65" transform="rotate(-25 887.25 1116.05)"/>
+<circle cx="896.0" cy="1153.7" r="42" fill="url(#grad-antigen_b)"/>
+<ellipse cx="881.3" cy="1139.0" rx="11.760000000000002" ry="7.56" fill="#ffffff" opacity="0.65" transform="rotate(-25 881.3 1139.0)"/>
+
+                  <polygon points="872.0,1097.6 878.0,1071.6 890.0,1085.6 896.0,1067.6 902.0,1085.6 914.0,1071.6 920.0,1097.6" fill="url(#crown-gold)" stroke="#d97706" stroke-width="2"/>
+                  <circle cx="896.0" cy="1067.6" r="3" fill="#ff1744"/>
+                  <circle cx="878.0" cy="1071.6" r="2.5" fill="#00e5ff"/>
+                  <circle cx="914.0" cy="1071.6" r="2.5" fill="#00e5ff"/>
+                
+<ellipse cx="872.0" cy="1165.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+<ellipse cx="920.0" cy="1165.4" rx="9" ry="5.5" fill="#ff4081" opacity="0.55"/>
+
+                  <!-- Squeezed eyes > < -->
+                  <path d="M 874.0 1149.4 L 884.0 1156.4 L 874.0 1163.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M 918.0 1149.4 L 908.0 1156.4 L 918.0 1163.4" fill="none" stroke="#241405" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Wavy squished mouth -->
+                  <path d="M 888.0 1171.4 Q 892.0 1167.4 896.0 1171.4 Q 900.0 1175.4 904.0 1171.4" fill="none" stroke="#241405" stroke-width="3.5" stroke-linecap="round"/>
+                  <!-- Squeeze sweat drop -->
+                  <path d="M 928.0 1131.4 Q 938.0 1139.4 934.0 1147.4 Q 926.0 1143.4 928.0 1131.4 Z" fill="#67e8f9" opacity="0.85"/>
+                
+</g>
+</svg>
